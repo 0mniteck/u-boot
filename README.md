@@ -5,7 +5,9 @@
 RockPro64 SPI-Uboot Assembler
 
 Requirements:
+
 [ ] Debian based OS already running on the RockPro64
+
 [ ] Any size Fat formatted microsd in the /dev/mmcblk1 slot w/ no MBR/GUID
 
 
