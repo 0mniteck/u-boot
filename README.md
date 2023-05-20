@@ -1,8 +1,9 @@
 # u-boot-rk3399
 ## U-Boot Prebuilt Release v2023.04 W/ ATF 2.8.6
 
+Prebuilt spi_combined.img is included for convenience.
 
-RockPro64 SPI-Uboot Assembler
+##RockPro64 SPI-Uboot Assembler
 
 Requirements:
 
