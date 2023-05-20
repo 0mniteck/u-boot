@@ -23,7 +23,7 @@ export BL31=/tmp/arm-trusted-firmware-lts-v2.8.6/build/rk3399/release/bl31/bl31.
 cd ..
 cd u-boot-202*
 sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3399_defconfig
-make rockpro64-rk3399_defconfig #rpi_3_b_plus_defconfig
+make rockpro64-rk3399_defconfig
 make all
 image_name="spi_idbloader.img"
 combined_name="spi_combined.img"
@@ -35,9 +35,8 @@ dd if=/dev/zero of="${image_name}" conv=notrunc bs=1 count=1 seek=${padsize}
 cat ${image_name} u-boot.itb > "${combined_name}"
 mount /dev/mmcblk1 /mnt
 sha512sum spi_combined.img > /mnt/spi_combined.img.sum
-#dd if=u-boot-rockchip.bin of=/dev/mmcblk1
 cp spi_combined.img /mnt/spi_combined.img
 sync
 umount /mnt
 cd ..
-apt remove --purge build-essential bc zip unzip bison flex libssl-dev gcc-arm-none-eabi device-tree-compiler swig python3-pyelftools  python3-dev -y && apt autoremove -y && rm -f -r /tmp/u-boot-202* && rm -f /tmp/lts-* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-*
+apt remove --purge build-essential bc zip unzip bison flex libssl-dev gcc-arm-none-eabi device-tree-compiler swig python3-pyelftools python3-dev -y && apt autoremove -y && rm -f -r /tmp/u-boot-202* && rm -f /tmp/lts-* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-*
