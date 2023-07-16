@@ -35,6 +35,7 @@ image_size=$(wc -c < "${image_name}")
 dd if=/dev/zero of="${image_name}" conv=notrunc bs=1 count=1 seek=${padsize}
 cat ${image_name} u-boot.itb > "${combined_name}"
 mount /dev/mmcblk1 /mnt
+sha512sum spi_combined.img
 sha512sum spi_combined.img > /mnt/spi_combined.img.sum
 cp spi_combined.img /mnt/spi_combined.img
 sync
