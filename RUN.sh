@@ -20,7 +20,7 @@ cd arm-trusted-firmware-*
 sed -i '/--fatal-warnings -O1/ s/$/ --no-warn-rwx-segments/' Makefile
 make realclean
 make PLAT=rk3399
-export BL31=/tmp/arm-trusted-firmware-v2.9/build/rk3399/release/bl31/bl31.elf
+export BL31=/tmp/arm-trusted-firmware-2.9/build/rk3399/release/bl31/bl31.elf
 cd ..
 cd u-boot-202*
 sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3399_defconfig
