@@ -24,7 +24,7 @@ Reboot into U-Boot, Then:
 
 `load mmc 1:0 0x02080000 spi_combined.img`
 
-`sf write 0x02080000 0 $filesize`
+`sf write 0x02080000 0 163800`
 
 `reset`
 
