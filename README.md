@@ -1,5 +1,5 @@
 # U-Boot-rk3399
-## U-Boot Prebuilt Release v2023.04 W/ ATF 2.8.6
+## U-Boot Prebuilt Release v2023.07.02 W/ ATF 2.9
 
 Prebuilt spi_combined.img is included for convenience.
 
