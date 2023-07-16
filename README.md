@@ -22,7 +22,7 @@ Reboot into U-Boot, Then:
 
 `ls mmc 1:0 /`
 
-`load mmc 1:0 $kernel_addr_r spi_combined.img`
+`load mmc 1:0 0x02080000 spi_combined.img`
 
 `sf write $kernel_addr_r 0 $filesize`
 
