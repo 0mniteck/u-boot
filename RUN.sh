@@ -7,19 +7,19 @@
 
 cd /tmp/
 apt update && apt install build-essential bc zip unzip bison flex libssl-dev gcc-arm-none-eabi device-tree-compiler swig python3-pyelftools python3-dev -y
-wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/lts-v2.8.6.zip
-echo '843ddf990a8aae0233eded7558e2d4147d0e43be98432614d1223bb6ffa50d200532b6ec043e862ea80b61642ae064984478b52989d8dbb6806b3da2e63cb76d  lts-v2.8.6.zip' > v2.zip.sum
-if [[ $(sha512sum -c v2.zip.sum) == 'lts-v2.8.6.zip: OK' ]]; then sleep 0; else exit 1; fi;
-wget https://github.com/u-boot/u-boot/archive/refs/tags/v2023.04.zip
-echo '81be2e176ece1301fd7c7eafa8b46cda17b9be55025f5ed6d7dad4ea9d5e4db8eb86e229103517b584be294917ff4f9c6c43cd7ddf8067f2e2350408816dea1b  v2023.04.zip' > v2023.zip.sum
-if [[ $(sha512sum -c v2023.zip.sum) == 'v2023.04.zip: OK' ]]; then sleep 0; else exit 1; fi;
+wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/v2.9.zip
+echo '07e2500d5a64d4ebce5e5d7a934bdb4e911457402a84a8ca0070e42a65fe424596bb0995d03122867e08d459933f45eb7dd5478a5fcccd03afd16625e0dc2d3d  v2.9.zip' > v2.zip.sum
+if [[ $(sha512sum -c v2.zip.sum) == 'v2.9.zip: OK' ]]; then sleep 0; else exit 1; fi;
+wget https://github.com/u-boot/u-boot/archive/refs/tags/v2023.07.02.zip
+echo '3293f165ea9b381d4c1e86a40585a9e5b242da2a37f19b592e23983c9a92ba76a3e4c9b8c56dfd4faa324c4c66bda681cc7510e0ba42202486baa8d0ed4b6182  v2023.07.02.zip' > v2023.zip.sum
+if [[ $(sha512sum -c v2023.zip.sum) == 'v2023.07.02.zip: OK' ]]; then sleep 0; else exit 1; fi;
 unzip v202*.zip
 unzip lts*.zip
 cd arm-trusted-firmware-*
 sed -i '/--fatal-warnings -O1/ s/$/ --no-warn-rwx-segments/' Makefile
 make realclean
 make PLAT=rk3399
-export BL31=/tmp/arm-trusted-firmware-lts-v2.8.6/build/rk3399/release/bl31/bl31.elf
+export BL31=/tmp/arm-trusted-firmware-v2.9/build/rk3399/release/bl31/bl31.elf
 cd ..
 cd u-boot-202*
 sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3399_defconfig
