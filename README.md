@@ -1,13 +1,13 @@
-# U-Boot rk3399
-## U-Boot Prebuilt Release v2023.07.02 W/ ATF v2.9
+# U-Boot Allwinner A64
+## U-Boot Prebuilt Release v2023.07.02 W/ ATF v2.9 & SCP v0.6
 
-Prebuilt spi_combined.img is included for convenience.
+Prebuilt spi_combined.zip is included for convenience.
 
-## RockPro64 SPI-Uboot Assembler
+## PinePhone SPI-Uboot Assembler
 
 Requirements:
 
-* [ ] Debian based OS already running on the RockPro64
+* [ ] Debian based OS already running on an ARM64 architecture CPU
 
 * [ ] Any size Fat formatted microsd in the /dev/mmcblk1 slot w/ no MBR/GUID
 
@@ -22,9 +22,9 @@ Reboot into U-Boot, Then:
 
 `ls mmc 1:0 /`
 
-`load mmc 1:0 0x02080000 spi_combined.img`
+`load mmc 1:0 $kernel_addr_r spi_combined.img`
 
-`sf write 0x02080000 0 163800`
+`sf write $kernel_addr_r 0 $filesize`
 
 `reset`
 
