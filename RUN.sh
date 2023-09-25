@@ -19,7 +19,7 @@ unzip v2.*.zip
 cd arm-trusted-firmware-*
 sed -i '/--fatal-warnings -O1/ s/$/ --no-warn-rwx-segments/' Makefile
 make realclean
-make PLAT=sun50i_a64
+make PLAT=sun50i_a64 DEBUG=1 bl31
 export BL31=/tmp/arm-trusted-firmware-2.9/build/sun50i_a64/release/bl31/bl31.elf
 cd ..
 cd u-boot-202*
