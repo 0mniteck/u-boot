@@ -47,3 +47,4 @@ rm spi_combined.zip && zip -0 spi_combined.zip /tmp/spi_combined.img /tmp/spi_co
 git status
 git add -A
 git commit -a -S -m "Successful Build of U-Boot with TF-A"
+git push
