@@ -7,7 +7,7 @@
 ##
 
 pushd /tmp/
-apt update && apt install build-essential bc zip unzip bison flex libssl-dev gcc-arm-none-eabi gcc-or1k-elf binutils-or1k-elf device-tree-compiler swig python3-pyelftools python3-dev -y
+apt update && apt install build-essential bc zip unzip bison flex libssl-dev gcc-arm-none-eabi gcc-or1k-elf binutils-or1k-elf libgcc-s1-riscv64-cross device-tree-compiler swig python3-pyelftools python3-dev -y
 wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/v2.9.zip
 echo '07e2500d5a64d4ebce5e5d7a934bdb4e911457402a84a8ca0070e42a65fe424596bb0995d03122867e08d459933f45eb7dd5478a5fcccd03afd16625e0dc2d3d  v2.9.zip' > v2.zip.sum
 if [[ $(sha512sum -c v2.zip.sum) == 'v2.9.zip: OK' ]]; then sleep 0; else exit 1; fi;
