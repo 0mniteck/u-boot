@@ -30,6 +30,7 @@ cd crust-0.*
 export CROSS_COMPILE=or1k-linux-musl-
 make pinephone_defconfig && make -j5 scp
 export SCP=/src/crust/build/scp/scp.bin
+export CROSS_COMPILE=
 cd ..
 cd u-boot-202*
 make pinephone_defconfig
