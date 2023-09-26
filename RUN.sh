@@ -37,7 +37,7 @@ make pinephone_defconfig
 make all
 image_name="spi_idbloader.img"
 combined_name="spi_combined.img"
-tools/mkimage -n pinephone -T sunxi_toc0 -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin "${image_name}"
+tools/mkimage -n pinephone -T sunxi_toc0 -d spl/u-boot-spl.bin "${image_name}"
 padsize=$((0x60000 - 1))
 image_size=$(wc -c < "${image_name}")
 [ $image_size -le $padsize ] || exit 1
@@ -56,5 +56,5 @@ apt remove --purge build-essential bc zip unzip bison flex libssl-dev gcc-arm-no
 rm spi_combined.zip && zip -0 spi_combined.zip /tmp/spi_combined.img /tmp/spi_combined.img.sum
 git status
 git add -A
-git commit -a -S -m "Successful Build of U-Boot with TF-A"
+git commit -a -S -m "Successful Build of U-Boot with TF-A & SCP"
 git push
