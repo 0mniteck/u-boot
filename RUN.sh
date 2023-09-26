@@ -37,7 +37,7 @@ make pinephone_defconfig
 make all
 image_name="spi_idbloader.img"
 combined_name="spi_combined.img"
-tools/mkimage -n pinephone -T rkspi -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin "${image_name}"
+tools/mkimage -n pinephone -T sunxi_toc0 -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin "${image_name}"
 padsize=$((0x60000 - 1))
 image_size=$(wc -c < "${image_name}")
 [ $image_size -le $padsize ] || exit 1
