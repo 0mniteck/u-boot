@@ -29,7 +29,7 @@ cd ..
 cd crust-0.*
 export CROSS_COMPILE=or1k-elf-
 make pinephone_defconfig && make -j5 scp
-export SCP=/src/crust/build/scp/scp.bin
+export SCP=/tmp/crust-0.6/build/scp/scp.bin
 export CROSS_COMPILE=
 cd ..
 cd u-boot-202*
