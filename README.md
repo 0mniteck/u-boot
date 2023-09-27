@@ -3,7 +3,7 @@
 
 Prebuilt spi_combined.img is included for convenience.
 
-## RockPro64 SPI-Uboot Assembler
+## RockPro64 SPI U-Boot Assembler
 
 Requirements:
 
