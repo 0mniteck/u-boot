@@ -28,7 +28,7 @@ export BL31=/tmp/arm-trusted-firmware-2.9/build/sun50i_a64/release/bl31/bl31.elf
 cd ..
 cd crust-0.*
 export CROSS_COMPILE=or1k-elf-
-make pinephone_defconfig && make -j5 scp
+make pinephone_defconfig && make -j$(nproc) scp
 export SCP=/tmp/crust-0.6/build/scp/scp.bin
 export CROSS_COMPILE=
 cd ..
