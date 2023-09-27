@@ -44,7 +44,7 @@ umount /mnt
 popd
 rm -f -r spi_combined.zip && zip -0 spi_combined.zip /tmp/spi_combined.img /tmp/spi_combined.img.sum
 git status
-git add -A && git status && git commit -a -S -m "Successful Build of U-Boot with TF-A & SCP"
+git add -A && git status && git commit -a -S -m "Successful Build of U-Boot with TF-A"
 git push
 apt remove --purge build-essential bc zip unzip bison flex libssl-dev gcc-arm-none-eabi device-tree-compiler swig python3-pyelftools python3-dev -y && apt autoremove -y
 rm -f -r /tmp/u-boot-202* && rm -f /tmp/lts-* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/spi_*
