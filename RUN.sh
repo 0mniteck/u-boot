@@ -37,7 +37,7 @@ make pinephone_defconfig
 make all
 image_name="spi_idbloader.img"
 combined_name="spi_combined.img"
-openssl genrsa -out root_key.pem 4096
+openssl genrsa -out root_key.pem 2048
 tools/mkimage -n pinephone -T sunxi_toc0 -d spl/u-boot-spl.bin "${image_name}"
 shred root_key.pem
 padsize=$((0x60000 - 1))
