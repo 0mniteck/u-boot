@@ -17,6 +17,7 @@ if [[ $(sha512sum -c v2023.zip.sum) == 'v2023.07.02.zip: OK' ]]; then sleep 0; e
 unzip v202*.zip
 unzip v2.*.zip
 cd arm-trusted-firmware-*
+make realclean
 sed -i '/--fatal-warnings -O1/ s/$/ --no-warn-rwx-segments/' Makefile
 make PLAT=rk3399 bl31
 export BL31=/tmp/arm-trusted-firmware-2.9/build/rk3399/release/bl31/bl31.elf
@@ -42,5 +43,8 @@ sync
 umount /mnt
 popd
 rm -f -r spi_combined.zip && zip -0 spi_combined.zip /tmp/spi_combined.img /tmp/spi_combined.img.sum
+git status
+git add -A && git status && git commit -a -S -m "Successful Build of U-Boot with TF-A & SCP"
+git push
 apt remove --purge build-essential bc zip unzip bison flex libssl-dev gcc-arm-none-eabi device-tree-compiler swig python3-pyelftools python3-dev -y && apt autoremove -y
 rm -f -r /tmp/u-boot-202* && rm -f /tmp/lts-* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/spi_*
