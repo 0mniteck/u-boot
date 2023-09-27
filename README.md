@@ -3,7 +3,7 @@
 
 Prebuilt u-boot-sunxi-with-spl.bin is included for convenience.
 
-## PinePhone Uboot Assembler
+## PinePhone U-Boot Assembler
 
 Requirements:
 
