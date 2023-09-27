@@ -9,4 +9,4 @@ Requirements:
 
 * [ ] Debian based OS already running on an ARM64 CPU
 
-* [ ] Any size Fat formatted microsd in the /dev/mmcblk1 slot w/ no MBR/GUID
+* [ ] Any size Non-formatted microSD in the /dev/mmcblk1 slot w/ no MBR/GUID
