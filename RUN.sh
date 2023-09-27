@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 ##
-##	PinePhone SPI-Uboot Assembler
+##	PinePhone Uboot Assembler
 ##		Requirements: Debian based OS running on ARM64, any size Fat formatted microsd in the MMCBLK1 slot w/ no MBR/GUID
 ##		  By: Shant Tchatalbachian
 ##
@@ -34,27 +34,14 @@ export CROSS_COMPILE=
 cd ..
 cd u-boot-202*
 make pinephone_defconfig
-make all
-image_name="spi_idbloader.img"
-combined_name="spi_combined.img"
-openssl genrsa -out root_key.pem 2048
-tools/mkimage -n pinephone -T sunxi_toc0 -d spl/u-boot-spl.bin "${image_name}"
-shred root_key.pem
-padsize=$((0x60000 - 1))
-image_size=$(wc -c < "${image_name}")
-[ $image_size -le $padsize ] || exit 1
-dd if=/dev/zero of="${image_name}" conv=notrunc bs=1 count=1 seek=${padsize}
-cat ${image_name} u-boot-sunxi-with-spl.fit.itb > "${combined_name}"
-mount /dev/mmcblk1 /mnt
-sha512sum spi_combined.img
-sha512sum spi_combined.img > /mnt/spi_combined.img.sum
-sha512sum spi_combined.img > /tmp/spi_combined.img.sum
-cp spi_combined.img /mnt/spi_combined.img
-cp spi_combined.img /tmp/spi_combined.img
+make -j$(nproc) all
+dd if=u-boot-sunxi-with-spl.bin of=/dev/mmcblk1 bs=8k seek=1
+sha512sum u-boot-sunxi-with-spl.bin
+sha512sum u-boot-sunxi-with-spl.bin > /tmp/u-boot-sunxi-with-spl.bin.sum
+cp u-boot-sunxi-with-spl.bin /tmp/u-boot-sunxi-with-spl.bin
 sync
-umount /mnt
 popd
-rm spi_combined.zip && zip -0 spi_combined.zip /tmp/spi_combined.img /tmp/spi_combined.img.sum
+rm -f u-boot-sunxi-with-spl.bin && zip -0 build.zip /tmp/u-boot-sunxi-with-spl.bin /tmp/u-boot-sunxi-with-spl.bin.sum
 git status
 git add -A
 git commit -a -S -m "Successful Build of U-Boot with TF-A & SCP"
