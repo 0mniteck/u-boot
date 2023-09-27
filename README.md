@@ -7,7 +7,7 @@ Prebuilt spi_combined.img is included for convenience.
 
 Requirements:
 
-* [ ] Debian based OS already running on the RockPro64
+* [ ] Debian based OS already running on an ARM64 CPU
 
 * [ ] Any size Fat formatted microsd in the /dev/mmcblk1 slot w/ no MBR/GUID
 
