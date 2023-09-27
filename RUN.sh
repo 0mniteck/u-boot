@@ -33,8 +33,7 @@ export SCP=/tmp/crust-0.6/build/scp/scp.bin
 export CROSS_COMPILE=
 cd ..
 cd u-boot-202*
-make pinephone_defconfig
-make -j$(nproc) all
+make pinephone_defconfig && make -j$(nproc) all
 dd if=u-boot-sunxi-with-spl.bin of=/dev/mmcblk1 bs=8k seek=1
 sha512sum u-boot-sunxi-with-spl.bin
 sha512sum u-boot-sunxi-with-spl.bin > /tmp/u-boot-sunxi-with-spl.bin.sum
@@ -43,8 +42,7 @@ sync
 popd
 rm -f u-boot-sunxi-with-spl.bin && zip -0 build.zip /tmp/u-boot-sunxi-with-spl.bin /tmp/u-boot-sunxi-with-spl.bin.sum
 git status
-git add -A
-git commit -a -S -m "Successful Build of U-Boot with TF-A & SCP"
+git add -A && git status && git commit -a -S -m "Successful Build of U-Boot with TF-A & SCP"
 git push
 apt remove --purge build-essential bc zip unzip bison flex libssl-dev gcc-arm-none-eabi gcc-or1k-elf binutils-or1k-elf device-tree-compiler swig python3-pyelftools python3-dev -y && apt autoremove -y
-rm -f -r /tmp/u-boot-202* && rm -f /tmp/lts-* && rm -f /tmp/v2* && rm -f /tmp/v0* && rm -f -r /tmp/crust-0.* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/spi_*
+rm -f -r /tmp/u-boot-202* && rm -f /tmp/lts-* && rm -f /tmp/v2* && rm -f /tmp/v0* && rm -f -r /tmp/crust-0.* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/u-boot*
