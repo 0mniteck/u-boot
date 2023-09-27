@@ -10,12 +10,3 @@ Requirements:
 * [ ] Debian based OS already running on an ARM64 CPU
 
 * [ ] Any size Fat formatted microsd in the /dev/mmcblk1 slot w/ no MBR/GUID
-
-
-`sf write $kernel_addr_r 0 $filesize`
-
-`reset`
-
-`saveenv`
-
-`reset`
