@@ -43,7 +43,7 @@ padsize=$((0x60000 - 1))
 image_size=$(wc -c < "${image_name}")
 [ $image_size -le $padsize ] || exit 1
 dd if=/dev/zero of="${image_name}" conv=notrunc bs=1 count=1 seek=${padsize}
-cat ${image_name} u-boot.itb > "${combined_name}"
+cat ${image_name} u-boot-sunxi-with-spl.fit.itb > "${combined_name}"
 mount /dev/mmcblk1 /mnt
 sha512sum spi_combined.img
 sha512sum spi_combined.img > /mnt/spi_combined.img.sum
