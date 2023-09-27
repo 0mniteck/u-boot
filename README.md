@@ -1,7 +1,7 @@
 # U-Boot Allwinner A64
 ## U-Boot Prebuilt Release v2023.07.02 W/ ATF v2.9 & SCP v0.6
 
-Prebuilt build.zip is included for convenience.
+Prebuilt u-boot-sunxi-with-spl.bin is included for convenience.
 
 ## PinePhone Uboot Assembler
 
