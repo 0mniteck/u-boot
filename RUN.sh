@@ -2,7 +2,7 @@
 
 ##
 ##	PinePhone Uboot Assembler
-##		Requirements: Debian based OS running on ARM64, any size Fat formatted microsd in the MMCBLK1 slot w/ no MBR/GUID
+##		Requirements: Debian based OS running on ARM64 CPU, any size Non-formatted microSD in the MMCBLK1 slot w/ no MBR/GUID
 ##		  By: Shant Tchatalbachian
 ##
 
@@ -21,10 +21,10 @@ unzip v202*.zip
 unzip v2.*.zip
 unzip v0.*.zip
 cd arm-trusted-firmware-*
-sed -i '/--fatal-warnings -O1/ s/$/ --no-warn-rwx-segments/' Makefile
 make realclean
-make PLAT=sun50i_a64 bl31
-export BL31=/tmp/arm-trusted-firmware-2.9/build/sun50i_a64/release/bl31/bl31.elf
+sed -i '/--fatal-warnings -O1/ s/$/ --no-warn-rwx-segments/' Makefile
+make PLAT=sun50i_a64 DEBUG=1 bl31
+export BL31=/tmp/arm-trusted-firmware-2.9/build/sun50i_a64/debug/bl31/bl31.elf
 cd ..
 cd crust-0.*
 export CROSS_COMPILE=or1k-elf-
