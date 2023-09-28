@@ -33,7 +33,7 @@ export SCP=/tmp/crust-0.6/build/scp/scp.bin
 export CROSS_COMPILE=
 cd ..
 cd u-boot-202*
-echo "CONFIG_SPL_MAX_SIZE=0x00400000" >> configs/pinephone_defconfig && echo "CONFIG_SPL_BSS_MAX_SIZE=0x00400000" >> configs/pinephone_defconfig && echo "CONFIG_SYS_SPL_MALLOC_SIZE=0x00400000" >> configs/pinephone_defconfig
+echo "CONFIG_SYS_SPL_MALLOC_SIZE=0x00400000" >> configs/pinephone_defconfig
 make pinephone_defconfig && make -j$(nproc) all
 dd if=u-boot-sunxi-with-spl.bin of=/dev/mmcblk1 bs=8k seek=1
 sha512sum u-boot-sunxi-with-spl.bin
