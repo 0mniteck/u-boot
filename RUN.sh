@@ -2,7 +2,7 @@
 
 ##
 ##	Pinephone U-Boot Assembler
-##		Requirements: Debian based OS running on ARM64 CPU & any size Non-formatted microSD in the MMCBLK1 slot w/ no MBR/GUID
+##		Requirements: Debian based OS running on ARM64 CPU & any size Unformatted microSD in the MMCBLK1 slot w/ no MBR/GUID
 ##		  By: Shant Tchatalbachian
 ##
 
