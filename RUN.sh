@@ -18,7 +18,6 @@ unzip v202*.zip
 unzip v2.*.zip
 cd arm-trusted-firmware-*
 make realclean
-sed -i '/--fatal-warnings -O1/ s/$/ --no-warn-rwx-segments/' Makefile
 make PLAT=rk3399 bl31
 export BL31=/tmp/arm-trusted-firmware-2.9/build/rk3399/release/bl31/bl31.elf
 cd ..
