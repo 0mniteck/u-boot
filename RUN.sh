@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 ##
-##	RockPro64 SPI-U-Boot Assembler
+##	RockPro64 SPI U-Boot Assembler
 ##		Requirements: Debian based OS already running on an ARM64 CPU & any size Fat formatted microSD in the MMCBLK1 slot w/ no MBR/GUID
 ##		  By: Shant Tchatalbachian
 ##
