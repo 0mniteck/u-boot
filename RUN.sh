@@ -26,13 +26,17 @@ make PLAT=sun50i_a64 DEBUG=1 bl31
 export BL31=/tmp/arm-trusted-firmware-2.9/build/sun50i_a64/debug/bl31/bl31.elf
 cd ..
 cd crust-0.*
+echo "Entering Crust ------"
 export CROSS_COMPILE=or1k-elf-
 make pinephone_defconfig && make -j$(nproc) scp
 export SCP=/tmp/crust-0.6/build/scp/scp.bin
 export CROSS_COMPILE=
 cd ..
 cd u-boot-202*
+echo "Entering U-Boot ------"
+echo "CONFIG_SYS_MALLOC_CLEAR_ON_INIT=y" >> configs/pinephone_defconfig
 echo "CONFIG_SYS_SPL_MALLOC_SIZE=0x1000000" >> configs/pinephone_defconfig
+cat configs/pinephone_defconfig
 make pinephone_defconfig && make -j$(nproc) all
 sha512sum u-boot-sunxi-with-spl.bin
 dd if=u-boot-sunxi-with-spl.bin of=/dev/mmcblk1 bs=8k seek=1
