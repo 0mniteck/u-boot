@@ -32,12 +32,7 @@ export SCP=/tmp/crust-0.6/build/scp/scp.bin
 export CROSS_COMPILE=
 cd ..
 cd u-boot-202*
-echo "CONFIG_HAS_CUSTOM_SYS_INIT_SP_ADDR=y" >> configs/pinephone_defconfig
-echo "CONFIG_CUSTOM_SYS_INIT_SP_ADDR=0x300000" >> configs/pinephone_defconfig
-echo "CONFIG_SPL_HAS_BSS_LINKER_SECTION=y" >> configs/pinephone_defconfig
-echo "CONFIG_SPL_BSS_START_ADDR=0x400000" >> configs/pinephone_defconfig
-echo "CONFIG_SPL_BSS_MAX_SIZE=0x2000" >> configs/pinephone_defconfig
-echo "CONFIG_SYS_SPL_MALLOC_SIZE=0x800000" >> configs/pinephone_defconfig
+sed 13d -i configs/pinephone_defconfig
 make pinephone_defconfig && make -j$(nproc) all
 sha512sum u-boot-sunxi-with-spl.bin
 dd if=u-boot-sunxi-with-spl.bin of=/dev/mmcblk1 bs=8k seek=1
