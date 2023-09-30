@@ -6,6 +6,7 @@
 ##		  By: Shant Tchatalbachian
 ##
 
+git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 pushd /tmp/
 apt update && apt install build-essential bc zip unzip bison flex libssl-dev gcc-arm-linux-gnueabi gcc-or1k-elf binutils-or1k-elf device-tree-compiler swig python3-pyelftools python3-dev -y
 wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/v2.9.zip
