@@ -7,7 +7,7 @@
 ##
 
 pushd /tmp/
-apt update && apt install build-essential bc zip unzip bison flex libssl-dev gcc-arm-none-eabi gcc-or1k-elf binutils-or1k-elf device-tree-compiler swig python3-pyelftools python3-dev -y
+apt update && apt install build-essential bc zip unzip bison flex libssl-dev gcc-arm-linux-gnueabi gcc-or1k-elf binutils-or1k-elf device-tree-compiler swig python3-pyelftools python3-dev -y
 wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/v2.9.zip
 echo '07e2500d5a64d4ebce5e5d7a934bdb4e911457402a84a8ca0070e42a65fe424596bb0995d03122867e08d459933f45eb7dd5478a5fcccd03afd16625e0dc2d3d  v2.9.zip' > v2.zip.sum
 if [[ $(sha512sum -c v2.zip.sum) == 'v2.9.zip: OK' ]]; then sleep 0; else exit 1; fi;
@@ -34,8 +34,9 @@ export CROSS_COMPILE=
 cd ..
 cd u-boot-202*
 echo "Entering U-Boot ------"
-echo "CONFIG_SYS_MALLOC_CLEAR_ON_INIT=y" >> configs/pinephone_defconfig
-echo "CONFIG_SYS_SPL_MALLOC_SIZE=0x1000000" >> configs/pinephone_defconfig
+echo "CONFIG_SYS_SPL_MALLOC_SIZE=0x2000000" >> configs/pinephone_defconfig
+echo "CONFIG_MFD_AXP20X=y" >> configs/pinephone_defconfig
+echo "Configs for U-Boot ------"
 cat configs/pinephone_defconfig
 make pinephone_defconfig && make -j$(nproc) all
 sha512sum u-boot-sunxi-with-spl.bin
@@ -48,5 +49,5 @@ rm -f u-boot-sunxi-with-spl.bin && zip -0 build.zip /tmp/u-boot-sunxi-with-spl.b
 git status
 git add -A && git status && git commit -a -S -m "Successful Build of U-Boot with TF-A & SCP"
 git push
-apt remove --purge build-essential bc zip unzip bison flex libssl-dev gcc-arm-none-eabi gcc-or1k-elf binutils-or1k-elf device-tree-compiler swig python3-pyelftools python3-dev -y && apt autoremove -y
+apt remove --purge build-essential bc zip unzip bison flex libssl-dev gcc-arm-linux-gnueabi gcc-or1k-elf binutils-or1k-elf device-tree-compiler swig python3-pyelftools python3-dev -y && apt autoremove -y
 rm -f -r /tmp/u-boot-202* && rm -f /tmp/lts-* && rm -f /tmp/v2* && rm -f /tmp/v0* && rm -f -r /tmp/crust-0.* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/u-boot*
