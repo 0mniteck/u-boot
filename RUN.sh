@@ -16,8 +16,8 @@ if [[ $(sha512sum -c v2.zip.sum) == 'lts-v2.8.8.zip: OK' ]]; then sleep 0; else 
 wget https://github.com/u-boot/u-boot/archive/refs/tags/v2023.07.02.zip
 echo '3293f165ea9b381d4c1e86a40585a9e5b242da2a37f19b592e23983c9a92ba76a3e4c9b8c56dfd4faa324c4c66bda681cc7510e0ba42202486baa8d0ed4b6182  v2023.07.02.zip' > v2023.zip.sum
 if [[ $(sha512sum -c v2023.zip.sum) == 'v2023.07.02.zip: OK' ]]; then sleep 0; else exit 1; fi;
-unzip v202*.zip
-unzip v2.*.zip
+unzip v202*
+unzip lts-*
 cd arm-trusted-firmware-*
 echo "Entering TF-A ------"
 make realclean
