@@ -1,5 +1,5 @@
 # U-Boot Allwinner A64 (W.I.P.)
-## U-Boot Prebuilt Release v2023.07.02 W/ ATF v2.9 NO SCP
+## U-Boot Prebuilt Release v2023.07.02 W/ ATF v2.8.8 NO SCP
 
 Prebuilt u-boot-sunxi-with-spl.bin is included for convenience.
 
