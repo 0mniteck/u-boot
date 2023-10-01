@@ -21,7 +21,7 @@ unzip v2.*.zip
 cd arm-trusted-firmware-*
 echo "Entering TF-A ------"
 make realclean
-make PLAT=sun50i_a64 bl31
+make PLAT=sun50i_a64 DEBUG=0 bl31
 export BL31=/tmp/arm-trusted-firmware-2.9/build/sun50i_a64/release/bl31/bl31.elf
 cd ..
 echo "Bypassing Crust ------"
