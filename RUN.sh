@@ -22,7 +22,7 @@ cd arm-trusted-firmware-*
 echo "Entering TF-A ------"
 make realclean
 make PLAT=sun50i_a64 bl31
-export BL31=/tmp/arm-trusted-firmware-2.8/build/sun50i_a64/release/bl31/bl31.elf
+export BL31=/tmp/arm-trusted-firmware-lts-v2.8.8/build/sun50i_a64/release/bl31/bl31.elf
 cd ..
 echo "Bypassing Crust ------"
 export SCP=/dev/null
