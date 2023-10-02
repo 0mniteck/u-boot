@@ -10,9 +10,9 @@ git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 rm -f build.zip
 pushd /tmp/
 apt update && apt install build-essential bc zip unzip bison flex libssl-dev device-tree-compiler swig python3-pyelftools python3-dev -y
-wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/v2.7.zip
-echo '8c421e33b0b248872eef74ac3026366c1d861ced4cebb09b1d16431e130924fb481c7186bb676a7d7818658976dd14bb5f02e80bbb39a0704ba539755a578071  v2.7.zip' > v2.zip.sum
-if [[ $(sha512sum -c v2.zip.sum) == 'v2.7.zip: OK' ]]; then sleep 0; else exit 1; fi;
+wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/v2.6.zip
+echo '3d5ef0f39017aad6bc469ba367604941e0aa7f5ce69f1709492e282aaff8188ff18ee7a224271c3d6c0479cac98954feb6faf9355c83a7351d8693ae61beac03  v2.6.zip' > v2.zip.sum
+if [[ $(sha512sum -c v2.zip.sum) == 'v2.6.zip: OK' ]]; then sleep 0; else exit 1; fi;
 wget https://github.com/u-boot/u-boot/archive/refs/tags/v2021.10.zip
 echo '3da78730da93592b4a7d9f7ba4c8d50adb1173411d7bb9aadfb30301902f1c2027775a1bfd39db828a1bd2a431c5a52e86fbb18381dac0059ce25456e532a960  v2021.10.zip' > v2021.zip.sum
 if [[ $(sha512sum -c v2021.zip.sum) == 'v2021.10.zip: OK' ]]; then sleep 0; else exit 1; fi;
@@ -23,7 +23,7 @@ echo "Entering TF-A ------"
 sed -i '/--fatal-warnings -O1/ s/$/ --no-warn-rwx-segments/' Makefile
 make realclean
 make PLAT=sun50i_a64 bl31
-export BL31=/tmp/arm-trusted-firmware-2.7/build/sun50i_a64/release/bl31/bl31.elf
+export BL31=/tmp/arm-trusted-firmware-2.6/build/sun50i_a64/release/bl31/bl31.elf
 cd ..
 echo "Bypassing Crust ------"
 export SCP=/dev/null
