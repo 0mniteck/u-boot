@@ -20,6 +20,7 @@ unzip v202*.zip
 unzip crust-*.zip
 cd arm-trusted-firmware-crust-*
 echo "Entering TF-A ------"
+sed -i '/--fatal-warnings -O1/ s/$/ --no-warn-rwx-segments/' Makefile
 make realclean
 make PLAT=sun50i_a64 bl31
 export BL31=/tmp/arm-trusted-firmware-crust-20220611/build/sun50i_a64/release/bl31/bl31.elf
