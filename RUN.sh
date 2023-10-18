@@ -2,7 +2,7 @@
 
 ##
 ##	RockPro64 SPI U-Boot Assembler
-##		Requirements: Debian based OS already running on an ARM64 CPU & any size Fat formatted microSD in the MMCBLK1 slot w/ no MBR/GUID
+##		Requirements: Debian based OS running on an ARM64 CPU & any size Fat formatted microSD in the MMCBLK1 slot w/ no MBR/GUID
 ##		  By: Shant Tchatalbachian
 ##
 
@@ -52,4 +52,4 @@ git status
 git add -A && git status && git commit -a -S -m "Successful Build of U-Boot with TF-A"
 git push
 apt remove --purge build-essential bc zip unzip bison flex libssl-dev gcc-arm-none-eabi device-tree-compiler swig python3-pyelftools python3-dev -y && apt autoremove -y
-rm -f -r /tmp/u-boot-202* && rm -f /tmp/lts-* && rm -f /tmp/lts-v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/spi_*
+rm -f -r /tmp/u-boot-202* && rm -f /tmp/lts-* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/spi_*
