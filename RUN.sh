@@ -49,6 +49,6 @@ popd
 cp /tmp/spi_combined.zip spi_combined.zip
 git status
 git add -A && git status && git commit -a -S -m "Successful Build of U-Boot with TF-A"
-git push
+git push --set-upstream origin RP64-rk3399-A
 apt remove --purge build-essential bc zip unzip bison flex libssl-dev gcc-arm-none-eabi device-tree-compiler swig python3-pyelftools python3-dev -y && apt autoremove -y
 rm -f -r /tmp/u-boot-202* && rm -f /tmp/lts-* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/spi_*
