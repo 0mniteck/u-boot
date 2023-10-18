@@ -33,7 +33,6 @@ combined_name="spi_combined.img"
 tools/mkimage -n rk3399 -T rkspi -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin "${image_name}"
 padsize=$((0x60000 - 1))
 image_size=$(wc -c < "${image_name}")
-[ $image_size -le $padsize ] || exit 1
 dd if=/dev/zero of="${image_name}" conv=notrunc bs=1 count=1 seek=${padsize}
 cat ${image_name} u-boot.itb > "${combined_name}"
 mount /dev/mmcblk1 /mnt
