@@ -14,8 +14,43 @@ Requirements:
 
 
 ## Post-Build
+# Initial-Flash From Blank or Bypassed SPI (Recommended)
 
-Reboot into U-Boot, Then:
+Boot into U-Boot Via SD/eMMC with u-boot-rockchip.bin:
+
+`dd if=u-boot-rockchip.bin of=/dev/xxx conv=notrunc seek=64`
+
+`Insert SD/eMMC Card with u-boot-rockchip.bin`
+
+`Insert SD Card with spi_combined.img`
+
+`Stop Autoboot by hitting any key`
+
+Then Flash the SPI with spi_combined.img:
+
+`mmc rescan`
+
+`sf probe`
+
+`sf erase 0x0 0x1000000`
+
+`ls mmc 1:0 /`
+
+`load mmc 1:0 $kernel_addr_r spi_combined.img`
+
+`sf write $kernel_addr_r 0 $filesize`
+
+`reset`
+
+`saveenv`
+
+`reset`
+
+# Update-Flash From Existing U-Boot
+
+`Insert SD Card with spi_combined.img`
+
+`Stop Autoboot by hitting any key`
 
 `sf probe`
 
