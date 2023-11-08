@@ -41,10 +41,14 @@ sha512sum spi_combined.img > /mnt/spi_combined.img.sum
 sha512sum spi_combined.img > /tmp/spi_combined.img.sum
 cp spi_combined.img /mnt/spi_combined.img
 cp spi_combined.img /tmp/spi_combined.img
-cd ..
-zip -0 spi_combined.zip spi_combined.img spi_combined.img.sum
 sync
 umount /mnt
+sha512sum u-boot-rockchip.bin
+sha512sum u-boot-rockchip.bin > /tmp/u-boot-rockchip.bin.sum
+cp u-boot-rockchip.bin /tmp/u-boot-rockchip.bin
+cd ..
+zip -0 spi_combined.zip spi_combined.img spi_combined.img.sum u-boot-rockchip.bin u-boot-rockchip.bin.sum
+sync
 popd
 cp /tmp/spi_combined.zip spi_combined.zip
 git status
