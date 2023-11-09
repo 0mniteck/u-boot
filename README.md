@@ -1,9 +1,9 @@
-## U-Boot RockChip rk3399
-# U-Boot Prebuilt Release v2023.07.02 W/ ATF lts-v2.8.10
+# U-Boot RockChip rk3399
+## U-Boot Prebuilt Release v2023.07.02 W/ ATF lts-v2.8.10
 
 Prebuilt spi_combined.img & u-boot-rockchip.bin are included for convenience
 
-## RockPro64 SPI U-Boot Assembler
+# RockPro64 SPI U-Boot Assembler
 
 Requirements:
 
@@ -12,8 +12,8 @@ Requirements:
 * [ ] Any size Fat formatted microSD in the /dev/mmcblk1 slot w/ no MBR/GUID
 
 
-## Post-Build
-# Initial-Flash From Blank or Bypassed SPI (Recommended)
+# Post-Build
+## Initial-Flash From Blank or Bypassed SPI (Recommended)
 
 1. Bypass current SPI, then boot into U-Boot Via SD/eMMC with u-boot-rockchip.bin
 2. Swap SD then flash the SPI with spi_combined.img
@@ -44,7 +44,7 @@ Requirements:
 
 `reset`
 
-# Update-Flash From Existing U-Boot
+## Update-Flash From Existing U-Boot
 
 `Insert SD Card with spi_combined.img`
 
