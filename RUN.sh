@@ -53,9 +53,9 @@ umount /mnt
 dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 cd ..
 zip -0 spi_combined.zip spi_combined.img spi_combined.img.sum u-boot-rockchip.bin u-boot-rockchip.bin.sum
-cp /tmp/spi_combined.zip spi_combined.zip
 sync
 popd
+cp /tmp/spi_combined.zip spi_combined.zip
 git status && git add -A && git status
 read -p "Continue -->"
 git commit -a -S -m "Successful Build of U-Boot W/ TF-A For The RockPro64"
