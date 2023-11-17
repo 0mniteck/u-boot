@@ -48,7 +48,7 @@ sync
 umount /mnt
 sha512sum u-boot-rockchip.bin
 sha512sum u-boot-rockchip.bin > /tmp/u-boot-rockchip.bin.sum
-dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 status=progress
+dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 cp u-boot-rockchip.bin /tmp/u-boot-rockchip.bin
 cd ..
 zip -0 spi_combined.zip spi_combined.img spi_combined.img.sum u-boot-rockchip.bin u-boot-rockchip.bin.sum
@@ -61,4 +61,4 @@ git commit -a -S -m "Successful Build of U-Boot W/ TF-A For The RockPro64"
 git push --set-upstream origin RP64-rk3399-A
 cd ..
 apt remove --purge build-essential bc zip unzip bison flex libssl-dev gcc-arm-none-eabi device-tree-compiler swig python3-pyelftools python3-setuptools python3-dev parted dosfstools -y && apt autoremove -y
-rm -f -r /tmp/u-boot-202* && rm -f /tmp/lts-* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f /tmp/spi_*
+rm -f -r /tmp/u-boot* && rm -f /tmp/lts-* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f /tmp/spi_*
