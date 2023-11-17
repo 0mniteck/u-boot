@@ -1,7 +1,7 @@
 # U-Boot RockChip rk3399
 ## U-Boot Prebuilt Release v2023.07.02 W/ ATF lts-v2.8.11
 
-Prebuilt spi_combined.img & u-boot-rockchip.bin are included for convenience
+Prebuilt spi_combined.img & u-boot-rockchip.bin are included together for convenience
 
 # RockPro64 SPI U-Boot Assembler
 
@@ -9,7 +9,7 @@ Requirements:
 
 * [ ] Debian based OS already running on an ARM64 CPU
 
-* [ ] Any size Fat formatted microSD in the /dev/mmcblk1 slot w/ no MBR/GUID
+* [ ] Any microSD in the /dev/mmcblk1 slot
 
 
 # Post-Build
