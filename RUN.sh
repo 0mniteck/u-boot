@@ -2,7 +2,7 @@
 
 ##
 ##	RockPro64 SPI U-Boot Assembler
-##		Requirements: Debian based OS running on an ARM64 CPU & any size Fat formatted microSD in the MMCBLK1 slot w/ no MBR/GUID
+##		Requirements: Debian based OS running on an ARM64 CPU & any size microSD in the MMCBLK1 slot
 ##		  By: Shant Tchatalbachian
 ##
 
@@ -35,7 +35,7 @@ padsize=$((0x60000 - 1))
 image_size=$(wc -c < "${image_name}")
 dd if=/dev/zero of="${image_name}" conv=notrunc bs=1 count=1 seek=${padsize}
 cat ${image_name} u-boot.itb > "${combined_name}"
-read -p "Insert FAT formatted SD Card, Then Press Enter to Continue"
+read -p "Insert any SD Card, Then Press Enter to Continue"
 dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=2000 status=progress
 parted /dev/mmcblk1 mktable gpt mkpart P1 fat32 16MB 1G -s
 mount /dev/mmcblk1p1 /mnt
