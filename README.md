@@ -13,40 +13,10 @@ Requirements:
 
 
 # Post-Build
-## Initial-Flash From Blank or Bypassed SPI (Recommended)
+## Initial-Flash From Erased or Bypassed SPI (Recommended)
+## or Update-Flash From Existing U-Boot
 
-1. Bypass current SPI, then boot into U-Boot Via SD/eMMC with u-boot-rockchip.bin
-2. Hot-swap SD then flash the SPI with spi_combined.img
-
-`dd if=u-boot-rockchip.bin of=/dev/mmcblkX conv=notrunc seek=64`
-
-`Insert SD/eMMC Card with u-boot-rockchip.bin`
-
-`Stop Autoboot by hitting any key`
-
-`Insert SD Card with spi_combined.img`
-
-`mmc rescan`
-
-`sf probe`
-
-`sf erase 0x0 0x1000000`
-
-`ls mmc 1:0 /`
-
-`load mmc 1:0 $kernel_addr_r spi_combined.img`
-
-`sf write $kernel_addr_r 0 $filesize`
-
-`reset`
-
-`saveenv`
-
-`reset`
-
-## Update-Flash From Existing U-Boot
-
-`Insert SD Card with spi_combined.img`
+### Bypass current SPI, then boot into U-Boot Via SD/eMMC with Combined SD
 
 `Stop Autoboot by hitting any key`
 
@@ -54,13 +24,21 @@ Requirements:
 
 `sf erase 0x0 0x1000000`
 
-`ls mmc 1:0 /`
+`Insert SD Card`
 
-`load mmc 1:0 $kernel_addr_r spi_combined.img`
+`reset`
+
+`Stop Autoboot by hitting any key`
+
+`ls mmc 1:1 /`
+
+`load mmc 1:1 $kernel_addr_r spi_combined.img`
 
 `sf write $kernel_addr_r 0 $filesize`
 
 `reset`
+
+`Stop Autoboot by hitting any key`
 
 `saveenv`
 
