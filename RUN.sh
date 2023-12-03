@@ -22,7 +22,7 @@ cd arm-trusted-firmware-*
 echo "Entering TF-A ------"
 make realclean
 make PLAT=rk3399 bl31
-export BL31=/tmp/arm-trusted-firmware-v2.10/build/rk3399/release/bl31/bl31.elf
+export BL31=/tmp/arm-trusted-firmware-2.10/build/rk3399/release/bl31/bl31.elf
 cd ..
 cd u-boot-202*
 echo "Entering U-Boot ------"
