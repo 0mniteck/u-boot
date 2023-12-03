@@ -12,7 +12,7 @@ pushd /tmp/
 apt update && apt install build-essential bc zip unzip bison flex libssl-dev gcc-arm-none-eabi device-tree-compiler swig python3-pyelftools python3-setuptools python3-dev parted dosfstools -y
 wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/v2.10.zip
 echo 'f5188111df54d7f9a2f178e2d57fda765a874d2f7a24710c569abaf30dca7b44e48bf1180df52c690f569929993bbd8e732824a0afaa73377ff963535c2fc2a8  v2.10.zip' > v2.zip.sum
-if [[ $(sha512sum -c v2.zip.sum) == 'lts-v2.8.11.zip: OK' ]]; then sleep 0; else exit 1; fi;
+if [[ $(sha512sum -c v2.zip.sum) == 'v2.10.zip: OK' ]]; then sleep 0; else exit 1; fi;
 wget https://github.com/u-boot/u-boot/archive/refs/tags/v2023.07.02.zip
 echo '3293f165ea9b381d4c1e86a40585a9e5b242da2a37f19b592e23983c9a92ba76a3e4c9b8c56dfd4faa324c4c66bda681cc7510e0ba42202486baa8d0ed4b6182  v2023.07.02.zip' > v2023.zip.sum
 if [[ $(sha512sum -c v2023.zip.sum) == 'v2023.07.02.zip: OK' ]]; then sleep 0; else exit 1; fi;
@@ -22,7 +22,7 @@ cd arm-trusted-firmware-*
 echo "Entering TF-A ------"
 make realclean
 make PLAT=rk3399 bl31
-export BL31=/tmp/arm-trusted-firmware-v2.10.0/build/rk3399/release/bl31/bl31.elf
+export BL31=/tmp/arm-trusted-firmware-v2.10/build/rk3399/release/bl31/bl31.elf
 cd ..
 cd u-boot-202*
 echo "Entering U-Boot ------"
