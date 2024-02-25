@@ -1,6 +1,7 @@
 # U-Boot RockChip rk3399
-## U-Boot Prebuilt Release v2023.07.02 W/ ATF v2.10
 
+
+## U-Boot Prebuilt Release v2024.01 W/ ATF lts-v2.10.2 & OP-TEE v4.1.0
 Prebuilt spi_combined.img & u-boot-rockchip.bin are included together for convenience
 
 # RockPro64 SPI U-Boot Assembler
@@ -13,18 +14,29 @@ Requirements:
 
 
 # Post-Build
-## Initial-Flash From Erased or Bypassed SPI (Recommended)
+## Initial-Flash From Bypassed and Erased SPI (Recommended)
 ## or Update-Flash From Existing U-Boot
 
+
 ### Erase current SPI, then boot into U-Boot Via SD/eMMC with Combined SD
+
+`Stop Autoboot by hitting any key`
+
+`Insert SD Card`
+
+`Bypass SPI`
+
+`reset`
+
+### Wait untill you see the environment fail to load from SPI
+
+`Reconnect SPI`
 
 `Stop Autoboot by hitting any key`
 
 `sf probe`
 
 `sf erase 0x0 0x1000000`
-
-`Insert SD Card`
 
 `reset`
 
@@ -33,6 +45,8 @@ Requirements:
 `ls mmc 1:1 /`
 
 `load mmc 1:1 $kernel_addr_r spi_combined.img`
+
+`sf probe`
 
 `sf write $kernel_addr_r 0 $filesize`
 
