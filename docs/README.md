@@ -4,7 +4,9 @@
 ## U-Boot Prebuilt Release v2023.10 W/ ATF lts-v2.10.2 & OP-TEE v4.1.0
 Prebuilt spi_combined.img & u-boot-rockchip.bin are included together for convenience
 
-# RockPro64 SPI U-Boot Assembler
+## RockPro64 SPI U-Boot Assembler
+## Pinebook Pro SPI U-Boot Assembler
+
 
 Requirements:
 
