@@ -33,14 +33,14 @@ cd ..
 cd arm-trusted-firmware*
 echo "Entering TF-A ------"
 make realclean
-make PLAT=rk3399 bl31
+make PLAT=rk3399 BUILD_MESSAGE_TIMESTAMP=$(date -d $(date +%D) +%s) bl31
 export BL31=/tmp/arm-trusted-firmware/build/rk3399/release/bl31/bl31.elf
 cd ..
 cd u-boot-202*
 echo "Entering U-Boot ------"
 sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3399_defconfig
 make rockpro64-rk3399_defconfig
-SOURCE_DATE_EPOCH=$(date -d $(date +%D) +%s) make -j$(nproc) all
+make SOURCE_DATE_EPOCH=$(date -d $(date +%D) +%s) -j$(nproc) all
 image_name="spi_idbloader.img"
 combined_name="spi_combined.img"
 tools/mkimage -n rk3399 -T rkspi -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin "${image_name}"
