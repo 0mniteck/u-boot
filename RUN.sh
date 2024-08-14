@@ -74,7 +74,7 @@ popd
 cp /tmp/spi_combined.zip spi_combined.zip
 git status && git add -A && git status
 read -p "Continue -->"
-git commit -a -S -m "Successful Build of U-Boot $(date -d $(date +%D) +%s) W/ TF-A & OP-TEE For The RockPro64"
+git commit -a -S -m "Successful Build of U-Boot $(date +%D) W/ TF-A & OP-TEE For The RockPro64"
 git push --set-upstream origin RP64-rk3399-A
 cd ..
 apt remove --purge build-essential bc zip unzip bison flex libssl-dev gcc-arm-none-eabi gcc-arm-linux-gnueabihf device-tree-compiler swig python3-pyelftools python3-setuptools python3-dev parted dosfstools libncurses-dev -y && apt autoremove -y
