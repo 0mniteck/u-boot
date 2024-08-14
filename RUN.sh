@@ -13,7 +13,7 @@ apt update && apt install acpica-tools adb autoconf automake bc binfmt-support b
 wget https://github.com/OP-TEE/optee_os/archive/refs/tags/4.3.0.zip
 echo '04a2e85947283e49a79cb8d60fde383df28303a9be15080a7f5354268b01f16405178c0c570e253256c3be8e3084d812c8b46b6dc2cb5c8eb3bde8d2ba4c380e  4.3.0.zip' > 4.zip.sum
 if [[ $(sha512sum -c 4.zip.sum) == '4.3.0.zip: OK' ]]; then echo 'OP-TEE Checksum Matched!'; else echo 'OP-TEE Checksum Mismatched!' & exit 1; fi;
-wget wget https://git.trustedfirmware.org/plugins/gitiles/TF-A/trusted-firmware-a.git/+archive/refs/tags/lts-v2.10.5.tar.gz
+wget https://git.trustedfirmware.org/plugins/gitiles/TF-A/trusted-firmware-a.git/+archive/refs/tags/lts-v2.10.5.tar.gz
 echo '178f4793dff3a93a43b5e7faa607794bbf6ea20c23d1c13fa70e31c32081e33c77068644ac353de4988d4a1d98ab31a65d78a92926b70da930ff5ad0240fa5cf  lts-v2.10.5.tar.gz' > v2.zip.sum
 if [[ $(sha512sum -c v2.zip.sum) == 'lts-v2.10.5.zip: OK' ]]; then echo 'ATF Checksum Matched!'; else echo 'ATF Checksum Mismatched!' & exit 1; fi;
 wget https://github.com/u-boot/u-boot/archive/refs/tags/v2024.07.zip
