@@ -27,17 +27,17 @@ echo '0a3e614ba0fd14224f52a8ad3e68e22df08f6e02c43e9183a459d80b4f37b4f384a4bfef76
 if [[ $(sha512sum -c v$(echo $UB_VER).zip.sum) == 'v$(echo $UB_VER).zip: OK' ]]; then echo 'U-Boot Checksum Matched!'; else echo 'U-Boot Checksum Mismatched!' & exit 1; fi;
 unzip $(echo $OPT_VER).zip
 unzip v$(echo $UB_VER).zip
-unzip lts-v($ATF_VER).zip
+unzip lts-v$(echo $ATF_VER).zip
 cd optee_os-$(echo $OPT_VER)
 echo "Entering OP-TEE ------"
 make -j$(nproc) PLATFORM=rockchip-rk3399 CFG_ARM64_core=y
 export TEE=/tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin
 cd ..
-cd arm-trusted-firmware-lts-v($ATF_VER)
+cd arm-trusted-firmware-lts-v$(echo $ATF_VER)
 echo "Entering TF-A ------"
 make realclean
 make PLAT=rk3399 BUILD_MESSAGE_TIMESTAMP='"'$BUILDTIME_A'"' bl31
-export BL31=/tmp/arm-trusted-firmware-lts-v($ATF_VER)/build/rk3399/release/bl31/bl31.elf
+export BL31=/tmp/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/release/bl31/bl31.elf
 cd ..
 cd u-boot-$(echo $UB_VER)
 echo "Entering U-Boot ------"
@@ -77,7 +77,7 @@ popd
 cp /tmp/spi_combined.zip spi_combined.zip
 git status && git add -A && git status
 read -p "Continue -->"
-git commit -a -S -m "Successful Build of U-Boot v$(echo $UB_VER) at $BUILDTIME W/ TF-A ($ATF_VER) & OP-TEE $(echo $OPT_VER) For The RockPro64"
+git commit -a -S -m "Successful Build of U-Boot v$(echo $UB_VER) at $BUILDTIME W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For The RockPro64"
 git push --set-upstream origin RP64-rk3399-A
 cd ..
 apt remove --purge acpica-tools adb autoconf automake bc binfmt-support bison build-essential ccache coccinelle cscope device-tree-compiler dfu-util dosfstools e2tools efitools expect fakeroot fastboot flex gcc gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libattr1-dev libcap-ng-dev libfdt-dev libftdi-dev libgmp3-dev libgnutls28-dev libhidapi-dev liblz4-tool libmbedtls-dev libmpc-dev libncurses-dev libpixman-1-dev libpython3-dev libslirp-dev libssl-dev libtool libusb-1.0-0-dev lz4 lzma lzma-alone make mtools netcat-openbsd ninja-build parted pkg-config python3-asteval python3-coverage python3-dev python3-filelock python3-pip python3-pycryptodome python3-pytest python3-pyelftools python3-pytest-xdist python3-setuptools python3-subunit python3-testtools python3-virtualenv python-is-python3 rsync swig u-boot-tools uuid-dev uuid-runtime zlib1g-dev -y && apt autoremove -y
