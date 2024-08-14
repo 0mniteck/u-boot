@@ -30,7 +30,7 @@ cd ..
 cd arm-trusted-firmware*
 echo "Entering TF-A ------"
 make realclean
-make PLAT=rk3399 BUILD_MESSAGE_TIMESTAMP=$(date -d $(date +%D) +%s) bl31
+make PLAT=rk3399 BUILD_MESSAGE_TIMESTAMP='"'$(date +%D)'"' bl31
 export BL31=/tmp/arm-trusted-firmware/build/rk3399/release/bl31/bl31.elf
 cd ..
 cd u-boot-202*
