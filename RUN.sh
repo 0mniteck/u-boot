@@ -13,18 +13,15 @@ apt update && apt install acpica-tools adb autoconf automake bc binfmt-support b
 wget https://github.com/OP-TEE/optee_os/archive/refs/tags/4.3.0.zip
 echo '04a2e85947283e49a79cb8d60fde383df28303a9be15080a7f5354268b01f16405178c0c570e253256c3be8e3084d812c8b46b6dc2cb5c8eb3bde8d2ba4c380e  4.3.0.zip' > 4.zip.sum
 if [[ $(sha512sum -c 4.zip.sum) == '4.3.0.zip: OK' ]]; then echo 'OP-TEE Checksum Matched!'; else echo 'OP-TEE Checksum Mismatched!' & exit 1; fi;
-wget https://git.trustedfirmware.org/plugins/gitiles/TF-A/trusted-firmware-a.git/+archive/refs/tags/lts-v2.10.5.tar.gz
-echo 'cc9a04cd664ec4fdc2363fbf1649b19e6f023c1f6f9d2451ba7e0f8b64d15b41c5e30b723727d6225f12f22abff1873f3aef4d48f3b9a086884049f65395e85d  lts-v2.10.5.tar.gz' > v2.zip.sum
-if [[ $(sha512sum -c v2.zip.sum) == 'lts-v2.10.5.zip: OK' ]]; then echo 'ATF Checksum Matched!'; else echo 'ATF Checksum Mismatched!' & exit 1; fi;
+wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/lts-v2.10.4.zip
+echo '5252dc59f1133d9c3fae5560954d9810e97a7e3b018522fddea584343d742a110c65678115cb0f554c201b5f7326353eec9a54031485156b6ca0788f53d33882  lts-v2.10.4.zip' > v2.zip.sum
+if [[ $(sha512sum -c v2.zip.sum) == 'lts-v2.10.4.zip: OK' ]]; then echo 'ATF Checksum Matched!'; else echo 'ATF Checksum Mismatched!' & exit 1; fi;
 wget https://github.com/u-boot/u-boot/archive/refs/tags/v2024.07.zip
 echo '0a3e614ba0fd14224f52a8ad3e68e22df08f6e02c43e9183a459d80b4f37b4f384a4bfef7627a3863388fcffb1472c38d178810bed401f63eb8b5d0a21456603  v2024.07.zip' > v2024.zip.sum
 if [[ $(sha512sum -c v2024.zip.sum) == 'v2024.07.zip: OK' ]]; then echo 'U-Boot Checksum Matched!'; else echo 'U-Boot Checksum Mismatched!' & exit 1; fi;
 unzip 4.*.*.zip
 unzip v202*.zip
-gunzip lts*.gz
-mkdir arm-trusted-firmware && cd arm-trusted-firmware
-tar -x -f ../lts*.tar
-cd ..
+unzip lts*.zip
 cd optee_os-*
 echo "Entering OP-TEE ------"
 make -j$(nproc) PLATFORM=rockchip-rk3399 CFG_ARM64_core=y
