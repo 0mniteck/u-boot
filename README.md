@@ -1,4 +1,4 @@
-# U-Boot RockChip rk3399
+# U-Boot RockChip WIP
 ## U-Boot Prebuilt Release v2024.07 W/ ATF lts-v2.10.4 & OP-TEE v4.3.0
 
 Prebuilt spi_combined.img & u-boot-rockchip.bin are included together for convenience
