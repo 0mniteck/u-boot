@@ -15,6 +15,7 @@ BUILD_MESSAGE_TIMESTAMP='"'$(date -d $(date +%D))'"';
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 rm -f spi_combined.zip
 cp 0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
+cp logo.bmp /tmp/logo.bmp
 pushd /tmp/
 apt update && apt install bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip zip -y
 wget https://github.com/OP-TEE/optee_os/archive/refs/tags/$(echo $OPT_VER).zip
@@ -40,6 +41,8 @@ cd ..
 cd u-boot
 echo "Entering U-Boot ------"
 git am < ../0001-rockchip-rk3399.patch
+rm tools/logos/denx.bmp && rm drivers/video/u_boot_logo.bmp
+cp /tmp/logo.bmp tools/logos/denx.bmp && cp /tmp/logo.bmp drivers/video/u_boot_logo.bmp
 sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3399_defconfig
 make rockpro64-rk3399_defconfig
 make SOURCE_DATE_EPOCH=$(echo $SOURCE_DATE_EPOCH) -j$(nproc) all
