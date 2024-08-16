@@ -1,15 +1,15 @@
 # U-Boot RockChip rk3399
 
-Prebuilt spi_combined.img & u-boot-rockchip.bin are included together for convenience
+Prebuilt spi_combined.img, u-boot-rockchip.bin, & u-boot-rockchip-spi.bin are included together for convenience
 
 ## RockPro64 SPI U-Boot Assembler
-## U-Boot (Feb 25 2024 - 07:32:28 +0000)
-### Prebuilt Release v2023.07.02 W/ ATF lts-v2.10.2 & OP-TEE v4.1.0
+## U-Boot ()
+### Prebuilt Release v2024.07 W/ ATF lts-v2.10.4 & OP-TEE v4.3.0
 
 
 ## Pinebook Pro SPI U-Boot Assembler 
-## U-Boot (Feb 25 2024 - 19:00:15 +0000)
-### Prebuilt Release v2023.07.02 W/ ATF lts-v2.10.2 & OP-TEE v4.1.0
+## U-Boot ()
+### Prebuilt Release v2024.07 W/ ATF lts-v2.10.4 & OP-TEE v4.3.0
 
 
 Requirements:
