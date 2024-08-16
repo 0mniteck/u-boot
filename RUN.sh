@@ -69,6 +69,7 @@ cp spi_combined.img /tmp/spi_combined.img
 sha512sum u-boot-rockchip.bin
 sha512sum u-boot-rockchip.bin > /mnt/u-boot-rockchip.bin.sum
 sha512sum u-boot-rockchip.bin > /tmp/u-boot-rockchip.bin.sum
+cp u-boot-rockchip.bin /mnt/u-boot-rockchip.bin
 cp u-boot-rockchip.bin /tmp/u-boot-rockchip.bin
 sha512sum u-boot-rockchip-spi.bin
 sha512sum u-boot-rockchip-spi.bin > /mnt/u-boot-rockchip-spi.bin.sum
@@ -88,7 +89,7 @@ cp /tmp/spi_combined.zip.sum spi_combined.zip.sum
 cp /tmp/spi_combined.zip spi_combined.zip
 sha512sum spi_combined.zip
 git status && git add -A && git status
-read -p "Continue -->"
+read -p "Successful Build of U-Boot v$(echo $UB_VER) at "$(echo $BUILD_MESSAGE_TIMESTAMP)" W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For The RockPro64: Sign -->"
 git commit -a -S -m "Successful Build of U-Boot v$(echo $UB_VER) at "$(echo $BUILD_MESSAGE_TIMESTAMP)" W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For The RockPro64"
 git push --set-upstream origin RP64-rk3399-A
 cd ..
