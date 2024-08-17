@@ -9,8 +9,8 @@
 OPT_VER=4.3.0;
 ATF_VER=2.10.4;
 UB_VER=2024.07;
-SOURCE_DATE_EPOCH=$(date -d $(date +%D) +%s);
-BUILD_MESSAGE_TIMESTAMP=$(date -d $(date +%D));
+SOURCE_DATE_EPOCH="@$(date -d "$(date +%D)" +%s)";
+BUILD_MESSAGE_TIMESTAMP="$(date -d "$(date +%D)")";
 
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 rm -f spi_combined.zip
