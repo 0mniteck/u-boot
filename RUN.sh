@@ -12,6 +12,9 @@ UB_VER=2024.07;
 FORCE_SOURCE_DATE=1;
 SOURCE_DATE_EPOCH="$(date -d "$(date +%D)" +%s)";
 BUILD_MESSAGE_TIMESTAMP="$(date -u +'%b %d %Y - 00:00:00 +0000')";
+export FORCE_SOURCE_DATE;
+export SOURCE_DATE_EPOCH;
+export BUILD_MESSAGE_TIMESTAMP;
 
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 rm -f spi_combined.zip
@@ -44,12 +47,13 @@ export BL31=/tmp/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/release
 cd ..
 cd u-boot-$(echo $UB_VER)
 echo "Entering U-Boot ------"
+make clean
 git apply ../0001-rockchip-rk3399.patch
 rm tools/logos/denx.bmp && rm drivers/video/u_boot_logo.bmp
 cp /tmp/logo.bmp tools/logos/denx.bmp && cp /tmp/logo.bmp drivers/video/u_boot_logo.bmp
 sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3399_defconfig
 make rockpro64-rk3399_defconfig
-FORCE_SOURCE_DATE=1 SOURCE_DATE_EPOCH=$(echo $SOURCE_DATE_EPOCH) make -j$(nproc) all
+FORCE_SOURCE_DATE=1 SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j$(nproc) all
 image_name="spi_idbloader.img"
 combined_name="spi_combined.img"
 tools/mkimage -n rk3399 -T rkspi -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin "${image_name}"
