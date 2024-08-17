@@ -35,7 +35,7 @@ cd ..
 cd arm-trusted-firmware-lts-v$(echo $ATF_VER)
 echo "Entering TF-A ------"
 make realclean
-make BUILD_MESSAGE_TIMESTAMP=$(echo $BUILD_MESSAGE_TIMESTAMP) PLAT=rk3399 bl31
+make PLAT=rk3399 bl31
 export BL31=/tmp/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/release/bl31/bl31.elf
 cd ..
 cd u-boot
