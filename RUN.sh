@@ -27,7 +27,7 @@ if [[ $(sha512sum -c v$(echo $ATF_VER).zip.sum) == 'lts-v'$(echo $ATF_VER)'.zip:
 wget https://github.com/u-boot/u-boot/archive/refs/tags/v$(echo $UB_VER).zip
 echo '0a3e614ba0fd14224f52a8ad3e68e22df08f6e02c43e9183a459d80b4f37b4f384a4bfef7627a3863388fcffb1472c38d178810bed401f63eb8b5d0a21456603  v'$(echo $UB_VER)'.zip' > v$(echo $UB_VER).zip.sum
 if [[ $(sha512sum -c v$(echo $UB_VER).zip.sum) == 'v'$(echo $UB_VER)'.zip: OK' ]]; then echo 'U-Boot Checksum Matched!'; else echo 'U-Boot Checksum Mismatched!' & exit 1; fi;
-unzip $(echo $OPT_VER).
+unzip $(echo $OPT_VER).zip
 unzip v$(echo $UB_VER).zip
 unzip lts-v$(echo $ATF_VER).zip
 cd optee_os-$(echo $OPT_VER)
