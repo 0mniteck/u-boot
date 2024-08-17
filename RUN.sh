@@ -40,7 +40,7 @@ export BL31=/tmp/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/release
 cd ..
 cd u-boot
 echo "Entering U-Boot ------"
-git am < ../0001-rockchip-rk3399.patch
+git apply ../0001-rockchip-rk3399.patch
 rm tools/logos/denx.bmp && rm drivers/video/u_boot_logo.bmp
 cp /tmp/logo.bmp tools/logos/denx.bmp && cp /tmp/logo.bmp drivers/video/u_boot_logo.bmp
 sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3399_defconfig
