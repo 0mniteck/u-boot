@@ -24,8 +24,11 @@ if [[ $(sha512sum -c $(echo $OPT_VER).zip.sum) == $(echo $OPT_VER)'.zip: OK' ]];
 wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/lts-v$(echo $ATF_VER).zip
 echo '5252dc59f1133d9c3fae5560954d9810e97a7e3b018522fddea584343d742a110c65678115cb0f554c201b5f7326353eec9a54031485156b6ca0788f53d33882  lts-v'$(echo $ATF_VER)'.zip' > v$(echo $ATF_VER).zip.sum
 if [[ $(sha512sum -c v$(echo $ATF_VER).zip.sum) == 'lts-v'$(echo $ATF_VER)'.zip: OK' ]]; then echo 'ATF Checksum Matched!'; else echo 'ATF Checksum Mismatched!' & exit 1; fi;
-git clone https://github.com/u-boot/u-boot.git -b v$(echo $UB_VER)
-unzip $(echo $OPT_VER).zip
+wget https://github.com/u-boot/u-boot/archive/refs/tags/v$(echo $UB_VER).zip
+echo '0a3e614ba0fd14224f52a8ad3e68e22df08f6e02c43e9183a459d80b4f37b4f384a4bfef7627a3863388fcffb1472c38d178810bed401f63eb8b5d0a21456603  v'$(echo $UB_VER)'.zip' > v$(echo $UB_VER).zip.sum
+if [[ $(sha512sum -c v$(echo $UB_VER).zip.sum) == 'v'$(echo $UB_VER)'.zip: OK' ]]; then echo 'U-Boot Checksum Matched!'; else echo 'U-Boot Checksum Mismatched!' & exit 1; fi;
+unzip $(echo $OPT_VER).
+unzip v$(echo $UB_VER).zip
 unzip lts-v$(echo $ATF_VER).zip
 cd optee_os-$(echo $OPT_VER)
 echo "Entering OP-TEE ------"
@@ -38,7 +41,7 @@ make realclean
 make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" PLAT=rk3399 bl31
 export BL31=/tmp/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/release/bl31/bl31.elf
 cd ..
-cd u-boot
+cd u-boot-$(echo $UB_VER)
 echo "Entering U-Boot ------"
 git apply ../0001-rockchip-rk3399.patch
 rm tools/logos/denx.bmp && rm drivers/video/u_boot_logo.bmp
