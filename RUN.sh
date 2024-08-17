@@ -45,7 +45,7 @@ rm tools/logos/denx.bmp && rm drivers/video/u_boot_logo.bmp
 cp /tmp/logo.bmp tools/logos/denx.bmp && cp /tmp/logo.bmp drivers/video/u_boot_logo.bmp
 sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3399_defconfig
 make rockpro64-rk3399_defconfig
-make SOURCE_DATE_EPOCH=$(echo $SOURCE_DATE_EPOCH) -j$(nproc) all
+SOURCE_DATE_EPOCH=$(echo $SOURCE_DATE_EPOCH) make -j$(nproc) all
 image_name="spi_idbloader.img"
 combined_name="spi_combined.img"
 tools/mkimage -n rk3399 -T rkspi -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin "${image_name}"
