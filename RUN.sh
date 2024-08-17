@@ -10,7 +10,7 @@ OPT_VER=4.3.0;
 ATF_VER=2.10.4;
 UB_VER=2024.07;
 SOURCE_DATE_EPOCH="$(date -d "$(date +%D)" +%s)";
-BUILD_MESSAGE_TIMESTAMP='"$(date -u +'%b %d %Y - 12:00:00 +0000')"';
+BUILD_MESSAGE_TIMESTAMP="$(date -u +'%b %d %Y - 12:00:00 +0000')";
 
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 rm -f spi_combined.zip
@@ -35,7 +35,7 @@ cd ..
 cd arm-trusted-firmware-lts-v$(echo $ATF_VER)
 echo "Entering TF-A ------"
 make realclean
-make BUILD_MESSAGE_TIMESTAMP='"$(date -u +'%b %d %Y - 12:00:00 +0000')"' PLAT=rk3399 bl31
+make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" PLAT=rk3399 bl31
 export BL31=/tmp/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/release/bl31/bl31.elf
 cd ..
 cd u-boot
