@@ -89,8 +89,8 @@ cp /tmp/spi_combined.zip.sum spi_combined.zip.sum
 cp /tmp/spi_combined.zip spi_combined.zip
 sha512sum spi_combined.zip
 git status && git add -A && git status
-read -p "Successful Build of U-Boot v$(echo $UB_VER) at "$(echo $BUILD_MESSAGE_TIMESTAMP)" W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For The RockPro64: Sign -->"
-git commit -a -S -m "Successful Build of U-Boot v$(echo $UB_VER) at "$(echo $BUILD_MESSAGE_TIMESTAMP)" W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For The RockPro64"
+read -p "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For The RockPro64: Sign -->"
+git commit -a -S -m "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For The RockPro64"
 git push --set-upstream origin RP64-rk3399-A
 cd ..
 apt remove --purge bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip zip -y && apt autoremove -y
