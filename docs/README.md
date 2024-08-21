@@ -50,7 +50,7 @@ Requirements:
 
 `ls mmc 1:1 /`
 
-`load mmc 1:1 $kernel_addr_r spi_combined.img`
+`load mmc 1:1 $kernel_addr_r u-boot-rockchip-spi.bin`
 
 `sf probe`
 
