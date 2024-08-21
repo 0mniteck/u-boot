@@ -1,6 +1,6 @@
 # U-Boot RockChip rk3399
 
-Prebuilt spi_combined.img, u-boot-rockchip.bin, & u-boot-rockchip-spi.bin are included together for convenience
+Prebuilt u-boot-rockchip.bin & u-boot-rockchip-spi.bin are included together for convenience
 
 ## RockPro64 SPI U-Boot Assembler
 ## U-Boot ()
