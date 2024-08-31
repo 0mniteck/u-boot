@@ -3,12 +3,12 @@
 Prebuilt u-boot-rockchip.bin & u-boot-rockchip-spi.bin are included together for convenience
 
 ## RockPro64 SPI U-Boot Assembler
-## U-Boot ()
+## U-Boot (WIP)
 ### Prebuilt Release v2024.07 W/ ATF lts-v2.10.4 & OP-TEE v4.3.0
 
 
 ## Pinebook Pro SPI U-Boot Assembler 
-## U-Boot ()
+## U-Boot (WIP)
 ### Prebuilt Release v2024.07 W/ ATF lts-v2.10.4 & OP-TEE v4.3.0
 
 
