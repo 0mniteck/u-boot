@@ -55,9 +55,10 @@ rm tools/logos/denx.bmp && rm drivers/video/u_boot_logo.bmp
 cp /tmp/logo.bmp tools/logos/denx.bmp && cp /tmp/logo.bmp drivers/video/u_boot_logo.bmp
 sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_FIT_SIGNATURE" >> configs/rockpro64-rk3399_defconfig
+# echo "CONFIG_RSA" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_ECDSA" >> configs/rockpro64-rk3399_defconfig
+# echo "CONFIG_BOOTM_EFI=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_CMD_EFICONFIG=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_BOOTM_EFI=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_EFI_SECURE_BOOT=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_EFI_MM_COMM_TEE=y" >> configs/rockpro64-rk3399_defconfig
 make rockpro64-rk3399_defconfig
