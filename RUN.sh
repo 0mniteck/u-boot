@@ -29,9 +29,7 @@ apt update && apt install bc bison build-essential device-tree-compiler dosfstoo
 wget https://github.com/OP-TEE/optee_os/archive/refs/tags/$(echo $OPT_VER).zip
 echo '04a2e85947283e49a79cb8d60fde383df28303a9be15080a7f5354268b01f16405178c0c570e253256c3be8e3084d812c8b46b6dc2cb5c8eb3bde8d2ba4c380e  '$(echo $OPT_VER)'.zip' > $(echo $OPT_VER).zip.sum
 if [[ $(sha512sum -c $(echo $OPT_VER).zip.sum) == $(echo $OPT_VER)'.zip: OK' ]]; then echo 'OP-TEE Checksum Matched!'; else echo 'OP-TEE Checksum Mismatched!' & exit 1; fi;
-wget https://github.com/tianocore/edk2/archive/refs/tags/$(echo $EDK_VER).zip
-echo 'df4d033df70cab0f0a054a1af033dcaea3d0c042f8c401f41ebfaa5c513d8bfa7bb60dd7ef12a82208b26e10c0d0abf48abebfa08dcfd6f9e1da34766991d26f  '$(echo $EDK_VER)'.zip' > $(echo $EDK_VER).zip.sum
-if [[ $(sha512sum -c $(echo $EDK_VER).zip.sum) == $(echo $EDK_VER)'.zip: OK' ]]; then echo 'EDK2 Checksum Matched!'; else echo 'EDK2 Checksum Mismatched!' & exit 1; fi;
+git clone https://github.com/tianocore/edk2.git -b $(echo $EDK_VER) edk2-$(echo $EDK_VER)
 wget https://github.com/tianocore/edk2-platforms/archive/$(echo $EDKP_VER).zip
 echo '00f69c101927bac3fe98efd0714f2418dd9be52ae6b9e30e7395b56f4f34f8691bc4da140a2b17bbfac0cb8ef772e15db64db76033b03b2c036992f5a95b8809  '$(echo $EDKP_VER)'.zip' > $(echo $EDKP_VER).zip.sum
 if [[ $(sha512sum -c $(echo $EDKP_VER).zip.sum) == $(echo $EDKP_VER)'.zip: OK' ]]; then echo 'EDK2 Platform Checksum Matched!'; else echo 'EDK2 Platform Checksum Mismatched!' & exit 1; fi;
@@ -41,12 +39,10 @@ if [[ $(sha512sum -c v$(echo $ATF_VER).zip.sum) == 'lts-v'$(echo $ATF_VER)'.zip:
 wget https://github.com/u-boot/u-boot/archive/refs/tags/v$(echo $UB_VER).zip
 echo '0a3e614ba0fd14224f52a8ad3e68e22df08f6e02c43e9183a459d80b4f37b4f384a4bfef7627a3863388fcffb1472c38d178810bed401f63eb8b5d0a21456603  v'$(echo $UB_VER)'.zip' > v$(echo $UB_VER).zip.sum
 if [[ $(sha512sum -c v$(echo $UB_VER).zip.sum) == 'v'$(echo $UB_VER)'.zip: OK' ]]; then echo 'U-Boot Checksum Matched!'; else echo 'U-Boot Checksum Mismatched!' & exit 1; fi;
-unzip $(echo $EDK_VER).zip
 unzip $(echo $EDKP_VER).zip
 unzip $(echo $OPT_VER).zip
 unzip v$(echo $UB_VER).zip
 unzip lts-v$(echo $ATF_VER).zip
-#WIP
 cd edk2-$(echo $EDK_VER)
 echo "Entering EDK2 ------"
 git submodule init && git submodule update --init --recursive
