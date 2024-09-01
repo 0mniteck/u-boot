@@ -6,6 +6,8 @@
 ##		  By: Shant Tchatalbachian
 ##
 
+EDK_VER=edk2-stable202408;
+EDKP_VER=2acddc92a4951ee885351c035ac19794644a1fd8;
 OPT_VER=4.3.0;
 ATF_VER=2.10.4;
 UB_VER=2024.07;
@@ -24,18 +26,24 @@ cp 0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-roc
 cp logo.bmp /tmp/logo.bmp
 pushd /tmp/
 apt update && apt install bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y
-wget https://github.com/OP-TEE/optee_os/archive/refs/tags/$(echo $OPT_VER).zip
-echo '04a2e85947283e49a79cb8d60fde383df28303a9be15080a7f5354268b01f16405178c0c570e253256c3be8e3084d812c8b46b6dc2cb5c8eb3bde8d2ba4c380e  '$(echo $OPT_VER)'.zip' > $(echo $OPT_VER).zip.sum
-if [[ $(sha512sum -c $(echo $OPT_VER).zip.sum) == $(echo $OPT_VER)'.zip: OK' ]]; then echo 'OP-TEE Checksum Matched!'; else echo 'OP-TEE Checksum Mismatched!' & exit 1; fi;
+wget https://github.com/tianocore/edk2-platforms/archive/$(echo $EDKP_VER).zip
+echo '' > $(echo $EDKP_VER).zip.sum
+if [[ $(sha512sum -c $(echo $EDKP_VER).zip.sum) == $(echo $EDKP_VER)'.zip: OK' ]]; then echo 'EDK2 Platform Checksum Matched!'; else echo 'EDK2 Platform Checksum Mismatched!' & exit 1; fi;
+wget https://github.com/tianocore/edk2/archive/refs/tags/$(echo $EDK_VER).zip
+echo '' > $(echo $EDK_VER).zip.sum
+if [[ $(sha512sum -c $(echo $EDK_VER).zip.sum) == $(echo $EDK_VER)'.zip: OK' ]]; then echo 'EDK2 Checksum Matched!'; else echo 'EDK2 Checksum Mismatched!' & exit 1; fi;
 wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/lts-v$(echo $ATF_VER).zip
 echo '5252dc59f1133d9c3fae5560954d9810e97a7e3b018522fddea584343d742a110c65678115cb0f554c201b5f7326353eec9a54031485156b6ca0788f53d33882  lts-v'$(echo $ATF_VER)'.zip' > v$(echo $ATF_VER).zip.sum
 if [[ $(sha512sum -c v$(echo $ATF_VER).zip.sum) == 'lts-v'$(echo $ATF_VER)'.zip: OK' ]]; then echo 'ATF Checksum Matched!'; else echo 'ATF Checksum Mismatched!' & exit 1; fi;
 wget https://github.com/u-boot/u-boot/archive/refs/tags/v$(echo $UB_VER).zip
 echo '0a3e614ba0fd14224f52a8ad3e68e22df08f6e02c43e9183a459d80b4f37b4f384a4bfef7627a3863388fcffb1472c38d178810bed401f63eb8b5d0a21456603  v'$(echo $UB_VER)'.zip' > v$(echo $UB_VER).zip.sum
 if [[ $(sha512sum -c v$(echo $UB_VER).zip.sum) == 'v'$(echo $UB_VER)'.zip: OK' ]]; then echo 'U-Boot Checksum Matched!'; else echo 'U-Boot Checksum Mismatched!' & exit 1; fi;
+unzip $(echo $EDK_VER).zip
+unzip $(echo $EDKP_VER).zip
 unzip $(echo $OPT_VER).zip
 unzip v$(echo $UB_VER).zip
 unzip lts-v$(echo $ATF_VER).zip
+#WIP
 cd optee_os-$(echo $OPT_VER)
 echo "Entering OP-TEE ------"
 make -j$(nproc) PLATFORM=rockchip-rk3399 CFG_ARM64_core=y CFG_STMM_PATH=BL32_AP_MM.fd CFG_RPMB_FS=y CFG_RPMB_FS_DEV_ID=0 CFG_CORE_HEAP_SIZE=524288 CFG_RPMB_WRITE_KEY=y CFG_CORE_DYN_SHM=y CFG_RPMB_TESTKEY=y CFG_REE_FS=n CFG_CORE_ARM64_PA_BITS=48 CFG_TEE_CORE_LOG_LEVEL=1 CFG_TEE_TA_LOG_LEVEL=1 CFG_SCTLR_ALIGNMENT_CHECK=n
