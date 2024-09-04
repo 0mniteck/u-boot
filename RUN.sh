@@ -85,6 +85,7 @@ echo "CONFIG_TEE=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_SCP03=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE_TA_SCP03=y" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_OPTEE_TA_AVB=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE_SERVICE_DISCOVERY=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_SUPPORT_EMMC_RPMB=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_SUPPORT_EMMC_BOOT=y" >> configs/rockpro64-rk3399_defconfig
