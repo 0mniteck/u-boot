@@ -82,7 +82,8 @@ sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3
 echo "CONFIG_TPM=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_TPM_V1=n" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_TPM_V2=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_TPM_RNG" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_TPM_RNG=y" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_TPM2_TIS_SPI=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_TPL_TPM=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_SPL_TPM=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_MEASURED_BOOT=y" >> configs/rockpro64-rk3399_defconfig
@@ -106,7 +107,6 @@ echo "CONFIG_EFI_TCG2_PROTOCOL_MEASURE_DTB=y" >> configs/rockpro64-rk3399_defcon
 echo "CONFIG_EFI_MM_COMM_TEE=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_EFI_SECURE_BOOT=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_CMD_MMC_RPMB=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_CMD_OPTEE_RPMB=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_CMD_SCP03=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_CMD_TPM=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_CMD_TPM_TEST=y" >> configs/rockpro64-rk3399_defconfig
