@@ -78,6 +78,9 @@ sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3
 # echo "CONFIG_RSA" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_ECDSA" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_BOOTM_EFI=y" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_STACKPROTECTOR=y" >> configs/rockpro64-rk3399_defconfig
+echo "TPL_STACKPROTECTOR=y" >> configs/rockpro64-rk3399_defconfig
+echo "SPL_STACKPROTECTOR=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_TEE=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_SCP03=y" >> configs/rockpro64-rk3399_defconfig
