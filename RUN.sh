@@ -120,6 +120,7 @@ echo "CONFIG_CMD_EFIDEBUG=y" >> configs/rockpro64-rk3399_defconfig
 make rockpro64-rk3399_defconfig
 cat configs/rockpro64-rk3399_defconfig
 read -p "menuconfig -->"
+make menuconfig
 FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j$(nproc) all
 sha512sum u-boot-rockchip.bin
 sha512sum u-boot-rockchip-spi.bin
