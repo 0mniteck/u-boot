@@ -74,21 +74,21 @@ rm tools/logos/denx.bmp && rm drivers/video/u_boot_logo.bmp
 cp /tmp/logo.bmp tools/logos/denx.bmp && cp /tmp/logo.bmp drivers/video/u_boot_logo.bmp
 sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_ARMV8_SEC_FIRMWARE_SUPPORT=y" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_ARM_FFA_TRANSPORT=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_FIT_SIGNATURE=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_RSA=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_ECDSA=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_BOOTM_EFI=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_SPI_FLASH_UNLOCK_ALL=n" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_STACKPROTECTOR=y" >> configs/rockpro64-rk3399_defconfig
-echo "TPL_STACKPROTECTOR=y" >> configs/rockpro64-rk3399_defconfig
-echo "SPL_STACKPROTECTOR=y" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_TPL_STACKPROTECTOR=y" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_SPL_STACKPROTECTOR=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_TEE=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_SCP03=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE_TA_SCP03=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE_TA_AVB=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_RNG_OPTEE=y" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_ARM_FFA_TRANSPORT=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE_SERVICE_DISCOVERY=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_SUPPORT_EMMC_RPMB=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_SUPPORT_EMMC_BOOT=y" >> configs/rockpro64-rk3399_defconfig
