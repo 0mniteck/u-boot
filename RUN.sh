@@ -100,7 +100,7 @@ echo "CONFIG_LIB_HW_RAND=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_ARM_FFA_TRANSPORT=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_FFA_SHARED_MM_BUF_SIZE=4096" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_FFA_SHARED_MM_BUF_OFFSET=0" >> configs/rockpro64-rk3399_defconfig
-echo "COBFIG_FFA_SHARED_MM_BUF_ADDR=0x0" >> configs/rockpro64-rk3399_defconfig
+echo "COBFIG_FFA_SHARED_MM_BUF_ADDR='0x0'" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE_SERVICE_DISCOVERY=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_SUPPORT_EMMC_RPMB=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_SUPPORT_EMMC_BOOT=y" >> configs/rockpro64-rk3399_defconfig
@@ -121,6 +121,8 @@ make rockpro64-rk3399_defconfig
 cat configs/rockpro64-rk3399_defconfig
 read -p "menuconfig -->"
 make menuconfig
+cat configs/rockpro64-rk3399_defconfig
+read -p "Build U-Boot -->"
 FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j$(nproc) all
 sha512sum u-boot-rockchip.bin
 sha512sum u-boot-rockchip-spi.bin
