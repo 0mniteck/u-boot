@@ -77,6 +77,7 @@ sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3
 # echo "CONFIG_RSA" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_ECDSA" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_BOOTM_EFI=y" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_SUPPORT_EMMC_BOOT=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_EFI_SECURE_BOOT=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_CMD_EFIDEBUG=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE=y" >> configs/rockpro64-rk3399_defconfig
