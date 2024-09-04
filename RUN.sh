@@ -110,6 +110,7 @@ echo "CONFIG_EFI_TCG2_PROTOCOL=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_EFI_TCG2_PROTOCOL_MEASURE_DTB=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_EFI_MM_COMM_TEE=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_EFI_SECURE_BOOT=y" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_SOFT_SPI=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_CMD_MMC_RPMB=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_CMD_SCP03=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_CMD_TPM=y" >> configs/rockpro64-rk3399_defconfig
