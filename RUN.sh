@@ -80,6 +80,7 @@ sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3
 # echo "CONFIG_BOOTM_EFI=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_TEE=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE=y" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_SCP03=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE_TA_SCP03=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE_SERVICE_DISCOVERY=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_SUPPORT_EMMC_RPMB=y" >> configs/rockpro64-rk3399_defconfig
