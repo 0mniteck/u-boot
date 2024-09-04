@@ -80,6 +80,7 @@ sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3
 # echo "CONFIG_BOOTM_EFI=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_SPI_FLASH_UNLOCK_ALL=n" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_TPM2_FTPM_TEE=y" >> configs/rockpro64-rk3399_defconfig
+# echo "CONFIG_DM_RNG=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_TPM=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_TPM_V1=n" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_TPM_V2=y" >> configs/rockpro64-rk3399_defconfig
