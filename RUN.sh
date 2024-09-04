@@ -79,6 +79,7 @@ sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3
 # echo "CONFIG_ECDSA=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_BOOTM_EFI=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_SPI_FLASH_UNLOCK_ALL=n" >> configs/rockpro64-rk3399_defconfig
+# echo "CONFIG_TPM2_FTPM_TEE=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_TPM=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_TPM_V1=n" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_TPM_V2=y" >> configs/rockpro64-rk3399_defconfig
@@ -121,9 +122,8 @@ echo "CONFIG_CMD_BOOTEFI_BOOTMGR=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_CMD_EFIDEBUG=y" >> configs/rockpro64-rk3399_defconfig
 make rockpro64-rk3399_defconfig
 cat configs/rockpro64-rk3399_defconfig
-read -p "menuconfig -->"
-make menuconfig
-cat configs/rockpro64-rk3399_defconfig
+# read -p "menuconfig -->"
+# make menuconfig
 read -p "Build U-Boot -->"
 FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j$(nproc) all
 sha512sum u-boot-rockchip.bin
