@@ -1,6 +1,6 @@
 # U-Boot RockChip rk3399
 Status:
-* [ ] Build SPM StandaloneMM fro EDK2
+* [x] Build SPM StandaloneMM from EDK2
 * [ ] Add spport for ARM FFA MM
 * [ ] Add support for infineon TPM
 
