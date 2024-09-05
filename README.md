@@ -1,4 +1,9 @@
 # U-Boot RockChip rk3399
+Status:
+* [ ] Build SPM StandaloneMM fro EDK2
+* [ ] Add spport for ARM FFA MM
+* [ ] Add support for infineon TPM
+
 ## U-Boot Prebuilt Release v2024.07 W/ ATF lts-v2.10.4 & OP-TEE v4.3.0
 
 Prebuilt u-boot-rockchip.bin & u-boot-rockchip-spi.bin are included together for convenience
