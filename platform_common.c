@@ -32,8 +32,8 @@
  * region used by BL31. If BL31 it is placed in SRAM, put the Secure Partition
  * at the base of DRAM.
  */
-#define ARM_SP_IMAGE_BASE		BL31_BASE
-#define ARM_SP_IMAGE_LIMIT		BL31_LIMIT
+#define ARM_SP_IMAGE_BASE		BL32_BASE
+#define ARM_SP_IMAGE_LIMIT		BL32_LIMIT
 /* The maximum size of the S-EL0 payload can be 3MB */
 #define ARM_SP_IMAGE_SIZE		ULL(0x300000)
 
