@@ -102,8 +102,7 @@ void plat_cci_disable(void)
 	ARM_SPM_BUF_EL3_MMAP,
 #endif
 
-
-#if defined(IMAGE_BL31) && SPM_MM
+#if SPM_MM
 const mmap_region_t plat_arm_secure_partition_mmap[] = {
 	V2M_MAP_IOFPGA_EL0, /* for the UART */
 	V2M_MAP_SECURE_SYSTEMREG_EL0, /* for initializing flash */
@@ -120,9 +119,6 @@ const mmap_region_t plat_arm_secure_partition_mmap[] = {
 	ARM_SPM_BUF_EL0_MMAP,
 	{0}
 };
-#endif
-
-#if defined(IMAGE_BL31) && SPM_MM
 /*
  * Boot information passed to a secure partition during initialisation. Linear
  * indices in MP information will be filled at runtime.
