@@ -24,6 +24,27 @@
 
 #include <plat_private.h>
 
+#ifndef BL32_PARAM_H
+#define BL32_PARAM_H
+
+/*******************************************************************************
+ * Platform memory map related constants
+ ******************************************************************************/
+/* TF text, ro, rw, Size: 1MB */
+#define TZRAM_BASE		(0x0)
+#define TZRAM_SIZE		(0x100000)
+
+/*******************************************************************************
+ * BL32 specific defines.
+ ******************************************************************************/
+/*
+ * Put BL32 at the top of the Trusted RAM
+ */
+#define BL32_BASE			(TZRAM_BASE + 0x40000)
+#define BL32_LIMIT			(TZRAM_BASE + TZRAM_SIZE)
+
+#endif /* BL32_PARAM_H */
+
 #ifndef ARM_SPM_DEF_H
 #define ARM_SPM_DEF_H
 
@@ -94,6 +115,9 @@
  * buffers, if defined. First there is the stack memory for all CPUs and then
  * there is the common heap memory. Both are mapped with RW permissions.
  */
+#define PLAT_ARM_SP_IMAGE_STACK_BASE	(PLAT_SP_IMAGE_NS_BUF_BASE +	\
+					 PLAT_SP_IMAGE_NS_BUF_SIZE)
+
 #define PLAT_SP_IMAGE_STACK_BASE	PLAT_ARM_SP_IMAGE_STACK_BASE
 #define PLAT_SP_IMAGE_STACK_PCPU_SIZE	ULL(0x2000)
 #define ARM_SP_IMAGE_STACK_TOTAL_SIZE	(PLATFORM_CORE_COUNT *			\
