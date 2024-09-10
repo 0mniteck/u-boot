@@ -23,7 +23,7 @@ export BUILD_MESSAGE_TIMESTAMP;
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 rm -f spi_combined.zip
 cp 0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
-cp platform_common.c /tmp/platform_common.c
+# cp platform_common.c /tmp/platform_common.c
 cp logo.bmp /tmp/logo.bmp
 pushd /tmp/
 apt update && apt install bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi iasl libncurses-dev libssl-dev nasm parted python3-dev python-is-python3 python3-pyelftools python3-setuptools swig unzip uuid-dev wget zip -y
