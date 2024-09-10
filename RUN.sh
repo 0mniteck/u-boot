@@ -58,7 +58,7 @@ build -p $ACTIVE_PLATFORM -b RELEASE -a AARCH64 -t GCC5 -n `nproc`
 cd optee_os-$(echo $OPT_VER)
 echo "Entering OP-TEE ------"
 ln -s /tmp/Build/MmStandaloneRpmb/RELEASE_GCC5/FV/BL32_AP_MM.fd
-make -j$(nproc) PLATFORM=rockchip-rk3399 CFG_ARM64_core=y CFG_STMM_PATH=BL32_AP_MM.fd CFG_RPMB_FS=y CFG_RPMB_FS_DEV_ID=1 CFG_CORE_HEAP_SIZE=524288 CFG_RPMB_WRITE_KEY=n CFG_CORE_DYN_SHM=y CFG_RPMB_TESTKEY=n CFG_REE_FS=n CFG_CORE_ARM64_PA_BITS=48 CFG_TEE_CORE_LOG_LEVEL=1 CFG_TEE_TA_LOG_LEVEL=1 CFG_SCTLR_ALIGNMENT_CHECK=n
+make -j$(nproc) PLATFORM=rockchip-rk3399 CFG_ARM64_core=y CFG_STMM_PATH=BL32_AP_MM.fd CFG_RPMB_FS=y CFG_RPMB_FS_DEV_ID=0 CFG_CORE_HEAP_SIZE=524288 CFG_RPMB_WRITE_KEY=y CFG_CORE_DYN_SHM=y CFG_RPMB_TESTKEY=n CFG_REE_FS=n CFG_CORE_ARM64_PA_BITS=48 CFG_TEE_CORE_LOG_LEVEL=1 CFG_TEE_TA_LOG_LEVEL=1 CFG_SCTLR_ALIGNMENT_CHECK=n
 export TEE=/tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin
 cd ..
 cd arm-trusted-firmware-lts-v$(echo $ATF_VER)
@@ -87,46 +87,46 @@ sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3
 # echo "CONFIG_SPI_FLASH_UNLOCK_ALL=n" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_TPM2_FTPM_TEE=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_DM_RNG=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_TPM=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_TPM_V1=n" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_TPM_V2=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_TPM=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_TPM_V1=n" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_TPM_V2=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_TPM_RNG=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_TPM2_TIS_SPI=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_TPM2_TIS_SPI=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_TPL_TPM=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_SPL_TPM=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_MEASURED_BOOT=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_STACKPROTECTOR=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_TPL_STACKPROTECTOR=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_SPL_STACKPROTECTOR=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_TEE=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_MEASURED_BOOT=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_STACKPROTECTOR=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_TPL_STACKPROTECTOR=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_SPL_STACKPROTECTOR=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_TEE=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_SCP03=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_OPTEE_TA_SCP03=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_OPTEE_TA_AVB=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_SCP03=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_OPTEE_TA_SCP03=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_OPTEE_TA_AVB=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_RNG_OPTEE=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_LIB_HW_RAND=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_ARM_FFA_TRANSPORT=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_FFA_SHARED_MM_BUF_SIZE=4000" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_FFA_SHARED_MM_BUF_OFFSET=0" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_FFA_SHARED_MM_BUF_ADDR=0x0" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_OPTEE_SERVICE_DISCOVERY=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_SUPPORT_EMMC_RPMB=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_SUPPORT_EMMC_BOOT=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_EFI_VARIABLE_FILE_STORE=n" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_OPTEE_SERVICE_DISCOVERY=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_SUPPORT_EMMC_RPMB=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_SUPPORT_EMMC_BOOT=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_EFI_VARIABLE_FILE_STORE=n" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_EFI_RNG_PROTOCOL=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_EFI_TCG2_PROTOCOL=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_EFI_TCG2_PROTOCOL_MEASURE_DTB=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_EFI_TCG2_PROTOCOL=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_EFI_TCG2_PROTOCOL_MEASURE_DTB=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_EFI_MM_COMM_TEE=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_EFI_SECURE_BOOT=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_SOFT_SPI=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_CMD_MMC_RPMB=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_EFI_SECURE_BOOT=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_SOFT_SPI=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_CMD_MMC_RPMB=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_CMD_OPTEE_RPMB=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_CMD_SCP03=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_CMD_TPM=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_CMD_TPM_TEST=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_CMD_BOOTMENU=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_CMD_BOOTEFI_BOOTMGR=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_CMD_EFIDEBUG=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_CMD_SCP03=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_CMD_TPM=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_CMD_TPM_TEST=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_CMD_BOOTMENU=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_CMD_BOOTEFI_BOOTMGR=y" >> configs/rockpro64-rk3399_defconfig
+## echo "CONFIG_CMD_EFIDEBUG=y" >> configs/rockpro64-rk3399_defconfig
 make rockpro64-rk3399_defconfig
 cat configs/rockpro64-rk3399_defconfig
 # read -p "menuconfig -->"
