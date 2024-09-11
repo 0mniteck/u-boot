@@ -104,6 +104,7 @@ echo "CONFIG_OPTEE_SERVICE_DISCOVERY=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_SCP03=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE_TA_SCP03=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE_TA_AVB=n" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_CHIMP_OPTEE=n" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_RNG_OPTEE=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_LIB_HW_RAND=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_ARM_FFA_TRANSPORT=y" >> configs/rockpro64-rk3399_defconfig
