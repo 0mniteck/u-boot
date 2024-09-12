@@ -46,12 +46,12 @@ echo "Entering EDK2 ------"
 lxc exec edk2 --cwd /root/edk2-$(echo $EDK_VER) -- git submodule init
 lxc exec edk2 --cwd /root/edk2-$(echo $EDK_VER) -- git submodule update --init --recursive
 lxc exec edk2 --cwd /root/edk2-$(echo $EDK_VER) -- bash -i -c "export WORKSPACE=/root && \
-export PACKAGES_PATH=$WORKSPACE/edk2-$(echo $EDK_VER):$WORKSPACE/edk2-platforms-$(echo $EDKP_VER) && \
+export PACKAGES_PATH=/root/edk2-$(echo $EDK_VER):/root/edk2-platforms-$(echo $EDKP_VER) && \
 export ACTIVE_PLATFORM='Platform/StandaloneMm/PlatformStandaloneMmPkg/PlatformStandaloneMmRpmb.dsc' && \
 export GCC5_AARCH64_PREFIX=aarch64-linux-gnu- && \
 source edksetup.sh && \
 make -C BaseTools && \
-build -p $ACTIVE_PLATFORM -b RELEASE -a AARCH64 -t GCC5 -n `nproc`"
+build -p \$ACTIVE_PLATFORM -b RELEASE -a AARCH64 -t GCC5 -n `nproc`"
 lxc exec edk2 -- ls -la
 lxc exec edk2 --cwd /root/edk2-$(echo $EDK_VER) -- ls -la
 lxc file pull edk2/root/Build/MmStandaloneRpmb/RELEASE_GCC13/FV/BL32_AP_MM.fd /tmp/
