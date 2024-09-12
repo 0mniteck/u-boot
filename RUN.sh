@@ -28,6 +28,9 @@ cp logo.bmp /tmp/logo.bmp
 pushd /tmp/
 apt update && apt install bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y
 snap install lxd && lxd init --auto && lxc launch ubuntu:18.04 edk2
+sleep 60
+ufw reload
+sleep 10
 lxc exec edk2 apt update && lxc exec edk2 -- apt upgrade -y
 lxc exec edk2 -- apt install build-essential gcc-5 iasl nasm python-is-python3 unzip uuid-dev wget -y
 lxc exec edk2 -- git clone https://github.com/tianocore/edk2.git -b $(echo $EDK_VER) edk2-$(echo $EDK_VER)
