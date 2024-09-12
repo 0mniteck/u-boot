@@ -40,7 +40,7 @@ lxc exec edk2 -- apt install build-essential gcc-5 acpica-tools nasm unzip uuid-
 lxc exec edk2 -- git clone https://github.com/tianocore/edk2.git -b $(echo $EDK_VER) edk2-$(echo $EDK_VER)
 lxc exec edk2 -- wget https://github.com/tianocore/edk2-platforms/archive/$(echo $EDKP_VER).zip
 lxc exec edk2 -- bash -c "echo '00f69c101927bac3fe98efd0714f2418dd9be52ae6b9e30e7395b56f4f34f8691bc4da140a2b17bbfac0cb8ef772e15db64db76033b03b2c036992f5a95b8809  '$(echo $EDKP_VER)'.zip' > $(echo $EDKP_VER).zip.sum"
-if [[ $(lxc exec edk2 -- bash -c "sha512sum -c $(echo $EDKP_VER).zip.sum") == $(echo $EDKP_VER)'.zip: OK' ]]; then echo 'EDK2 Platform Checksum Matched!'; else echo 'EDK2 Platform Checksum Mismatched!' & exit 1; fi;
+if [[ $(lxc exec edk2 -- bash -i -c "sha512sum -c $(echo $EDKP_VER).zip.sum") == $(echo $EDKP_VER)'.zip: OK' ]]; then echo 'EDK2 Platform Checksum Matched!'; else echo 'EDK2 Platform Checksum Mismatched!' & exit 1; fi;
 lxc exec edk2 -- unzip $(echo $EDKP_VER).zip
 echo "Entering EDK2 ------"
 lxc exec edk2 --cwd /root/edk2-$(echo $EDK_VER) -- git submodule init
