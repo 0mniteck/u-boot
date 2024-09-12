@@ -98,6 +98,7 @@ sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3
 ## echo "CONFIG_STACKPROTECTOR=y" >> configs/rockpro64-rk3399_defconfig
 ## echo "CONFIG_TPL_STACKPROTECTOR=y" >> configs/rockpro64-rk3399_defconfig
 ## echo "CONFIG_SPL_STACKPROTECTOR=y" >> configs/rockpro64-rk3399_defconfig
+# echo "CONFIG_SPL_OPTEE_IMAGE=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_TEE=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE_TZDRAM_SIZE=0x3000000" >> configs/rockpro64-rk3399_defconfig
