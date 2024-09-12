@@ -55,6 +55,7 @@ make -C edk2-$(echo $EDK_VER)/BaseTools && \
 build -p $ACTIVE_PLATFORM -b RELEASE -a AARCH64 -t GCC5 -n `nproc`"
 lxc file pull edk2/root/Build/MmStandaloneRpmb/RELEASE_GCC13/FV/BL32_AP_MM.fd /tmp/
 snap remove lxd --purge
+umount /mnt
 wget https://github.com/OP-TEE/optee_os/archive/refs/tags/$(echo $OPT_VER).zip
 echo '04a2e85947283e49a79cb8d60fde383df28303a9be15080a7f5354268b01f16405178c0c570e253256c3be8e3084d812c8b46b6dc2cb5c8eb3bde8d2ba4c380e  '$(echo $OPT_VER)'.zip' > $(echo $OPT_VER).zip.sum
 if [[ $(sha512sum -c $(echo $OPT_VER).zip.sum) == $(echo $OPT_VER)'.zip: OK' ]]; then echo 'OP-TEE Checksum Matched!'; else echo 'OP-TEE Checksum Mismatched!' & exit 1; fi;
