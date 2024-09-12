@@ -39,8 +39,8 @@ lxc exec edk2 -- bash -c "echo '00f69c101927bac3fe98efd0714f2418dd9be52ae6b9e30e
 if [[ $(lxc exec edk2 -- bash -c "sha512sum -c $(echo $EDKP_VER).zip.sum") == $(echo $EDKP_VER)'.zip: OK' ]]; then echo 'EDK2 Platform Checksum Matched!'; else echo 'EDK2 Platform Checksum Mismatched!' & exit 1; fi;
 lxc exec edk2 -- unzip $(echo $EDKP_VER).zip
 echo "Entering EDK2 ------"
-lxc exec edk2 -- cd edk2-$(echo $EDK_VER) && git submodule init
-lxc exec edk2 -- cd edk2-$(echo $EDK_VER) && git submodule update --init --recursive
+lxc exec edk2 --cwd /root/edk2-$(echo $EDK_VER) -- git submodule init
+lxc exec edk2 --cwd /root/edk2-$(echo $EDK_VER) -- git submodule update --init --recursive
 lxc exec edk2 -- bash -c "export WORKSPACE=$(pwd) && \
 export PACKAGES_PATH=$WORKSPACE/edk2-$(echo $EDK_VER):$WORKSPACE/edk2-platforms-$(echo $EDKP_VER) && \
 export ACTIVE_PLATFORM='Platform/StandaloneMm/PlatformStandaloneMmPkg/PlatformStandaloneMmRpmb.dsc' && \
