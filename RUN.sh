@@ -54,7 +54,7 @@ export ACTIVE_PLATFORM="Platform/StandaloneMm/PlatformStandaloneMmPkg/PlatformSt
 export GCC5_AARCH64_PREFIX=aarch64-linux-gnu-
 source edk2-$(echo $EDK_VER)/edksetup.sh
 make -C edk2-$(echo $EDK_VER)/BaseTools
-build -p $ACTIVE_PLATFORM -b RELEASE -a AARCH64 -t GCC5 -n `nproc`
+build -p $ACTIVE_PLATFORM -b RELEASE -a AARCH64 -t GCC13 -n `nproc`
 cd optee_os-$(echo $OPT_VER)
 echo "Entering OP-TEE ------"
 ln -s /tmp/Build/MmStandaloneRpmb/RELEASE_GCC5/FV/BL32_AP_MM.fd
