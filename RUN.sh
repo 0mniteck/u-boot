@@ -44,6 +44,7 @@ unzip $(echo $EDKP_VER).zip
 unzip $(echo $OPT_VER).zip
 unzip v$(echo $UB_VER).zip
 unzip lts-v$(echo $ATF_VER).zip
+rm -f *.zip
 cd edk2-$(echo $EDK_VER)
 echo "Entering EDK2 ------"
 git submodule init && git submodule update --init --recursive
