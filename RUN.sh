@@ -51,13 +51,13 @@ cd ..
 export WORKSPACE=$(pwd)
 export PACKAGES_PATH=$WORKSPACE/edk2-$(echo $EDK_VER):$WORKSPACE/edk2-platforms-$(echo $EDKP_VER)
 export ACTIVE_PLATFORM="Platform/StandaloneMm/PlatformStandaloneMmPkg/PlatformStandaloneMmRpmb.dsc"
-export GCC5_AARCH64_PREFIX=aarch64-linux-gnu-
+export GCC13_AARCH64_PREFIX=aarch64-linux-gnu-
 source edk2-$(echo $EDK_VER)/edksetup.sh
 make -C edk2-$(echo $EDK_VER)/BaseTools
 build -p $ACTIVE_PLATFORM -b RELEASE -a AARCH64 -t GCC13 -n `nproc`
 cd optee_os-$(echo $OPT_VER)
 echo "Entering OP-TEE ------"
-ln -s /tmp/Build/MmStandaloneRpmb/RELEASE_GCC5/FV/BL32_AP_MM.fd
+ln -s /tmp/Build/MmStandaloneRpmb/RELEASE_GCC13/FV/BL32_AP_MM.fd
 make -j$(nproc) PLATFORM=rockchip-rk3399 CFG_ARM64_core=y CFG_STMM_PATH=BL32_AP_MM.fd CFG_RPMB_FS=y CFG_RPMB_FS_DEV_ID=0 CFG_CORE_HEAP_SIZE=524288 CFG_RPMB_WRITE_KEY=y CFG_CORE_DYN_SHM=y CFG_RPMB_TESTKEY=n CFG_REE_FS=n CFG_CORE_ARM64_PA_BITS=48 CFG_TEE_CORE_LOG_LEVEL=1 CFG_TEE_TA_LOG_LEVEL=1 CFG_SCTLR_ALIGNMENT_CHECK=n
 export TEE=/tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin
 cd ..
