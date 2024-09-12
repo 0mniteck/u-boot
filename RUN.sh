@@ -26,11 +26,27 @@ cp 0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-roc
 # cp platform_common.c /tmp/platform_common.c
 cp logo.bmp /tmp/logo.bmp
 pushd /tmp/
-apt update && apt install bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi iasl libncurses-dev libssl-dev nasm parted python3-dev python-is-python3 python3-pyelftools python3-setuptools swig unzip uuid-dev wget zip -y
-git clone https://github.com/tianocore/edk2.git -b $(echo $EDK_VER) edk2-$(echo $EDK_VER)
-wget https://github.com/tianocore/edk2-platforms/archive/$(echo $EDKP_VER).zip
-echo '00f69c101927bac3fe98efd0714f2418dd9be52ae6b9e30e7395b56f4f34f8691bc4da140a2b17bbfac0cb8ef772e15db64db76033b03b2c036992f5a95b8809  '$(echo $EDKP_VER)'.zip' > $(echo $EDKP_VER).zip.sum
-if [[ $(sha512sum -c $(echo $EDKP_VER).zip.sum) == $(echo $EDKP_VER)'.zip: OK' ]]; then echo 'EDK2 Platform Checksum Matched!'; else echo 'EDK2 Platform Checksum Mismatched!' & exit 1; fi;
+apt update && apt install bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y
+snap install lxd && lxd init --auto && lxc launch ubuntu:18.04 edk2
+lxc exec edk2 apt update && lxc exec edk2 -- apt upgrade -y
+lxc exec edk2 -- apt install build-essential gcc-5 iasl nasm python-is-python3 unzip uuid-dev wget -y
+lxc exec edk2 -- git clone https://github.com/tianocore/edk2.git -b $(echo $EDK_VER) edk2-$(echo $EDK_VER)
+lxc exec edk2 -- wget https://github.com/tianocore/edk2-platforms/archive/$(echo $EDKP_VER).zip
+lxc exec edk2 -- bash -c "echo '00f69c101927bac3fe98efd0714f2418dd9be52ae6b9e30e7395b56f4f34f8691bc4da140a2b17bbfac0cb8ef772e15db64db76033b03b2c036992f5a95b8809  '$(echo $EDKP_VER)'.zip' > $(echo $EDKP_VER).zip.sum"
+if [[ $(lxc exec edk2 -- bash -c "sha512sum -c $(echo $EDKP_VER).zip.sum") == $(echo $EDKP_VER)'.zip: OK' ]]; then echo 'EDK2 Platform Checksum Matched!'; else echo 'EDK2 Platform Checksum Mismatched!' & exit 1; fi;
+lxc exec edk2 -- unzip $(echo $EDKP_VER).zip
+echo "Entering EDK2 ------"
+lxc exec edk2 -- cd edk2-$(echo $EDK_VER) && git submodule init
+lxc exec edk2 -- cd edk2-$(echo $EDK_VER) && git submodule update --init --recursive
+lxc exec edk2 -- bash -c "export WORKSPACE=$(pwd) && \
+export PACKAGES_PATH=$WORKSPACE/edk2-$(echo $EDK_VER):$WORKSPACE/edk2-platforms-$(echo $EDKP_VER) && \
+export ACTIVE_PLATFORM='Platform/StandaloneMm/PlatformStandaloneMmPkg/PlatformStandaloneMmRpmb.dsc' && \
+export GCC5_AARCH64_PREFIX=aarch64-linux-gnu- && \
+source edk2-$(echo $EDK_VER)/edksetup.sh && \
+make -C edk2-$(echo $EDK_VER)/BaseTools && \
+build -p $ACTIVE_PLATFORM -b RELEASE -a AARCH64 -t GCC5 -n `nproc`"
+lxc file pull edk2/root/Build/MmStandaloneRpmb/RELEASE_GCC13/FV/BL32_AP_MM.fd /tmp/
+snap remove lxd --purge
 wget https://github.com/OP-TEE/optee_os/archive/refs/tags/$(echo $OPT_VER).zip
 echo '04a2e85947283e49a79cb8d60fde383df28303a9be15080a7f5354268b01f16405178c0c570e253256c3be8e3084d812c8b46b6dc2cb5c8eb3bde8d2ba4c380e  '$(echo $OPT_VER)'.zip' > $(echo $OPT_VER).zip.sum
 if [[ $(sha512sum -c $(echo $OPT_VER).zip.sum) == $(echo $OPT_VER)'.zip: OK' ]]; then echo 'OP-TEE Checksum Matched!'; else echo 'OP-TEE Checksum Mismatched!' & exit 1; fi;
@@ -40,32 +56,19 @@ if [[ $(sha512sum -c v$(echo $ATF_VER).zip.sum) == 'lts-v'$(echo $ATF_VER)'.zip:
 wget https://github.com/u-boot/u-boot/archive/refs/tags/v$(echo $UB_VER).zip
 echo '0a3e614ba0fd14224f52a8ad3e68e22df08f6e02c43e9183a459d80b4f37b4f384a4bfef7627a3863388fcffb1472c38d178810bed401f63eb8b5d0a21456603  v'$(echo $UB_VER)'.zip' > v$(echo $UB_VER).zip.sum
 if [[ $(sha512sum -c v$(echo $UB_VER).zip.sum) == 'v'$(echo $UB_VER)'.zip: OK' ]]; then echo 'U-Boot Checksum Matched!'; else echo 'U-Boot Checksum Mismatched!' & exit 1; fi;
-unzip $(echo $EDKP_VER).zip
 unzip $(echo $OPT_VER).zip
 unzip v$(echo $UB_VER).zip
 unzip lts-v$(echo $ATF_VER).zip
-rm -f *.zip
-cd edk2-$(echo $EDK_VER)
-echo "Entering EDK2 ------"
-git submodule init && git submodule update --init --recursive
-cd ..
-export WORKSPACE=$(pwd)
-export PACKAGES_PATH=$WORKSPACE/edk2-$(echo $EDK_VER):$WORKSPACE/edk2-platforms-$(echo $EDKP_VER)
-export ACTIVE_PLATFORM="Platform/StandaloneMm/PlatformStandaloneMmPkg/PlatformStandaloneMmRpmb.dsc"
-export GCC13_AARCH64_PREFIX=aarch64-linux-gnu-
-source edk2-$(echo $EDK_VER)/edksetup.sh
-make -C edk2-$(echo $EDK_VER)/BaseTools
-build -p $ACTIVE_PLATFORM -b RELEASE -a AARCH64 -t GCC13 -n `nproc`
 cd optee_os-$(echo $OPT_VER)
 echo "Entering OP-TEE ------"
-ln -s /tmp/Build/MmStandaloneRpmb/RELEASE_GCC13/FV/BL32_AP_MM.fd
+ln -s /tmp/BL32_AP_MM.fd
 make -j$(nproc) PLATFORM=rockchip-rk3399 CFG_ARM64_core=y CFG_STMM_PATH=BL32_AP_MM.fd CFG_RPMB_FS=y CFG_RPMB_FS_DEV_ID=0 CFG_CORE_HEAP_SIZE=524288 CFG_RPMB_WRITE_KEY=y CFG_CORE_DYN_SHM=y CFG_RPMB_TESTKEY=n CFG_REE_FS=n CFG_CORE_ARM64_PA_BITS=48 CFG_TEE_CORE_LOG_LEVEL=1 CFG_TEE_TA_LOG_LEVEL=1 CFG_SCTLR_ALIGNMENT_CHECK=n
 export TEE=/tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin
 cd ..
 cd arm-trusted-firmware-lts-v$(echo $ATF_VER)
 echo "Entering TF-A ------"
 make realclean
-# ln -s /tmp/Build/MmStandaloneRpmb/RELEASE_GCC5/FV/BL32_AP_MM.fd
+# ln -s /tmp/BL32_AP_MM.fd
 # ln -s /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin
 # Test patch
 # cp /tmp/platform_common.c plat/rockchip/common/aarch64/platform_common.c
@@ -173,6 +176,6 @@ read -p "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TI
 git commit -a -S -m "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For The RockPro64"
 git push --set-upstream origin RP64-rk3399-A
 cd ..
-apt remove --purge bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi iasl libncurses-dev libssl-dev nasm parted python3-dev python-is-python3 python3-pyelftools python3-setuptools swig unzip uuid-dev wget zip -y && apt autoremove -y
+apt remove --purge bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip uuid-dev wget zip -y && apt autoremove -y
 rm -f -r /tmp/u-boot* && rm -f /tmp/4.* && rm -f /tmp/lts* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/optee_os-* && rm -f -r /tmp/edk2-* && rm -f -r /tmp/Build && rm -f /tmp/spi_* && rm -f /tmp/rk* && rm -f /tmp/000* && rm -f /tmp/logo.bmp && rm -f /tmp/$(echo $EDKP_VER).zip* && rm -f /tmp/platform_common.c && rm -f -r U-Boot && cd ..
 exit
