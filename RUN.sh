@@ -52,7 +52,10 @@ export GCC5_AARCH64_PREFIX=aarch64-linux-gnu- && \
 source edksetup.sh && \
 make -C BaseTools && \
 build -p $ACTIVE_PLATFORM -b RELEASE -a AARCH64 -t GCC5 -n `nproc`"
+lxc exec edk2 -- ls -la
+lxc exec edk2 --cwd /root/edk2-$(echo $EDK_VER) -- ls -la
 lxc file pull edk2/root/Build/MmStandaloneRpmb/RELEASE_GCC13/FV/BL32_AP_MM.fd /tmp/
+ls -la /tmp
 snap remove lxd --purge
 #umount /mnt
 apt update && apt install bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y
