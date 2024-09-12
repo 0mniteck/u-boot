@@ -27,6 +27,11 @@ cp 0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-roc
 cp logo.bmp /tmp/logo.bmp
 pushd /tmp/
 apt update && apt install bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y
+read -p "Insert any SD Card, Then Press Enter to Continue"
+dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=2000 status=progress
+parted /dev/mmcblk1 mktable gpt mkpart P1 ext4 0 15G -s && sleep 3
+mkfs.ext4 /dev/mmcblk1p1
+mount /dev/mmcblk1p1 /mnt
 snap install lxd && lxd init --auto && lxc launch ubuntu:18.04 edk2
 sleep 30
 ufw reload
