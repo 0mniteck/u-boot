@@ -26,12 +26,11 @@ cp 0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-roc
 # cp platform_common.c /tmp/platform_common.c
 cp logo.bmp /tmp/logo.bmp
 pushd /tmp/
-apt update && apt install bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y
-read -p "Insert any SD Card, Then Press Enter to Continue"
-dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=2000 status=progress
-parted /dev/mmcblk1 mktable gpt mkpart P1 ext4 0 15G -s && sleep 3
-mkfs.ext4 /dev/mmcblk1p1
-mount /dev/mmcblk1p1 /mnt
+#read -p "Insert any SD Card, Then Press Enter to Continue"
+#dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=2000 status=progress
+#parted /dev/mmcblk1 mktable gpt mkpart P1 ext4 0 15G -s && sleep 3
+#mkfs.ext4 /dev/mmcblk1p1
+#mount /dev/mmcblk1p1 /mnt
 snap install lxd && lxd init --auto && lxc launch ubuntu:18.04 edk2
 sleep 30
 ufw reload
@@ -55,7 +54,8 @@ make -C edk2-$(echo $EDK_VER)/BaseTools && \
 build -p $ACTIVE_PLATFORM -b RELEASE -a AARCH64 -t GCC5 -n `nproc`"
 lxc file pull edk2/root/Build/MmStandaloneRpmb/RELEASE_GCC13/FV/BL32_AP_MM.fd /tmp/
 snap remove lxd --purge
-umount /mnt
+#umount /mnt
+apt update && apt install bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y
 wget https://github.com/OP-TEE/optee_os/archive/refs/tags/$(echo $OPT_VER).zip
 echo '04a2e85947283e49a79cb8d60fde383df28303a9be15080a7f5354268b01f16405178c0c570e253256c3be8e3084d812c8b46b6dc2cb5c8eb3bde8d2ba4c380e  '$(echo $OPT_VER)'.zip' > $(echo $OPT_VER).zip.sum
 if [[ $(sha512sum -c $(echo $OPT_VER).zip.sum) == $(echo $OPT_VER)'.zip: OK' ]]; then echo 'OP-TEE Checksum Matched!'; else echo 'OP-TEE Checksum Mismatched!' & exit 1; fi;
