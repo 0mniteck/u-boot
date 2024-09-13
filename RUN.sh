@@ -86,6 +86,8 @@ rm tools/logos/denx.bmp && rm drivers/video/u_boot_logo.bmp
 cp /tmp/logo.bmp tools/logos/denx.bmp && cp /tmp/logo.bmp drivers/video/u_boot_logo.bmp
 sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3399_defconfig
 echo "CONFIG_LOG=y" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_LOG_MAX_LEVEL=7" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_LOG_CONSOLE=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_ARMV8_SEC_FIRMWARE_SUPPORT=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_FIT_SIGNATURE=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_RSA=y" >> configs/rockpro64-rk3399_defconfig
@@ -110,8 +112,8 @@ echo "CONFIG_TEE=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE_TZDRAM_SIZE=0x3000000" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE_SERVICE_DISCOVERY=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_SCP03=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_OPTEE_TA_SCP03=y" >> configs/rockpro64-rk3399_defconfig
+### echo "CONFIG_SCP03=Y" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_OPTEE_TA_SCP03=n" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE_TA_AVB=n" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_CHIMP_OPTEE=n" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_BOOTM_OPTEE=y" >> configs/rockpro64-rk3399_defconfig
@@ -133,7 +135,7 @@ echo "CONFIG_EFI_VAR_BUF_SIZE=4194304" >> configs/rockpro64-rk3399_defconfig
 ## echo "CONFIG_SOFT_SPI=y" >> configs/rockpro64-rk3399_defconfig
 ## echo "CONFIG_CMD_MMC_RPMB=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_CMD_OPTEE_RPMB=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_CMD_SCP03=y" >> configs/rockpro64-rk3399_defconfig
+### echo "CONFIG_CMD_SCP03=y" >> configs/rockpro64-rk3399_defconfig
 ## echo "CONFIG_CMD_TPM=y" >> configs/rockpro64-rk3399_defconfig
 ## echo "CONFIG_CMD_TPM_TEST=y" >> configs/rockpro64-rk3399_defconfig
 ## echo "CONFIG_CMD_BOOTMENU=y" >> configs/rockpro64-rk3399_defconfig
