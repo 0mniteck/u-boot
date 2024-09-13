@@ -1,0 +1,38 @@
+From 0a9e081395c8286a96e7bb141d8517372ba712d7 Mon Sep 17 00:00:00 2001
+From: Quentin Schulz <quentin.schulz@cherry.de>
+Date: Mon, 17 Jun 2024 15:10:08 +0200
+Subject: [PATCH] rockchip: rk3399: fix SPI-NOR flash not found in U-Boot
+ pre-reloc
+
+In commit 100f489f58a6 ("rockchip: rk3399: Fix loading FIT from SD-card
+when booting from eMMC"), the spi1 bootph properties were mistakenly
+removed meaning, so re-add them back to fix SPI-NOR flash not being
+found in U-Boot pre-reloc as required for RK3399 Puma.
+
+Fixes: 100f489f58a6 ("rockchip: rk3399: Fix loading FIT from SD-card when booting from eMMC")
+Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+Reviewed-by: Jonas Karlman <jonas@kwiboo.se>
+Reviewed-by: Kever Yang <kever.yang@rock-chips.com>
+---
+ arch/arm/dts/rk3399-u-boot.dtsi | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/arch/arm/dts/rk3399-u-boot.dtsi b/arch/arm/dts/rk3399-u-boot.dtsi
+index b6b4327117..2bec139d83 100644
+--- a/arch/arm/dts/rk3399-u-boot.dtsi
++++ b/arch/arm/dts/rk3399-u-boot.dtsi
+@@ -145,6 +145,11 @@
+ 	bootph-some-ram;
+ };
+ 
++&spi1 {
++	bootph-pre-ram;
++	bootph-some-ram;
++};
++
+ &spi1_clk {
+ 	bootph-pre-ram;
+ 	bootph-some-ram;
+-- 
+2.43.0
+
