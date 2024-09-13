@@ -21,7 +21,6 @@ export SOURCE_DATE_EPOCH;
 export BUILD_MESSAGE_TIMESTAMP;
 
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
-rm -f spi_combined.zip
 cp 0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
 # cp platform_common.c /tmp/platform_common.c
 cp logo.bmp /tmp/logo.bmp
@@ -166,21 +165,19 @@ sync
 umount /mnt
 dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 cd ..
-zip -0 spi_combined.zip u-boot-rockchip.bin u-boot-rockchip.bin.sum u-boot-rockchip-spi.bin u-boot-rockchip-spi.bin.sum
-sha512sum spi_combined.zip
 sync
 popd
-sha512sum /tmp/spi_combined.zip > /tmp/spi_combined.zip.sum
-cp /tmp/spi_combined.zip.sum spi_combined.zip.sum
-cp /tmp/spi_combined.zip spi_combined.zip
-sha512sum spi_combined.zip
-cp /tmp/BL32_AP_MM.fd BL32_AP_MM.fd
-cp /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin tee.bin
+cp /tmp/u-boot-rockchip.bin Builds/u-boot-rockchip.bin
+cp /tmp/u-boot-rockchip.bin.sum Builds/u-boot-rockchip.bin.sum
+cp /tmp/u-boot-rockchip-spi.bin Builds/u-boot-rockchip-spi.bin
+cp /tmp/u-boot-rockchip-spi.bin.sum Builds/u-boot-rockchip-spi.bin.sum
+cp /tmp/BL32_AP_MM.fd Builds/BL32_AP_MM.fd
+cp /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin Builds/tee.bin
 git status && git add -A && git status
 read -p "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For The RockPro64: Sign -->"
 git commit -a -S -m "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For The RockPro64"
 git push --set-upstream origin RP64-rk3399-A
 cd ..
 apt remove --purge bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y && apt autoremove -y
-rm -f -r /tmp/u-boot* && rm -f /tmp/4.* && rm -f /tmp/lts* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/optee_os-* && rm -f -r /tmp/edk2-* && rm -f -r /tmp/Build && rm -f /tmp/spi_* && rm -f /tmp/rk* && rm -f /tmp/000* && rm -f /tmp/logo.bmp && rm -f /tmp/$(echo $EDKP_VER).zip* && rm -f /tmp/platform_common.c && rm -f -r U-Boot && cd ..
+rm -f -r /tmp/u-boot* && rm -f /tmp/4.* && rm -f /tmp/lts* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/optee_os-* && rm -f /tmp/000* && rm -f /tmp/logo.bmp && rm -f /tmp/BL32_AP_MM.fd && rm -f -r U-Boot && cd ..
 exit
