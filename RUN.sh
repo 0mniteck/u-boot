@@ -25,6 +25,7 @@ cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp
 # cp includes/platform_common.c /tmp/platform_common.c
 cp includes/logo.bmp /tmp/logo.bmp
 pushd /tmp/
+apt remove --purge bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y && apt autoremove -y
 snap install lxd && lxd init --auto && lxc launch ubuntu:18.04 edk2
 sleep 30
 ufw reload
