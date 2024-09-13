@@ -88,6 +88,7 @@ sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3
 echo "CONFIG_LOG=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_LOG_MAX_LEVEL=7" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_LOG_CONSOLE=y" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_LOGLEVEL=7" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_ARMV8_SEC_FIRMWARE_SUPPORT=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_FIT_SIGNATURE=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_RSA=y" >> configs/rockpro64-rk3399_defconfig
