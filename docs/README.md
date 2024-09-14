@@ -6,7 +6,7 @@ Status:
 * [ ] Add support for infineon TPM
 
 
-Prebuilt u-boot-rockchip.bin & u-boot-rockchip-spi.bin are included together for convenience
+Prebuilt u-boot-rockchip.bin & u-boot-rockchip-spi.bin are included in `Builds/` for convenience
 
 ## RockPro64 SPI U-Boot Assembler
 ## U-Boot (WIP)
