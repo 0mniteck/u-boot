@@ -24,6 +24,66 @@ static const int cci_map[] = {
 };
 #endif
 
+#define PLAT_SP_IMAGE_MMAP_REGIONS  \
+    {                               \
+        {                           \
+            .base = 0x80000000,   \
+            .size = 0x1000000,    \
+            .attr = MT_MEMORY | MT_RW | MT_SECURE, \
+        },                          \
+        {                           \
+            .base = 0x0,          \
+            .size = 0x40000000,   \
+            .attr = MT_MEMORY | MT_RW | MT_SECURE, \
+        },                          \
+    }
+
+#define PLAT_SP_IMAGE_MAX_XLAT_TABLES 4
+
+static spm_mm_mp_info_t sp_mp_info[] = {
+	[0] = {0x80000000, 0},
+	[1] = {0x80000001, 0},
+	[2] = {0x80000002, 0},
+	[3] = {0x80000003, 0},
+	[4] = {0x80000100, 0},
+	[5] = {0x80000101, 0},
+	[6] = {0x80000102, 0},
+	[7] = {0x80000103, 0},
+};
+
+const spm_mm_boot_info_t plat_arm_secure_partition_boot_info = {
+    .h.type              = PARAM_SP_IMAGE_BOOT_INFO,
+    .h.version           = VERSION_1,
+    .h.size              = sizeof(spm_mm_boot_info_t),
+    .h.attr              = 0,
+    .sp_mem_base         = 0x80000000,  /* Base address for Secure Partition memory */
+    .sp_mem_limit        = 0x80010000,  /* Limit address for Secure Partition memory */
+    .sp_image_base       = 0x80000000,  /* Base address for the Secure Partition image */
+    .sp_stack_base       = 0x8000F000,  /* Base address for the Secure Partition stack */
+    .sp_heap_base        = 0x8000E000,  /* Base address for the Secure Partition heap */
+    .sp_ns_comm_buf_base = 0x8000D000,  /* Base address for Non-secure communication buffer */
+    .sp_shared_buf_base  = 0x8000C000,  /* Base address for shared buffer */
+    .sp_image_size       = 0x00010000,  /* Size of the Secure Partition image */
+    .sp_pcpu_stack_size  = 0x00002000,  /* Per-CPU stack size */
+    .sp_heap_size        = 0x00002000,  /* Size of the Secure Partition heap */
+    .sp_ns_comm_buf_size = 0x00001000,  /* Size of Non-secure communication buffer */
+    .sp_shared_buf_size  = 0x00001000,  /* Size of shared buffer */
+    .num_sp_mem_regions  = ARRAY_SIZE(sp_mp_info),  /* Number of memory regions defined */
+    .num_cpus            = PLATFORM_CORE_COUNT,  /* Number of CPU cores */
+    .mp_info             = &sp_mp_info[0],  /* Pointer to memory region info */
+};
+
+const struct mmap_region *plat_get_secure_partition_mmap(void *cookie)
+{
+	return plat_arm_secure_partition_mmap;
+}
+
+const struct spm_mm_boot_info *plat_get_secure_partition_boot_info(
+		void *cookie)
+{
+	return &plat_arm_secure_partition_boot_info;
+}
+
 /******************************************************************************
  * Macro generating the code for the function setting up the pagetables as per
  * the platform memory map & initialize the mmu, for the given exception level
