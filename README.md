@@ -7,7 +7,7 @@ Status:
 
 ## U-Boot Prebuilt Release v2024.07 W/ ATF lts-v2.10.4 & OP-TEE v4.3.0
 
-Prebuilt u-boot-rockchip.bin & u-boot-rockchip-spi.bin are included together for convenience
+Prebuilt u-boot-rockchip.bin & u-boot-rockchip-spi.bin are included in `Builds/` for convenience
 
 # RockPro64 SPI U-Boot Assembler
 
