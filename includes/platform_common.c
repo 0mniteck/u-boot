@@ -49,9 +49,6 @@ const mmap_region_t plat_arm_secure_partition_mmap[] = {
 };
 #endif
 
-#define PLAT_SP_IMAGE_MMAP_REGIONS	7
-#define PLAT_SP_IMAGE_MAX_XLAT_TABLES	10
-
 #if defined(IMAGE_BL31) && SPM_MM
 static spm_mm_mp_info_t sp_mp_info[] = {
 	[0] = {0x80000000, 0},
