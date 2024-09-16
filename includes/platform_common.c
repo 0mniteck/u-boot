@@ -24,18 +24,18 @@ static const int cci_map[] = {
 };
 #endif
 
-#define PLAT_SP_IMAGE_MMAP_REGIONS  \
-    {                               \
-        {                           \
-            .base = 0x80000000,   \
-            .size = 0x1000000,    \
-            .attr = MT_MEMORY | MT_RW | MT_SECURE, \
-        },                          \
-        {                           \
-            .base = 0x0,          \
-            .size = 0x40000000,   \
-            .attr = MT_MEMORY | MT_RW | MT_SECURE, \
-        },                          \
+#define PLAT_SP_IMAGE_MMAP_REGIONS	\
+    {					\
+        {				\
+            .base = 0x80000000,		\
+            .size = 0x1000000,		\
+            .attr = MT_MEMORY | MT_RW | MT_SECURE,	\
+        },				\
+        {				\
+            .base = 0x0,		\
+            .size = 0x40000000,		\
+            .attr = MT_MEMORY | MT_RW | MT_SECURE,	\
+        },				\
     }
 
 #define PLAT_SP_IMAGE_MAX_XLAT_TABLES 4
@@ -73,13 +73,37 @@ const spm_mm_boot_info_t plat_arm_secure_partition_boot_info = {
     .mp_info             = &sp_mp_info[0],  /* Pointer to memory region info */
 };
 
+const mmap_region_t plat_arm_secure_partition_mmap[] = {
+    V2M_MAP_IOFPGA_EL0,
+    V2M_MAP_SECURE_SYSTEMREG_EL0,
+#if PSA_FWU_SUPPORT
+    V2M_MAP_FLASH0_RW_EL0,
+#endif
+    V2M_MAP_FLASH1_RW_EL0,
+    MAP_REGION_FLAT(DEVICE0_BASE,
+                    DEVICE0_SIZE,
+                    MT_DEVICE | MT_RW | MT_SECURE | MT_USER),
+    MAP_REGION_FLAT(0x80000000,
+                    0x00010000,
+                    MT_MEMORY | MT_RW | MT_SECURE),
+    MAP_REGION_FLAT(0x8000D000,
+                    0x00001000,
+                    MT_MEMORY | MT_RW | MT_NON_SECURE),
+    MAP_REGION_FLAT(0x8000E000,
+                    0x00002000,
+                    MT_MEMORY | MT_RW | MT_SECURE),
+    MAP_REGION_FLAT(0x8000C000,
+                    0x00001000,
+                    MT_MEMORY | MT_RW | MT_SECURE),
+    {0}
+};
+
 const struct mmap_region *plat_get_secure_partition_mmap(void *cookie)
 {
 	return plat_arm_secure_partition_mmap;
 }
 
-const struct spm_mm_boot_info *plat_get_secure_partition_boot_info(
-		void *cookie)
+const struct spm_mm_boot_info *plat_get_secure_partition_boot_info(void *cookie)
 {
 	return &plat_arm_secure_partition_boot_info;
 }
