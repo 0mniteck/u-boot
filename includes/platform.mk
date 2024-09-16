@@ -110,3 +110,7 @@ $(RK3399M0FW): | $$(@D)/
 
 # Do not enable SVE
 ENABLE_SVE_FOR_NS	:=	0
+
+ifeq (${EL3_EXCEPTION_HANDLING},1)
+BL31_SOURCES		+=	plat/common/aarch64/plat_ehf.c
+endif
