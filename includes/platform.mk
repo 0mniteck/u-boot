@@ -106,7 +106,7 @@ ${RK_PLAT_SOC}/drivers/pmu/pmu_fw.S: $(RK3399M0FW)
 
 .PHONY: $(RK3399M0FW)
 $(RK3399M0FW): | $$(@D)/
-	$(MAKE) -C ${RK_PLAT_SOC}/drivers/m0 BUILD=$(abspath ${BUILD_PLAT}/m0)
+	$(MAKE) -C ${RK_PLAT_SOC}/drivers/m0 BUILD=/tmp/arm-trusted-firmware-lts-v2.10.4/build/rk3399/release/m0)
 
 # Do not enable SVE
 ENABLE_SVE_FOR_NS	:=	0
