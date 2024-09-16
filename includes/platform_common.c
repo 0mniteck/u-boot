@@ -49,20 +49,7 @@ const mmap_region_t plat_arm_secure_partition_mmap[] = {
 };
 #endif
 
-#define PLAT_SP_IMAGE_MMAP_REGIONS	\
-    {					\
-        {				\
-            .base = 0x80000000,		\
-            .size = 0x1000000,		\
-            .attr = MT_MEMORY | MT_RW | MT_SECURE,	\
-        },				\
-        {				\
-            .base = 0x0,		\
-            .size = 0x40000000,		\
-            .attr = MT_MEMORY | MT_RW | MT_SECURE,	\
-        },				\
-    }
-
+#define PLAT_SP_IMAGE_MMAP_REGIONS	7
 #define PLAT_SP_IMAGE_MAX_XLAT_TABLES	10
 
 #if defined(IMAGE_BL31) && SPM_MM
