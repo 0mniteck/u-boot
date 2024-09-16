@@ -22,7 +22,7 @@ export BUILD_MESSAGE_TIMESTAMP;
 
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
-# cp includes/platform_common.c /tmp/platform_common.c
+cp includes/platform_common.c /tmp/platform_common.c
 cp includes/logo.bmp /tmp/logo.bmp
 if [ -f Builds/BL32_AP_MM.fd ]; then
   cp Builds/BL32_AP_MM.fd /tmp/BL32_AP_MM.fd
@@ -78,7 +78,7 @@ echo "Entering TF-A ------"
 make realclean
 ln -s /tmp/BL32_AP_MM.fd
 ln -s /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin
-# cp /tmp/platform_common.c plat/rockchip/common/aarch64/platform_common.c
+cp /tmp/platform_common.c plat/rockchip/common/aarch64/platform_common.c
 BL33=tee.bin BL32=BL32_AP_MM.fd make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" SPM_MM=1 EL3_EXCEPTION_HANDLING=1 ENABLE_SVE_FOR_NS=0 ARM_BL31_IN_DRAM=1 PLAT=rk3399 bl31
 # make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" PLAT=rk3399 bl31
 export BL31=/tmp/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/release/bl31/bl31.elf
