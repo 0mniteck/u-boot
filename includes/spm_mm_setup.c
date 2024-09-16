@@ -17,6 +17,7 @@
 #include <platform_def.h>
 #include <plat/common/common_def.h>
 #include <plat/common/platform.h>
+#include <plat/arm/common/arm_spm_def.h>
 #include <services/spm_mm_partition.h>
 
 #include "spm_common.h"
