@@ -69,8 +69,6 @@
 #define PLAT_SP_IMAGE_MMAP_REGIONS	7
 #define PLAT_SP_IMAGE_MAX_XLAT_TABLES	10
 #define PLAT_SP_PRI			0x20
-#define PLAT_SPM_COOKIE_0		0
-#define PLAT_SPM_COOKIE_1		0
 #  endif
 # endif
 
