@@ -9,6 +9,10 @@
 #define RK3399_DEF_H
 
 #include <addressmap.h>
+#if SPM_MM
+#include <plat/arm/common/arm_spm_def.h>
+#include <services/spm_mm_partition.h>
+#endif
 
 #define RK3399_PRIMARY_CPU		0x0
 
