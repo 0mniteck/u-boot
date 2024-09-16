@@ -81,7 +81,7 @@ ERRATA_A53_855873	:=	1
 
 # M0 source build
 PLAT_M0                 :=      ${PLAT}m0
-BUILD_M0		:=	/tmp/arm-trusted-firmware-lts-v2.10.4/build/rk3399/release/bl31
+BUILD_M0		:=	/tmp/arm-trusted-firmware-lts-v2.10.4/build/rk3399/release/bl31/m0
 
 RK3399M0FW=${BUILD_M0}/${PLAT_M0}.bin
 $(eval $(call add_define_val,RK3399M0FW,\"$(RK3399M0FW)\"))
@@ -103,6 +103,9 @@ endif
 export CCACHE_EXTRAFILES
 ${BUILD_PLAT}/bl31/pmu_fw.o: CCACHE_EXTRAFILES=$(RK3399M0FW):$(RK3399M0PMUFW)
 ${RK_PLAT_SOC}/drivers/pmu/pmu_fw.S: $(RK3399M0FW)
+
+$(dir $(RK3399M0FW)):
+	mkdir -p $@
 
 .PHONY: $(RK3399M0FW)
 $(RK3399M0FW): | $(dir $(RK3399M0FW))/
