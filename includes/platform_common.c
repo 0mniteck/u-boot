@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2013-2023, ARM Limited and Contributors. All rights reserved.
+ * Copyright (c) 2024, Shant Tchatalbachian
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
