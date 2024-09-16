@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2014-2016, ARM Limited and Contributors. All rights reserved.
+ * Copyright (c) 2024, Shant Tchatalbachian
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -61,5 +62,8 @@
 #define PLAT_RK_GICV3_G0_IRQS						\
 	INTR_PROP_DESC(ARM_IRQ_SEC_SGI_6, GIC_HIGHEST_SEC_PRIORITY,	\
 		       INTR_GROUP0, GIC_INTR_CFG_LEVEL)
+
+#define PLAT_SP_IMAGE_MMAP_REGIONS	7
+#define PLAT_SP_IMAGE_MAX_XLAT_TABLES	10
 
 #endif /* RK3399_DEF_H */
