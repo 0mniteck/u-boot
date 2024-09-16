@@ -83,7 +83,7 @@ ln -s /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin
 cp /tmp/platform_common.c plat/rockchip/common/aarch64/platform_common.c
 cp /tmp/platform.mk plat/rockchip/rk3399/platform.mk
 cp /tmp/rk3399_def.h plat/rockchip/rk3399/rk3399_def.h
-BL33=tee.bin BL32=BL32_AP_MM.fd make V=1 BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" SPM_MM=1 EL3_EXCEPTION_HANDLING=1 ENABLE_SVE_FOR_NS=0 CTX_INCLUDE_FPREGS=1 ARM_BL31_IN_DRAM=1 PLAT=rk3399 M0_CROSS_COMPILE=arm-none-eabi- bl31
+BL33=tee.bin BL32=BL32_AP_MM.fd make V=1 BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" SPM_MM=1 EL3_EXCEPTION_HANDLING=1 ENABLE_SVE_FOR_NS=0 CTX_INCLUDE_FPREGS=1 ARM_BL31_IN_DRAM=1 PLAT=rk3399 bl31
 # make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" PLAT=rk3399 bl31
 export BL31=/tmp/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/release/bl31/bl31.elf
 cd ..
