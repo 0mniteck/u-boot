@@ -38,7 +38,7 @@ const mmap_region_t plat_arm_secure_partition_mmap[] = {
                     MT_MEMORY | MT_RW | MT_SECURE),
     MAP_REGION_FLAT(0x8000D000,
                     0x00001000,
-                    MT_MEMORY | MT_RW | MT_NON_SECURE),
+                    MT_MEMORY | MT_RW | MT_SECURE),
     MAP_REGION_FLAT(0x8000E000,
                     0x00002000,
                     MT_MEMORY | MT_RW | MT_SECURE),
