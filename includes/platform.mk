@@ -81,7 +81,7 @@ ERRATA_A53_855873	:=	1
 
 # M0 source build
 PLAT_M0                 :=      ${PLAT}m0
-BUILD_M0		:=	${BUILD_PLAT}/m0
+BUILD_M0		:=	/tmp/arm-trusted-firmware-lts-v2.10.4/build/rk3399/release/bl31
 
 RK3399M0FW=${BUILD_M0}/${PLAT_M0}.bin
 $(eval $(call add_define_val,RK3399M0FW,\"$(RK3399M0FW)\"))
@@ -106,7 +106,7 @@ ${RK_PLAT_SOC}/drivers/pmu/pmu_fw.S: $(RK3399M0FW)
 
 .PHONY: $(RK3399M0FW)
 $(RK3399M0FW): | $$(@D)/
-	$(MAKE) -C ${RK_PLAT_SOC}/drivers/m0 BUILD=/tmp/arm-trusted-firmware-lts-v2.10.4/build/rk3399/release/m0)
+	$(MAKE) -C ${RK_PLAT_SOC}/drivers/m0 BUILD=${BUILD_M0})
 
 # Do not enable SVE
 ENABLE_SVE_FOR_NS	:=	0
