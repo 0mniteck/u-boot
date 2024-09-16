@@ -61,7 +61,7 @@ BL31_SOURCES	+=	${RK_GIC_SOURCES}				\
 			${RK_PLAT_SOC}/plat_sip_calls.c			\
 			${RK_PLAT_SOC}/drivers/gpio/rk3399_gpio.c	\
 			${RK_PLAT_SOC}/drivers/pmu/pmu.c		\
-			${RK_PLAT_SOC}/drivers/pmu/pmu_fw.S		\
+			${RK_PLAT_SOC}/drivers/pmu/pmu_fw.c		\
 			${RK_PLAT_SOC}/drivers/pmu/m0_ctl.c		\
 			${RK_PLAT_SOC}/drivers/pwm/pwm.c		\
 			${RK_PLAT_SOC}/drivers/secure/secure.c		\
