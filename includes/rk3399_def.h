@@ -65,6 +65,7 @@
 
 # if defined(IMAGE_BL31)
 #  if SPM_MM
+#define PLAT_PRI_BITS			3
 #define PLAT_SP_IMAGE_MMAP_REGIONS	7
 #define PLAT_SP_IMAGE_MAX_XLAT_TABLES	10
 #define PLAT_SP_PRI			0x10
