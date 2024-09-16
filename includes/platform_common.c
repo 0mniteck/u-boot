@@ -17,6 +17,7 @@
 #include <lib/xlat_tables/xlat_tables_compat.h>
 #if SPM_MM
 #include <services/spm_mm_partition.h>
+#include <plat/common/aarch64/plat_ehf.c>
 #endif
 
 #include <plat_private.h>
