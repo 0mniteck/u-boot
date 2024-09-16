@@ -30,15 +30,9 @@ static const int cci_map[] = {
 
 #if defined(IMAGE_BL31) && SPM_MM
 const mmap_region_t plat_arm_secure_partition_mmap[] = {
-    V2M_MAP_IOFPGA_EL0,
-    V2M_MAP_SECURE_SYSTEMREG_EL0,
-#if PSA_FWU_SUPPORT
-    V2M_MAP_FLASH0_RW_EL0,
-#endif
-    V2M_MAP_FLASH1_RW_EL0,
-    MAP_REGION_FLAT(DEVICE0_BASE,
-                    DEVICE0_SIZE,
-                    MT_DEVICE | MT_RW | MT_SECURE | MT_USER),
+    MAP_REGION_FLAT(0x20000000,
+                    0x0c200000,
+                    MT_DEVICE | MT_RW | MT_SECURE),
     MAP_REGION_FLAT(0x80000000,
                     0x00010000,
                     MT_MEMORY | MT_RW | MT_SECURE),
