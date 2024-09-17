@@ -9,8 +9,8 @@
 
 #include <arch.h>
 #include <lib/utils_def.h>
-#include <plat/common/common_def.h>
 #include <plat/arm/common/arm_spm_def.h>
+#include <plat/common/common_def.h>
 
 
 #include <bl31_param.h>
