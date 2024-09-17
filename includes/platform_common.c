@@ -15,7 +15,6 @@
 #include <drivers/arm/cci.h>
 #include <lib/utils.h>
 #include <lib/smccc.h>
-#include <lib/xlat_tables/xlat_tables_compat.h>
 #include <lib/xlat_tables/xlat_tables_v2.h>
 #if SPM_MM
 #include <services/spm_mm_partition.h>
