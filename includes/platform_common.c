@@ -64,7 +64,7 @@ static spm_mm_mp_info_t sp_mp_info[] = {
 
 const spm_mm_boot_info_t plat_arm_secure_partition_boot_info = {
     .h.type              = PARAM_SP_IMAGE_BOOT_INFO,
-    .h.version           = 0x01,
+    .h.version           = VERSION_1,
     .h.size              = sizeof(spm_mm_boot_info_t),
     .h.attr              = 0,
     .sp_mem_base         = 0x80000000,
