@@ -17,7 +17,6 @@
 #include <lib/smccc.h>
 #include <lib/xlat_tables/xlat_tables_compat.h>
 #if SPM_MM
-#include <plat/arm/common/arm_spm_def.h>
 #include <services/spm_mm_partition.h>
 #endif
 
