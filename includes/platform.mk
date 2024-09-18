@@ -33,7 +33,6 @@ RK_GIC_SOURCES		:=	${GICV3_SOURCES}			\
 
 PLAT_BL_COMMON_SOURCES	:=	common/desc_image_load.c			\
 				lib/bl_aux_params/bl_aux_params.c		\
-				lib/xlat_tables_v2/xlat_tables_context.c	\
 				plat/common/aarch64/crash_console_helpers.S	\
 				plat/common/plat_psci_common.c
 
@@ -72,6 +71,7 @@ BL31_SOURCES	+=	${RK_GIC_SOURCES}				\
 
 include lib/coreboot/coreboot.mk
 include lib/libfdt/libfdt.mk
+include lib/xlat_tables_v2/xlat_tables.mk
 
 $(eval $(call add_define,PLAT_EXTRA_LD_SCRIPT))
 
