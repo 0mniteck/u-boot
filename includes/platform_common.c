@@ -5,8 +5,6 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#define XLAT_TABLES_LIB_V2	1
-
 #include <string.h>
 
 #include <platform_def.h>
@@ -17,7 +15,7 @@
 #include <drivers/arm/cci.h>
 #include <lib/utils.h>
 #include <lib/smccc.h>
-#include <lib/xlat_tables/xlat_tables_compat.h>
+#include <lib/xlat_tables/xlat_tables_v2.h>
 #if SPM_MM
 #include <services/spm_mm_partition.h>
 #endif
