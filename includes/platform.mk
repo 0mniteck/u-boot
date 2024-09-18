@@ -111,7 +111,9 @@ $(RK3399M0FW): | $(dir $(RK3399M0FW))/
 	$(MAKE) -C ${RK_PLAT_SOC}/drivers/m0 BUILD=${BUILD_M0}
 
 # Do not enable SVE
-ENABLE_SVE_FOR_NS	:=	0
+ENABLE_SVE_FOR_NS		:= 0
+ENABLE_SME_FOR_NS		:= 0
+ENABLE_SME2_FOR_NS		:= 0
 
 ifeq (${EL3_EXCEPTION_HANDLING},1)
 BL31_SOURCES		+=	plat/common/aarch64/plat_ehf.c
