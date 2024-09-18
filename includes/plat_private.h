@@ -9,6 +9,8 @@
 
 #ifndef __ASSEMBLER__
 
+#define XLAT_TABLES_LIB_V2	1
+
 #include <stdint.h>
 
 #include <lib/psci/psci.h>
