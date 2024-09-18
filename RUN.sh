@@ -27,7 +27,6 @@ cp includes/platform_def.h /tmp/platform_def.h
 cp includes/plat_private.h /tmp/plat_private.h
 cp includes/platform.mk /tmp/platform.mk
 cp includes/rk3399_def.h /tmp/rk3399_def.h
-# cp includes/spm_mm_setup.c /tmp/spm_mm_setup.c
 cp includes/logo.bmp /tmp/logo.bmp
 if [ -f Builds/BL32_AP_MM.fd ]; then
   cp Builds/BL32_AP_MM.fd /tmp/BL32_AP_MM.fd
@@ -88,9 +87,7 @@ cp /tmp/platform_def.h plat/rockchip/rk3399/include/platform_def.h
 cp /tmp/plat_private.h plat/rockchip/common/include/plat_private.h
 cp /tmp/platform.mk plat/rockchip/rk3399/platform.mk
 cp /tmp/rk3399_def.h plat/rockchip/rk3399/rk3399_def.h
-# cp /tmp/spm_mm_setup.c services/std_svc/spm/spm_mm/spm_mm_setup.c
-BL33=tee.bin BL32=BL32_AP_MM.fd make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" SPM_MM=1 EL3_EXCEPTION_HANDLING=1 ENABLE_SVE_FOR_NS=0 ARM_BL31_IN_DRAM=1 CTX_INCLUDE_FPREGS=1 PLAT=rk3399 bl31
-# make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" PLAT=rk3399 bl31
+BL33=tee.bin BL32=BL32_AP_MM.fd make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" SPM_MM=1 EL3_EXCEPTION_HANDLING=1 ARM_BL31_IN_DRAM=1 CTX_INCLUDE_FPREGS=1 PLAT=rk3399 bl31
 export BL31=/tmp/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/release/bl31/bl31.elf
 cd ..
 cd u-boot-$(echo $UB_VER)
