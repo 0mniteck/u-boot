@@ -11,7 +11,6 @@
 #include <lib/utils_def.h>
 #include <common/interrupt_props.h>
 #include <lib/xlat_tables/xlat_tables_defs.h>
-#include <lib/xlat_tables/xlat_tables_v2_helpers.h>
 #include <plat/arm/common/arm_spm_def.h>
 #include <plat/arm/common/smccc_def.h>
 #include <plat/common/common_def.h>
