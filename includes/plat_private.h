@@ -13,7 +13,7 @@
 
 #include <lib/mmio.h>
 #include <lib/psci/psci.h>
-#include <lib/xlat_tables/xlat_tables_compat.h>
+#include <lib/xlat_tables/xlat_tables_v2.h>
 #include <plat_params.h>
 
 #define __sramdata __attribute__((section(".sram.data")))
