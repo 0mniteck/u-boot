@@ -15,7 +15,6 @@
 #include <plat/arm/common/smccc_def.h>
 #include <plat/common/common_def.h>
 
-
 #include <bl31_param.h>
 #include <rk3399_def.h>
 
@@ -74,7 +73,7 @@
 #define PLAT_VIRT_ADDR_SPACE_SIZE   (1ULL << 32)
 #define PLAT_PHY_ADDR_SPACE_SIZE    (1ULL << 32)
 #define MAX_XLAT_TABLES		20
-#define MAX_MMAP_REGIONS	30
+#define MAX_MMAP_REGIONS	25
 
 /*******************************************************************************
  * Declarations and constants to access the mailboxes safely. Each mailbox is
