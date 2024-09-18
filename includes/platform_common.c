@@ -5,6 +5,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+#define XLAT_TABLES_LIB_V2	1
+
 #include <string.h>
 
 #include <platform_def.h>
