@@ -23,8 +23,8 @@ export BUILD_MESSAGE_TIMESTAMP;
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
 cp includes/platform_common.c /tmp/platform_common.c
-cp includes/platform.mk /tmp/platform.mk
 cp includes/platform_def.h /tmp/platform_def.h
+cp includes/platform.mk /tmp/platform.mk
 cp includes/rk3399_def.h /tmp/rk3399_def.h
 # cp includes/plat_private.h /tmp/plat_private.h
 # cp includes/spm_mm_setup.c /tmp/spm_mm_setup.c
