@@ -9,12 +9,10 @@
 
 #ifndef __ASSEMBLER__
 
-#define XLAT_TABLES_LIB_V2	1
-
 #include <stdint.h>
 
 #include <lib/psci/psci.h>
-#include <lib/xlat_tables/xlat_tables_compat.h>
+#include <lib/xlat_tables/xlat_tables_v2.h>
 #include <lib/mmio.h>
 #include <plat_params.h>
 
