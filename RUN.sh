@@ -26,6 +26,7 @@ cp includes/platform_common.c /tmp/platform_common.c
 cp includes/platform.mk /tmp/platform.mk
 cp includes/rk3399_def.h /tmp/rk3399_def.h
 cp includes/platform_def.h /tmp/platform_def.h
+cp includes/plat_private.h /tmp/plat_private.h
 # cp includes/spm_mm_setup.c /tmp/spm_mm_setup.c
 cp includes/logo.bmp /tmp/logo.bmp
 if [ -f Builds/BL32_AP_MM.fd ]; then
@@ -86,6 +87,7 @@ cp /tmp/platform_common.c plat/rockchip/common/aarch64/platform_common.c
 cp /tmp/platform.mk plat/rockchip/rk3399/platform.mk
 cp /tmp/rk3399_def.h plat/rockchip/rk3399/rk3399_def.h
 cp /tmp/platform_def.h plat/rockchip/rk3399/include/platform_def.h
+cp /tmp/plat_private.h plat/rockchip/common/include/plat_private.h
 # cp /tmp/spm_mm_setup.c services/std_svc/spm/spm_mm/spm_mm_setup.c
 BL33=tee.bin BL32=BL32_AP_MM.fd make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" SPM_MM=1 EL3_EXCEPTION_HANDLING=1 ENABLE_SVE_FOR_NS=0 ARM_BL31_IN_DRAM=1 CTX_INCLUDE_FPREGS=1 PLAT=rk3399 bl31
 # make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" PLAT=rk3399 bl31
@@ -197,5 +199,5 @@ git commit -a -S -m "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUIL
 git push --set-upstream origin RP64-rk3399-A
 cd ..
 apt remove --purge bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y && apt autoremove -y
-rm -f -r /tmp/u-boot* && rm -f /tmp/4.* && rm -f /tmp/lts* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/optee_os-* && rm -f /tmp/000* && rm -f /tmp/logo.bmp && rm -f /tmp/BL32_AP_MM.fd && rm -f /tmp/platform* && rm -f /tmp/rk3399_def.h && rm -f /tmp/spm_mm_setup.c && rm -f -r U-Boot && cd ..
+rm -f -r /tmp/u-boot* && rm -f /tmp/4.* && rm -f /tmp/lts* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/optee_os-* && rm -f /tmp/000* && rm -f /tmp/logo.bmp && rm -f /tmp/BL32_AP_MM.fd && rm -f /tmp/plat* && rm -f /tmp/rk3399_def.h && rm -f /tmp/spm_mm_setup.c && rm -f -r U-Boot && cd ..
 exit
