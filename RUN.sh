@@ -97,10 +97,10 @@ git apply ../0001-rockchip-rk3399.patch && echo "Patched SPI bug"
 rm tools/logos/denx.bmp && rm drivers/video/u_boot_logo.bmp
 cp /tmp/logo.bmp tools/logos/denx.bmp && cp /tmp/logo.bmp drivers/video/u_boot_logo.bmp
 sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_LOG=y" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_LOG_MAX_LEVEL=7" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_LOG_CONSOLE=y" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_LOGLEVEL=7" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_LOG=y" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_LOG_MAX_LEVEL=7" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_LOG_CONSOLE=y" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_LOGLEVEL=7" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_ARMV8_SEC_FIRMWARE_SUPPORT=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_FIT_SIGNATURE=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_RSA=y" >> configs/rockpro64-rk3399_defconfig
