@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2023, ARM Limited and Contributors. All rights reserved.
+ * Copyright (c) 2014-2019, ARM Limited and Contributors. All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -11,9 +11,9 @@
 
 #include <stdint.h>
 
-#include <lib/mmio.h>
 #include <lib/psci/psci.h>
 #include <lib/xlat_tables/xlat_tables_v2.h>
+#include <lib/mmio.h>
 #include <plat_params.h>
 
 #define __sramdata __attribute__((section(".sram.data")))
@@ -49,7 +49,7 @@ extern uint32_t __sram_incbin_real_end;
 #endif
 
 #ifndef BITS_SHIFT
-#define BITS_SHIFT(bits, shift)	((bits) << (shift))
+#define BITS_SHIFT(bits, shift)	(bits << (shift))
 #endif
 
 #ifndef BITS_WITH_WMASK
@@ -135,13 +135,13 @@ extern const unsigned char rockchip_power_domain_tree_desc[];
 extern void *pmu_cpuson_entrypoint;
 extern u_register_t cpuson_entry_point[PLATFORM_CORE_COUNT];
 extern uint32_t cpuson_flags[PLATFORM_CORE_COUNT];
+
 extern const mmap_region_t plat_rk_mmap[];
 
 uint32_t rockchip_get_uart_base(void);
 uint32_t rockchip_get_uart_baudrate(void);
 uint32_t rockchip_get_uart_clock(void);
 
-void rockchip_init_scmi_server(void);
 #endif /* __ASSEMBLER__ */
 
 /******************************************************************************
