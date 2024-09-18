@@ -84,9 +84,9 @@ make realclean
 ln -s /tmp/BL32_AP_MM.fd
 ln -s /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin
 cp /tmp/platform_common.c plat/rockchip/common/aarch64/platform_common.c
+cp /tmp/platform_def.h plat/rockchip/rk3399/include/platform_def.h
 cp /tmp/platform.mk plat/rockchip/rk3399/platform.mk
 cp /tmp/rk3399_def.h plat/rockchip/rk3399/rk3399_def.h
-cp /tmp/platform_def.h plat/rockchip/rk3399/include/platform_def.h
 # cp /tmp/plat_private.h plat/rockchip/common/include/plat_private.h
 # cp /tmp/spm_mm_setup.c services/std_svc/spm/spm_mm/spm_mm_setup.c
 BL33=tee.bin BL32=BL32_AP_MM.fd make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" SPM_MM=1 EL3_EXCEPTION_HANDLING=1 ENABLE_SVE_FOR_NS=0 ARM_BL31_IN_DRAM=1 CTX_INCLUDE_FPREGS=1 PLAT=rk3399 bl31
