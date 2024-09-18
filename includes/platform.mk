@@ -51,6 +51,7 @@ BL31_SOURCES	+=	${RK_GIC_SOURCES}				\
 			drivers/delay_timer/delay_timer.c		\
 			drivers/delay_timer/generic_delay_timer.c	\
 			drivers/gpio/gpio.c				\
+			lib/utils/mem_region.c				\
 			lib/cpus/aarch64/cortex_a53.S			\
 			lib/cpus/aarch64/cortex_a72.S			\
 			${RK_PLAT_COMMON}/aarch64/plat_helpers.S	\
