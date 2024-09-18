@@ -33,6 +33,8 @@ RK_GIC_SOURCES		:=	${GICV3_SOURCES}			\
 
 PLAT_BL_COMMON_SOURCES	:=	common/desc_image_load.c			\
 				lib/bl_aux_params/bl_aux_params.c		\
+				lib/xlat_tables_v2/aarch64/enable_mmu.S		\
+				lib/xlat_tables_v2/aarch64/xlat_tables_arch.c	\
 				lib/xlat_tables_v2/xlat_tables_context.c	\
 				lib/xlat_tables_v2/xlat_tables_core.c		\
 				lib/xlat_tables_v2/xlat_tables_utils.c		\
