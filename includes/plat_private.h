@@ -12,7 +12,7 @@
 #include <stdint.h>
 
 #include <lib/psci/psci.h>
-#include <lib/xlat_tables_v2/xlat_tables_context.h>
+#include <lib/xlat_tables/xlat_tables_compat.h>
 #include <lib/mmio.h>
 #include <plat_params.h>
 
