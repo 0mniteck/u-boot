@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2013-2023, ARM Limited and Contributors. All rights reserved.
- * Copyright (c) 2024, Shant Tchatalbachian
+ * Copyright (c) 2013-2016, ARM Limited and Contributors. All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
@@ -94,6 +93,7 @@ const struct spm_mm_boot_info *plat_get_secure_partition_boot_info(void *cookie)
 	return &plat_arm_secure_partition_boot_info;
 }
 #endif
+
 /******************************************************************************
  * Macro generating the code for the function setting up the pagetables as per
  * the platform memory map & initialize the mmu, for the given exception level
@@ -112,10 +112,9 @@ const struct spm_mm_boot_info *plat_get_secure_partition_boot_info(void *cookie)
 		mmap_add_region(ro_start, ro_start,			\
 				ro_limit - ro_start,			\
 				MT_MEMORY | MT_RO | MT_SECURE);		\
-		if ((coh_limit - coh_start) != 0)			\
-			mmap_add_region(coh_start, coh_start,		\
-					coh_limit - coh_start,		\
-					MT_DEVICE | MT_RW | MT_SECURE);	\
+		mmap_add_region(coh_start, coh_start,			\
+				coh_limit - coh_start,			\
+				MT_DEVICE | MT_RW | MT_SECURE);		\
 		mmap_add(plat_rk_mmap);					\
 		rockchip_plat_mmu_el##_el();				\
 		init_xlat_tables();					\
