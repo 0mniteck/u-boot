@@ -74,6 +74,13 @@ BL31_SOURCES	+=	${RK_GIC_SOURCES}				\
 			${RK_PLAT_SOC}/drivers/dram/dram_spec_timing.c	\
 			${RK_PLAT_SOC}/drivers/dram/suspend.c
 
+XLAT_TABLES_LIB_SRCS	:=	$(addprefix lib/xlat_tables_v2/,	\
+				${ARCH}/enable_mmu.S			\
+				${ARCH}/xlat_tables_arch.c		\
+				xlat_tables_context.c			\
+				xlat_tables_core.c			\
+				xlat_tables_utils.c)
+
 include lib/coreboot/coreboot.mk
 include lib/libfdt/libfdt.mk
 include lib/xlat_tables_v2/xlat_tables.mk
@@ -120,6 +127,13 @@ ENABLE_SME_FOR_NS		:= 0
 ENABLE_SME2_FOR_NS		:= 0
 
 BL31_CPPFLAGS	+=	-DPLAT_XLAT_TABLES_DYNAMIC
+
+XLAT_TABLES_LIB_V2	:=	1
+$(eval $(call add_define,XLAT_TABLES_LIB_V2))
+
+ifeq (${ALLOW_RO_XLAT_TABLES}, 1)
+    include lib/xlat_tables_v2/ro_xlat_tables.mk
+endif
 
 ifeq (${EL3_EXCEPTION_HANDLING},1)
 BL31_SOURCES		+=	plat/common/aarch64/plat_ehf.c
