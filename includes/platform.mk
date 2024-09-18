@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2016-2024, ARM Limited and Contributors. All rights reserved.
+# Copyright (c) 2016-2020, ARM Limited and Contributors. All rights reserved.
 #
 # SPDX-License-Identifier: BSD-3-Clause
 #
@@ -38,7 +38,7 @@ PLAT_BL_COMMON_SOURCES	:=	common/desc_image_load.c			\
 				lib/xlat_tables_v2/xlat_tables_context.c	\
 				lib/xlat_tables_v2/xlat_tables_core.c		\
 				lib/xlat_tables_v2/xlat_tables_utils.c		\
-				plat/common/aarch64/crash_console_helpers.S	\
+				plat/common/aarch64/crash_console_helpers.S \
 				plat/common/plat_psci_common.c
 
 ifneq (${ENABLE_STACK_PROTECTOR},0)
@@ -94,8 +94,6 @@ ERRATA_A53_855873	:=	1
 PLAT_M0                 :=      ${PLAT}m0
 BUILD_M0		:=	${BUILD_PLAT}/m0
 
-$(shell mkdir -p ${BUILD_M0})
-
 RK3399M0FW=${BUILD_M0}/${PLAT_M0}.bin
 $(eval $(call add_define_val,RK3399M0FW,\"$(RK3399M0FW)\"))
 
@@ -117,9 +115,10 @@ export CCACHE_EXTRAFILES
 ${BUILD_PLAT}/bl31/pmu_fw.o: CCACHE_EXTRAFILES=$(RK3399M0FW):$(RK3399M0PMUFW)
 ${RK_PLAT_SOC}/drivers/pmu/pmu_fw.c: $(RK3399M0FW)
 
+$(eval $(call MAKE_PREREQ_DIR,${BUILD_M0},${BUILD_PLAT}))
 .PHONY: $(RK3399M0FW)
-$(RK3399M0FW): | $(dir $(RK3399M0FW))/
-	$(MAKE) -C ${RK_PLAT_SOC}/drivers/m0 BUILD=${BUILD_M0}
+$(RK3399M0FW): | ${BUILD_M0}
+	$(MAKE) -C ${RK_PLAT_SOC}/drivers/m0 BUILD=$(abspath ${BUILD_PLAT}/m0)
 
 # Do not enable SVE
 ENABLE_SVE_FOR_NS		:= 0
@@ -130,10 +129,6 @@ BL31_CPPFLAGS	+=	-DPLAT_XLAT_TABLES_DYNAMIC
 
 XLAT_TABLES_LIB_V2	:=	1
 $(eval $(call add_define,XLAT_TABLES_LIB_V2))
-
-ifeq (${ALLOW_RO_XLAT_TABLES}, 1)
-    include lib/xlat_tables_v2/ro_xlat_tables.mk
-endif
 
 ifeq (${EL3_EXCEPTION_HANDLING},1)
 BL31_SOURCES		+=	plat/common/aarch64/plat_ehf.c
