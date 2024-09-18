@@ -88,7 +88,7 @@ cp /tmp/plat_private.h plat/rockchip/common/include/plat_private.h
 cp /tmp/platform.mk plat/rockchip/rk3399/platform.mk
 cp /tmp/rk3399_def.h plat/rockchip/rk3399/rk3399_def.h
 BL33=tee.bin BL32=BL32_AP_MM.fd make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" SPM_MM=1 EL3_EXCEPTION_HANDLING=1 ARM_BL31_IN_DRAM=1 CTX_INCLUDE_FPREGS=1 DEBUG=1 PLAT=rk3399 bl31
-export BL31=/tmp/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/release/bl31/bl31.elf
+export BL31=/tmp/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/debug/bl31/bl31.elf
 cd ..
 cd u-boot-$(echo $UB_VER)
 echo "Entering U-Boot ------"
