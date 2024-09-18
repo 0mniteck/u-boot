@@ -33,6 +33,9 @@ RK_GIC_SOURCES		:=	${GICV3_SOURCES}			\
 
 PLAT_BL_COMMON_SOURCES	:=	common/desc_image_load.c			\
 				lib/bl_aux_params/bl_aux_params.c		\
+				lib/xlat_tables_v2/xlat_tables_context.c	\
+				lib/xlat_tables_v2/xlat_tables_core.c		\
+				lib/xlat_tables_v2/xlat_tables_utils.c		\
 				plat/common/aarch64/crash_console_helpers.S	\
 				plat/common/plat_psci_common.c
 
