@@ -21,6 +21,37 @@
 
 #include <plat_private.h>
 
+#define MAP_DEVICE0	MAP_REGION_FLAT(DEVICE0_BASE,			\
+					DEVICE0_SIZE,			\
+					MT_DEVICE | MT_RW | MT_SECURE)
+
+#define MAP_DEVICE1	MAP_REGION_FLAT(DEVICE1_BASE,			\
+					DEVICE1_SIZE,			\
+					MT_DEVICE | MT_RW | MT_SECURE)
+
+#if FVP_GICR_REGION_PROTECTION
+#define MAP_GICD_MEM	MAP_REGION_FLAT(BASE_GICD_BASE,			\
+					BASE_GICD_SIZE,			\
+					MT_DEVICE | MT_RW | MT_SECURE)
+
+#define MAP_DEVICE2	MAP_REGION_FLAT(DEVICE2_BASE,			\
+					DEVICE2_SIZE,			\
+					MT_DEVICE | MT_RW | MT_SECURE)
+
+#if TRANSFER_LIST
+#ifdef FW_NS_HANDOFF_BASE
+#define MAP_FW_NS_HANDOFF MAP_REGION_FLAT(FW_NS_HANDOFF_BASE, \
+					  FW_HANDOFF_SIZE,    \
+					  MT_MEMORY | MT_RW | MT_NS)
+#endif
+#endif
+
+/* Map all core's redistributor memory as read-only. After boots up,
+ * per-core map its redistributor memory as read-write */
+#define MAP_GICR_MEM	MAP_REGION_FLAT(BASE_GICR_BASE,			\
+					(BASE_GICR_SIZE * PLATFORM_CORE_COUNT),\
+					MT_DEVICE | MT_RO | MT_SECURE)
+
 #ifdef PLAT_RK_CCI_BASE
 static const int cci_map[] = {
 	PLAT_RK_CCI_CLUSTER0_SL_IFACE_IX,
@@ -28,25 +59,39 @@ static const int cci_map[] = {
 };
 #endif
 
+#ifdef IMAGE_BL31
+const mmap_region_t plat_arm_mmap[] = {
+	ARM_MAP_SHARED_RAM,
+	ARM_MAP_EL3_TZC_DRAM,
+	MAP_DEVICE0,
+	MAP_GICD_MEM,
+	MAP_GICR_MEM,
+	MAP_DEVICE1,
+#if SPM_MM
+	ARM_SPM_BUF_EL3_MMAP,
+#endif
+#if ENABLE_RME
+	ARM_MAP_GPT_L1_DRAM,
+	ARM_MAP_EL3_RMM_SHARED_MEM,
+#endif
+#ifdef MAP_FW_NS_HANDOFF
+	MAP_FW_NS_HANDOFF,
+#endif
+	{0}
+};
+
 #if defined(IMAGE_BL31) && SPM_MM
 const mmap_region_t plat_arm_secure_partition_mmap[] = {
-    MAP_REGION_FLAT(0x20000000,
-                    0x0c200000,
-                    MT_DEVICE | MT_RW | MT_SECURE),
-    MAP_REGION_FLAT(0x80000000,
-                    0x00010000,
-                    MT_MEMORY | MT_RW | MT_SECURE),
-    MAP_REGION_FLAT(0x8000D000,
-                    0x00001000,
-                    MT_MEMORY | MT_RW | MT_SECURE),
-    MAP_REGION_FLAT(0x8000E000,
-                    0x00002000,
-                    MT_MEMORY | MT_RW | MT_SECURE),
-    MAP_REGION_FLAT(0x8000C000,
-                    0x00001000,
-                    MT_MEMORY | MT_RW | MT_SECURE),
-    {0}
+	MAP_REGION_FLAT(DEVICE0_BASE,
+			DEVICE0_SIZE,
+			MT_DEVICE | MT_RO | MT_SECURE | MT_USER),
+	ARM_SP_IMAGE_MMAP,
+	ARM_SP_IMAGE_NS_BUF_MMAP,
+	ARM_SP_IMAGE_RW_MMAP,
+	ARM_SPM_BUF_EL0_MMAP,
+	{0}
 };
+#endif
 #endif
 
 #if defined(IMAGE_BL31) && SPM_MM
