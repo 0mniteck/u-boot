@@ -59,14 +59,14 @@
 /*
  * This macro defines the deepest retention state possible. A higher state
  * id will represent an invalid or a power down state.
+ * #define PLAT_MAX_RET_STATE		U(1)
  */
-#define PLAT_MAX_RET_STATE		U(1)
 
 /*
  * This macro defines the deepest power down states possible. Any state ID
  * higher than this is invalid.
+ * #define PLAT_MAX_OFF_STATE		U(2)
  */
-#define PLAT_MAX_OFF_STATE		U(2)
 
 /*******************************************************************************
  * Platform specific page table and MMU setup constants
@@ -74,7 +74,6 @@
 #define PLAT_VIRT_ADDR_SPACE_SIZE   (1ULL << 32)
 #define PLAT_PHY_ADDR_SPACE_SIZE    (1ULL << 32)
 #define MAX_XLAT_TABLES		20
-#define MAX_MMAP_REGIONS	25
 
 /*******************************************************************************
  * Declarations and constants to access the mailboxes safely. Each mailbox is
@@ -86,7 +85,6 @@
  * a valid mailbox address.
  ******************************************************************************/
 #define CACHE_WRITEBACK_SHIFT	6
-#define CACHE_WRITEBACK_GRANULE	(1 << CACHE_WRITEBACK_SHIFT)
 
 /*
  * Define GICD and GICC and GICR base
