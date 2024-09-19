@@ -74,7 +74,7 @@
 #define PLAT_VIRT_ADDR_SPACE_SIZE   (1ULL << 32)
 #define PLAT_PHY_ADDR_SPACE_SIZE    (1ULL << 32)
 #define MAX_XLAT_TABLES		20
-
+#define PLAT_ARM_MMAP_ENTRIES		8
 /*******************************************************************************
  * Declarations and constants to access the mailboxes safely. Each mailbox is
  * aligned on the biggest cache line size in the platform. This is known only
