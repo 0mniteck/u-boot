@@ -75,6 +75,7 @@
 #define PLAT_PHY_ADDR_SPACE_SIZE    (1ULL << 32)
 #define MAX_XLAT_TABLES		20
 #define PLAT_ARM_MMAP_ENTRIES		8
+#define PLAT_ARM_MAX_BL31_SIZE		0x60000
 
 /*******************************************************************************
  * Declarations and constants to access the mailboxes safely. Each mailbox is
