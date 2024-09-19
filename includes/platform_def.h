@@ -105,6 +105,12 @@
 #define PLAT_ARM_SP_IMAGE_STACK_BASE		(PLAT_SP_IMAGE_NS_BUF_BASE + \
 						 PLAT_SP_IMAGE_NS_BUF_SIZE)
 
+#define DEVICE0_BASE			0x20000000
+#define DEVICE0_SIZE			0x0c200000
+
+#define DEVICE1_BASE			0x2e000000
+#define DEVICE1_SIZE			0x1A00000
+
 /*******************************************************************************
  * Declarations and constants to access the mailboxes safely. Each mailbox is
  * aligned on the biggest cache line size in the platform. This is known only
