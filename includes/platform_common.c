@@ -49,8 +49,6 @@ const mmap_region_t plat_arm_mmap[] = {
 	ARM_MAP_SHARED_RAM,
 	ARM_MAP_EL3_TZC_DRAM,
 	MAP_DEVICE0,
-	MAP_GICD_MEM,
-	MAP_GICR_MEM,
 	MAP_DEVICE1,
 #if SPM_MM
 	ARM_SPM_BUF_EL3_MMAP,
