@@ -83,6 +83,15 @@
 #else
 #define PLAT_ARM_MAX_BL1_RW_SIZE	UL(0xB000)
 #endif
+
+#if USE_ROMLIB
+#define PLAT_ARM_MAX_ROMLIB_RW_SIZE	0x1000
+#define PLAT_ARM_MAX_ROMLIB_RO_SIZE	0xe000
+#else
+#define PLAT_ARM_MAX_ROMLIB_RW_SIZE	0
+#define PLAT_ARM_MAX_ROMLIB_RO_SIZE	0
+#endif
+
 /*******************************************************************************
  * Declarations and constants to access the mailboxes safely. Each mailbox is
  * aligned on the biggest cache line size in the platform. This is known only
