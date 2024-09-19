@@ -73,7 +73,8 @@ else
   cd optee_os-$(echo $OPT_VER)
   echo "Entering OP-TEE ------"
   ln -s /tmp/BL32_AP_MM.fd
-  make -j$(nproc) PLATFORM=rockchip-rk3399 CFG_ARM64_core=y CFG_STMM_PATH=BL32_AP_MM.fd CFG_RPMB_FS=y CFG_RPMB_FS_DEV_ID=0 CFG_CORE_HEAP_SIZE=524288 CFG_RPMB_WRITE_KEY=y CFG_CORE_DYN_SHM=y CFG_RPMB_TESTKEY=y CFG_REE_FS=n CFG_CORE_ARM64_PA_BITS=48 CFG_TEE_CORE_LOG_LEVEL=3 CFG_TEE_TA_LOG_LEVEL=3 CFG_SCTLR_ALIGNMENT_CHECK=n DEBUG=1 CFG_EARLY_CONSOLE=y CFG_EARLY_CONSOLE_BASE=UART2_BASE CFG_EARLY_CONSOLE_SIZE=UART2_SIZE CFG_EARLY_CONSOLE_BAUDRATE=115200 CFG_EARLY_CONSOLE_CLK_IN_HZ=24000000
+  make -j$(nproc) PLATFORM=rockchip-rk3399 CFG_ARM64_core=y CFG_STMM_PATH=BL32_AP_MM.fd CFG_RPMB_FS=y CFG_RPMB_FS_DEV_ID=0 CFG_CORE_HEAP_SIZE=524288 CFG_RPMB_WRITE_KEY=y CFG_CORE_DYN_SHM=y CFG_RPMB_TESTKEY=y CFG_REE_FS=n CFG_CORE_ARM64_PA_BITS=48 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_core=aarch64-linux-gnu- CROSS_COMPILE_ta_arm32=arm-linux-gnueabihf- \
+  CROSS_COMPILE_ta_arm64=aarch64-linux-gnu- CFG_TEE_CORE_LOG_LEVEL=3 CFG_TEE_TA_LOG_LEVEL=3 CFG_SCTLR_ALIGNMENT_CHECK=n DEBUG=1 CFG_EARLY_CONSOLE_BAUDRATE=115200
   export TEE=/tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin
   cd ..
   ln -s /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin
@@ -133,14 +134,15 @@ echo "CONFIG_LOGLEVEL=6" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_SPL_OPTEE_IMAGE=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_TEE=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_OPTEE_TZDRAM_SIZE=0x700000" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_OPTEE_TZDRAM_BASE=0x30000000" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_OPTEE_TZDRAM_SIZE=0x02000000" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE_SERVICE_DISCOVERY=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_OPTEE_IMAGE=y" >> configs/rockpro64-rk3399_defconfig
+# echo "CONFIG_BOOTM_OPTEE=y" >> configs/rockpro64-rk3399_defconfig
 ### echo "CONFIG_SCP03=Y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE_TA_SCP03=n" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_OPTEE_TA_AVB=n" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_CHIMP_OPTEE=n" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_BOOTM_OPTEE=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_RNG_OPTEE=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_LIB_HW_RAND=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_ARM_FFA_TRANSPORT=y" >> configs/rockpro64-rk3399_defconfig
