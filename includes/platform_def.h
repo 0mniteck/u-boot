@@ -78,6 +78,11 @@
 #define PLAT_ARM_MAX_BL31_SIZE		0x60000
 #define PLAT_ARM_TRUSTED_SRAM_SIZE	0x200000
 
+#if TF_MBEDTLS_KEY_ALG_ID == TF_MBEDTLS_RSA_AND_ECDSA || PSA_CRYPTO
+#define PLAT_ARM_MAX_BL1_RW_SIZE	UL(0xC000)
+#else
+#define PLAT_ARM_MAX_BL1_RW_SIZE	UL(0xB000)
+#endif
 /*******************************************************************************
  * Declarations and constants to access the mailboxes safely. Each mailbox is
  * aligned on the biggest cache line size in the platform. This is known only
