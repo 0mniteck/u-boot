@@ -8,6 +8,7 @@
 
 #include <platform_def.h>
 
+#include <bl31/ehf.h>
 #include <arch_helpers.h>
 #include <common/bl_common.h>
 #include <common/debug.h>
@@ -79,14 +80,12 @@ const mmap_region_t plat_arm_secure_partition_mmap[] = {
 
 #if defined(IMAGE_BL31) && SPM_MM
 static spm_mm_mp_info_t sp_mp_info[] = {
-	[0] = {0x80000000, 0},
-	[1] = {0x80000001, 0},
-	[2] = {0x80000002, 0},
-	[3] = {0x80000003, 0},
-	[4] = {0x80000100, 0},
-	[5] = {0x80000101, 0},
-	[6] = {0x80000102, 0},
-	[7] = {0x80000103, 0},
+	{0x80000000, 0}, {0x80000001, 0}, {0x80000100, 0}, {0x80000101, 0},
+	{0x80000200, 0}, {0x80000201, 0}, {0x80000300, 0}, {0x80000301, 0},
+	{0x80000400, 0}, {0x80000401, 0}, {0x80000500, 0}, {0x80000501, 0},
+	{0x80000600, 0}, {0x80000601, 0}, {0x80000700, 0}, {0x80000701, 0},
+	{0x80000800, 0}, {0x80000801, 0}, {0x80000900, 0}, {0x80000901, 0},
+	{0x80000a00, 0}, {0x80000a01, 0}, {0x80000b00, 0}, {0x80000b01, 0},
 };
 
 const spm_mm_boot_info_t plat_arm_secure_partition_boot_info = {
@@ -94,9 +93,9 @@ const spm_mm_boot_info_t plat_arm_secure_partition_boot_info = {
 	.h.version           = VERSION_1,
 	.h.size              = sizeof(spm_mm_boot_info_t),
 	.h.attr              = 0,
-	.sp_mem_base         = ARM_SP_IMAGE_BASE,
-	.sp_mem_limit        = ARM_SP_IMAGE_LIMIT,
-	.sp_image_base       = ARM_SP_IMAGE_BASE,
+	.sp_mem_base         = BL32_BASE,
+	.sp_mem_limit        = BL32_LIMIT,
+	.sp_image_base       = BL32_BASE,
 	.sp_stack_base       = PLAT_SP_IMAGE_STACK_BASE,
 	.sp_heap_base        = ARM_SP_IMAGE_HEAP_BASE,
 	.sp_ns_comm_buf_base = PLAT_SP_IMAGE_NS_BUF_BASE,
@@ -120,6 +119,11 @@ const struct spm_mm_boot_info *plat_get_secure_partition_boot_info(void *cookie)
 {
 	return &plat_arm_secure_partition_boot_info;
 }
+
+static ehf_pri_desc_t arm_exceptions[] = {
+	EHF_PRI_DESC(PLAT_PRI_BITS, PLAT_SP_PRI),
+};
+EHF_REGISTER_PRIORITIES(arm_exceptions, ARRAY_SIZE(arm_exceptions), PLAT_PRI_BITS);
 #endif
 
 /******************************************************************************
