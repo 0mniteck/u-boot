@@ -4,7 +4,8 @@ Status:
 * [x] Build Optee with StandaloneMM support (Reproducable)
 * [ ] Build TF-A with StandaloneMM support (DEBUG)
   * [x] Transition to xlat_v2 to add dynamic translation table support (Builds)
-  * [ ] Configure sm_mem_map regions (SEG_FAULT)
+  * [x] Configure sm_mem_map regions
+    * [ ] Unhandled Exception in EL3
 * [ ] Test Optee MM Communicate
 * [ ] Setup Secure Bootflow:
   * [ ] U-Boot Secure boot with signed FIT -> TF-A -> Optee_MM -> UEFI Secure Boot
