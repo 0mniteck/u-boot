@@ -71,8 +71,8 @@
 /*******************************************************************************
  * Platform specific page table and MMU setup constants
  ******************************************************************************/
-#define PLAT_VIRT_ADDR_SPACE_SIZE   (1ULL << 32)
-#define PLAT_PHY_ADDR_SPACE_SIZE    (1ULL << 32)
+#define PLAT_VIRT_ADDR_SPACE_SIZE   	(1ULL << 32)
+#define PLAT_PHY_ADDR_SPACE_SIZE    	(1ULL << 32)
 #define MAX_XLAT_TABLES			20
 #define PLAT_ARM_MMAP_ENTRIES		8
 #define PLAT_ARM_TRUSTED_SRAM_SIZE	0x00100000
