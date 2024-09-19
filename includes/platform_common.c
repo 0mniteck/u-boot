@@ -128,7 +128,6 @@ const struct mmap_region *plat_get_secure_partition_mmap(void *cookie)
 	return plat_arm_secure_partition_mmap;
 }
 
-const spm_mm_boot_info_t *
 const struct spm_mm_boot_info *plat_get_secure_partition_boot_info(void *cookie)
 {
 	arm_initialize_mp_info(sp_mp_info);
