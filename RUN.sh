@@ -201,6 +201,7 @@ cp /tmp/u-boot-rockchip-spi.bin.sum Builds/u-boot-rockchip-spi.bin.sum
 cp /tmp/BL32_AP_MM.fd Builds/BL32_AP_MM.fd
 if [ -f /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin Builds/tee.bin ]; then
   cp /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin Builds/tee.bin
+else
 fi
 git status && git add -A && git status
 read -p "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For The RockPro64: Sign -->"
