@@ -20,7 +20,5 @@
 /*
  * Put BL31 at the top of the Trusted RAM
  */
-#define BL31_BASE		(TZRAM_BASE + 0x40000)
-#define BL31_LIMIT		(TZRAM_BASE + TZRAM_SIZE)
 
 #endif /* BL31_PARAM_H */
