@@ -6,7 +6,8 @@ Status:
   * [x] Transition to xlat_v2 to add dynamic translation table support (Builds)
   * [ ] Configure sm_mem_map regions (SEG_FAULT)
 * [ ] Test Optee MM Communicate
-* [ ] Setup Secure Bootflow: U-Boot Secure boot with signed FIT -> TF-A -> Optee_MM -> UEFI Secure Boot
+* [ ] Setup Secure Bootflow:
+       U-Boot Secure boot with signed FIT -> TF-A -> Optee_MM -> UEFI Secure Boot
 * [ ] Add support for ARM FFA MM
 * [ ] Add support for infineon TPM
 
