@@ -100,10 +100,6 @@ const spm_mm_boot_info_t plat_arm_secure_partition_boot_info = {
 	.mp_info             = sp_mp_info,
 };
 
-static ehf_pri_desc_t arm_exceptions[] = {
-	EHF_PRI_DESC(PLAT_PRI_BITS, PLAT_SP_PRI),
-};
-
 static void arm_initialize_mp_info(spm_mm_mp_info_t *mp_info)
 {
 	unsigned int i, j;
@@ -133,8 +129,6 @@ const struct spm_mm_boot_info *plat_get_secure_partition_boot_info(void *cookie)
 	arm_initialize_mp_info(sp_mp_info);
 	return &plat_arm_secure_partition_boot_info;
 }
-
-EHF_REGISTER_PRIORITIES(arm_exceptions, ARRAY_SIZE(arm_exceptions), PLAT_PRI_BITS);
 #endif
 #endif
 
