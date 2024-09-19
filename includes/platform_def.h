@@ -101,6 +101,10 @@
 					 ARM_SHARED_RAM_SIZE - \
 					 ARM_L0_GPT_SIZE)
 
+#define PLAT_ARM_SCP_TZC_DRAM1_SIZE		0x00200000
+#define PLAT_ARM_SP_IMAGE_STACK_BASE		(PLAT_SP_IMAGE_NS_BUF_BASE + \
+						 PLAT_SP_IMAGE_NS_BUF_SIZE)
+
 /*******************************************************************************
  * Declarations and constants to access the mailboxes safely. Each mailbox is
  * aligned on the biggest cache line size in the platform. This is known only
