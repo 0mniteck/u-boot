@@ -75,18 +75,8 @@ const mmap_region_t plat_arm_secure_partition_mmap[] = {
 	ARM_SPM_BUF_EL0_MMAP,
 	{0}
 };
-#endif
-#endif
 
-#if defined(IMAGE_BL31) && SPM_MM
-static spm_mm_mp_info_t sp_mp_info[] = {
-	{0x80000000, 0}, {0x80000001, 0}, {0x80000100, 0}, {0x80000101, 0},
-	{0x80000200, 0}, {0x80000201, 0}, {0x80000300, 0}, {0x80000301, 0},
-	{0x80000400, 0}, {0x80000401, 0}, {0x80000500, 0}, {0x80000501, 0},
-	{0x80000600, 0}, {0x80000601, 0}, {0x80000700, 0}, {0x80000701, 0},
-	{0x80000800, 0}, {0x80000801, 0}, {0x80000900, 0}, {0x80000901, 0},
-	{0x80000a00, 0}, {0x80000a01, 0}, {0x80000b00, 0}, {0x80000b01, 0},
-};
+static spm_mm_mp_info_t sp_mp_info[PLATFORM_CORE_COUNT];
 
 const spm_mm_boot_info_t plat_arm_secure_partition_boot_info = {
 	.h.type              = PARAM_SP_IMAGE_BOOT_INFO,
@@ -107,23 +97,46 @@ const spm_mm_boot_info_t plat_arm_secure_partition_boot_info = {
 	.sp_shared_buf_size  = PLAT_SPM_BUF_SIZE,
 	.num_sp_mem_regions  = ARM_SP_IMAGE_NUM_MEM_REGIONS,
 	.num_cpus            = PLATFORM_CORE_COUNT,
-	.mp_info             = &sp_mp_info[0],
+	.mp_info             = sp_mp_info,
 };
+
+static ehf_pri_desc_t arm_exceptions[] = {
+	EHF_PRI_DESC(PLAT_PRI_BITS, PLAT_SP_PRI),
+};
+
+static void arm_initialize_mp_info(spm_mm_mp_info_t *mp_info)
+{
+	unsigned int i, j;
+	spm_mm_mp_info_t *tmp = mp_info;
+
+	for (i = 0; i < PLATFORM_CLUSTER_COUNT; i++) {
+		for (j = 0; j < PLATFORM_MAX_CPUS_PER_CLUSTER; j++) {
+			tmp->mpidr = (0x80000000 | (i << MPIDR_AFF1_SHIFT)) + j;
+			/*
+			 * Linear indices and flags will be filled
+			 * in the spm_mm service.
+			 */
+			tmp->linear_id = 0;
+			tmp->flags = 0;
+			tmp++;
+		}
+	}
+}
 
 const struct mmap_region *plat_get_secure_partition_mmap(void *cookie)
 {
 	return plat_arm_secure_partition_mmap;
 }
 
+const spm_mm_boot_info_t *
 const struct spm_mm_boot_info *plat_get_secure_partition_boot_info(void *cookie)
 {
+	arm_initialize_mp_info(sp_mp_info);
 	return &plat_arm_secure_partition_boot_info;
 }
 
-static ehf_pri_desc_t arm_exceptions[] = {
-	EHF_PRI_DESC(PLAT_PRI_BITS, PLAT_SP_PRI),
-};
 EHF_REGISTER_PRIORITIES(arm_exceptions, ARRAY_SIZE(arm_exceptions), PLAT_PRI_BITS);
+#endif
 #endif
 
 /******************************************************************************
