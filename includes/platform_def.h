@@ -79,9 +79,9 @@
 #define PLAT_ARM_TRUSTED_SRAM_SIZE	0x00080000
 
 #if TF_MBEDTLS_KEY_ALG_ID == TF_MBEDTLS_RSA_AND_ECDSA || PSA_CRYPTO
-#define PLAT_ARM_MAX_BL1_RW_SIZE	UL(0xC000)
+#define PLAT_ARM_MAX_BL1_RW_SIZE	0xC000
 #else
-#define PLAT_ARM_MAX_BL1_RW_SIZE	UL(0xB000)
+#define PLAT_ARM_MAX_BL1_RW_SIZE	0xB000
 #endif
 
 #if USE_ROMLIB
@@ -90,6 +90,12 @@
 #else
 #define PLAT_ARM_MAX_ROMLIB_RW_SIZE	0
 #define PLAT_ARM_MAX_ROMLIB_RO_SIZE	0
+#endif
+
+#if TRUSTED_BOARD_BOOT
+# define PLAT_ARM_MAX_BL2_SIZE			0x1D000
+#else
+# define PLAT_ARM_MAX_BL2_SIZE			0x14000
 #endif
 
 /*******************************************************************************
