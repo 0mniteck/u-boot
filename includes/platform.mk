@@ -82,9 +82,9 @@ XLAT_TABLES_LIB_SRCS	:=	$(addprefix lib/xlat_tables_v2/,	\
 				xlat_tables_core.c			\
 				xlat_tables_utils.c)
 
+include lib/xlat_tables_v2/xlat_tables.mk
 include lib/coreboot/coreboot.mk
 include lib/libfdt/libfdt.mk
-include lib/xlat_tables_v2/xlat_tables.mk
 
 $(eval $(call add_define,PLAT_EXTRA_LD_SCRIPT))
 
@@ -123,14 +123,17 @@ $(RK3399M0FW): | ${BUILD_M0}
 
 # Do not enable SVE
 ENABLE_SVE_FOR_NS		:= 0
-ENABLE_SME_FOR_NS		:= 0
-ENABLE_SME2_FOR_NS		:= 0
-
-BL31_CPPFLAGS	+=	-DPLAT_XLAT_TABLES_DYNAMIC
 
 XLAT_TABLES_LIB_V2	:=	1
 $(eval $(call add_define,XLAT_TABLES_LIB_V2))
 
+# Add SPM_MM support
+ifeq (${SPM_MM},1)
+$(eval $(call add_define,PLAT_EXTRA_LD_SCRIPT))
+ENABLE_SME_FOR_NS		:= 0
+ENABLE_SME2_FOR_NS		:= 0
+BL31_CPPFLAGS	+=	-DPLAT_XLAT_TABLES_DYNAMIC
 ifeq (${EL3_EXCEPTION_HANDLING},1)
 BL31_SOURCES		+=	plat/common/aarch64/plat_ehf.c
+endif
 endif
