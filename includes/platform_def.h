@@ -75,8 +75,7 @@
 #define PLAT_PHY_ADDR_SPACE_SIZE    (1ULL << 32)
 #define MAX_XLAT_TABLES			20
 #define PLAT_ARM_MMAP_ENTRIES		8
-#define PLAT_ARM_MAX_BL31_SIZE		0x60000
-#define PLAT_ARM_TRUSTED_SRAM_SIZE	0x00080000
+#define PLAT_ARM_TRUSTED_SRAM_SIZE	0x00100000
 
 #if TF_MBEDTLS_KEY_ALG_ID == TF_MBEDTLS_RSA_AND_ECDSA || PSA_CRYPTO
 #define PLAT_ARM_MAX_BL1_RW_SIZE	0xC000
@@ -97,6 +96,10 @@
 #else
 # define PLAT_ARM_MAX_BL2_SIZE			0x14000
 #endif
+
+#define PLAT_ARM_MAX_BL31_SIZE		(PLAT_ARM_TRUSTED_SRAM_SIZE - \
+					 ARM_SHARED_RAM_SIZE - \
+					 ARM_L0_GPT_SIZE)
 
 /*******************************************************************************
  * Declarations and constants to access the mailboxes safely. Each mailbox is
