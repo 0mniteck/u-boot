@@ -129,7 +129,6 @@ $(eval $(call add_define,XLAT_TABLES_LIB_V2))
 
 # Add SPM_MM support
 ifeq (${SPM_MM},1)
-$(eval $(call add_define,PLAT_EXTRA_LD_SCRIPT))
 ENABLE_SME_FOR_NS		:= 0
 ENABLE_SME2_FOR_NS		:= 0
 BL31_CPPFLAGS	+=	-DPLAT_XLAT_TABLES_DYNAMIC
