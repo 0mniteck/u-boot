@@ -37,12 +37,6 @@
 #endif
 #endif
 
-/* Map all core's redistributor memory as read-only. After boots up,
- * per-core map its redistributor memory as read-write */
-#define MAP_GICR_MEM	MAP_REGION_FLAT(BASE_GICR_BASE,			\
-					(BASE_GICR_SIZE * PLATFORM_CORE_COUNT),\
-					MT_DEVICE | MT_RO | MT_SECURE)
-
 #ifdef PLAT_RK_CCI_BASE
 static const int cci_map[] = {
 	PLAT_RK_CCI_CLUSTER0_SL_IFACE_IX,
