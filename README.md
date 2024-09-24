@@ -5,7 +5,8 @@
 Prebuilt u-boot-rockchip.bin & u-boot-rockchip-spi.bin are included for convenience
   #### RockPro64 - `Builds/RP64/`
   #### PinebookPro - `Builds/PBP/`
-  
+
+
 Requirements:
 
 * [ ] Debian based OS already running on an ARM64 CPU
