@@ -141,7 +141,7 @@ dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 sync
 dd if=/dev/mmcblk1 of=sdcard.img bs=1M count=1024 status=progress
 sha512sum sdcard.img > sdcard.img.sum
-cd ..
+cd .. && cd ..
 
 cd PBP/u-boot-$(echo $UB_VER)
 echo "Entering U-Boot ------"
@@ -174,7 +174,7 @@ dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 sync
 dd if=/dev/mmcblk1 of=sdcard.img bs=1M count=1024 status=progress
 sha512sum sdcard.img > sdcard.img.sum
-cd ..
+cd .. && cd ..
 popd
 
 mv /tmp/RP64/u-boot-$(echo $UB_VER)/sdcard.img Builds/RP64-rk3399/sdcard.img
