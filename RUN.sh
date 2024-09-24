@@ -110,7 +110,7 @@ make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" PLAT=rk339
 export BL31=/tmp/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/release/bl31/bl31.elf
 cd ..
 
-cd RP64
+cd RP64/u-boot-$(echo $UB_VER)
 echo "Entering U-Boot ------"
 make clean
 git apply ../0001-rockchip-rk3399.patch && echo "Patched SPI bug"
@@ -143,7 +143,7 @@ dd if=/dev/mmcblk1 of=sdcard.img bs=1M count=1024 status=progress
 sha512sum sdcard.img > sdcard.img.sum
 cd ..
 
-cd PBP
+cd PBP/u-boot-$(echo $UB_VER)
 echo "Entering U-Boot ------"
 make clean
 git apply ../0001-rockchip-rk3399.patch && echo "Patched SPI bug"
@@ -177,19 +177,19 @@ sha512sum sdcard.img > sdcard.img.sum
 cd ..
 popd
 
-mv /tmp/RP64/sdcard.img Builds/RP64-rk3399/sdcard.img
-mv /tmp/RP64/sdcard.img.sum Builds/RP64-rk3399/sdcard.img.sum
-mv /tmp/RP64/u-boot-rockchip.bin Builds/RP64-rk3399/u-boot-rockchip.bin
-mv /tmp/RP64/u-boot-rockchip.bin.sum Builds/RP64-rk3399/u-boot-rockchip.bin.sum
-mv /tmp/RP64/u-boot-rockchip-spi.bin Builds/RP64-rk3399/u-boot-rockchip-spi.bin
-mv /tmp/RP64/u-boot-rockchip-spi.bin.sum Builds/RP64-rk3399/u-boot-rockchip-spi.bin.sum
+mv /tmp/RP64/u-boot-$(echo $UB_VER)/sdcard.img Builds/RP64-rk3399/sdcard.img
+mv /tmp/RP64/u-boot-$(echo $UB_VER)/sdcard.img.sum Builds/RP64-rk3399/sdcard.img.sum
+mv /tmp/RP64/u-boot-$(echo $UB_VER)/u-boot-rockchip.bin Builds/RP64-rk3399/u-boot-rockchip.bin
+mv /tmp/RP64/u-boot-$(echo $UB_VER)/u-boot-rockchip.bin.sum Builds/RP64-rk3399/u-boot-rockchip.bin.sum
+mv /tmp/RP64/u-boot-$(echo $UB_VER)/u-boot-rockchip-spi.bin Builds/RP64-rk3399/u-boot-rockchip-spi.bin
+mv /tmp/RP64/u-boot-$(echo $UB_VER)/u-boot-rockchip-spi.bin.sum Builds/RP64-rk3399/u-boot-rockchip-spi.bin.sum
 
-mv /tmp/PBP/sdcard.img Builds/PBP-rk3399/sdcard.img
-mv /tmp/PBP/sdcard.img.sum Builds/PBP-rk3399/sdcard.img.sum
-mv /tmp/PBP/u-boot-rockchip.bin Builds/PBP-rk3399/u-boot-rockchip.bin
-mv /tmp/PBP/u-boot-rockchip.bin.sum Builds/PBP-rk3399/u-boot-rockchip.bin.sum
-mv /tmp/PBP/u-boot-rockchip-spi.bin Builds/PBP-rk3399/u-boot-rockchip-spi.bin
-mv /tmp/PBP/u-boot-rockchip-spi.bin.sum Builds/PBP-rk3399/u-boot-rockchip-spi.bin.sum
+mv /tmp/PBP/u-boot-$(echo $UB_VER)/sdcard.img Builds/PBP-rk3399/sdcard.img
+mv /tmp/PBP/u-boot-$(echo $UB_VER)/sdcard.img.sum Builds/PBP-rk3399/sdcard.img.sum
+mv /tmp/PBP/u-boot-$(echo $UB_VER)/u-boot-rockchip.bin Builds/PBP-rk3399/u-boot-rockchip.bin
+mv /tmp/PBP/u-boot-$(echo $UB_VER)/u-boot-rockchip.bin.sum Builds/PBP-rk3399/u-boot-rockchip.bin.sum
+mv /tmp/PBP/u-boot-$(echo $UB_VER)/u-boot-rockchip-spi.bin Builds/PBP-rk3399/u-boot-rockchip-spi.bin
+mv /tmp/PBP/u-boot-$(echo $UB_VER)/u-boot-rockchip-spi.bin.sum Builds/PBP-rk3399/u-boot-rockchip-spi.bin.sum
 
 git status && git add -A && git status
 read -p "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For rk3399: Sign -->"
