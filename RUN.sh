@@ -177,19 +177,19 @@ sha512sum sdcard.img > sdcard.img.sum
 cd ..
 popd
 
-mv /tmp/RP64/sdcard.img Builds/RP64/sdcard.img
-mv /tmp/RP64/sdcard.img.sum Builds/RP64/sdcard.img.sum
-mv /tmp/RP64/u-boot-rockchip.bin Builds/RP64/u-boot-rockchip.bin
-mv /tmp/RP64/u-boot-rockchip.bin.sum Builds/RP64/u-boot-rockchip.bin.sum
-mv /tmp/RP64/u-boot-rockchip-spi.bin Builds/RP64/u-boot-rockchip-spi.bin
-mv /tmp/RP64/u-boot-rockchip-spi.bin.sum Builds/RP64/u-boot-rockchip-spi.bin.sum
+mv /tmp/RP64/sdcard.img Builds/RP64-rk3399/sdcard.img
+mv /tmp/RP64/sdcard.img.sum Builds/RP64-rk3399/sdcard.img.sum
+mv /tmp/RP64/u-boot-rockchip.bin Builds/RP64-rk3399/u-boot-rockchip.bin
+mv /tmp/RP64/u-boot-rockchip.bin.sum Builds/RP64-rk3399/u-boot-rockchip.bin.sum
+mv /tmp/RP64/u-boot-rockchip-spi.bin Builds/RP64-rk3399/u-boot-rockchip-spi.bin
+mv /tmp/RP64/u-boot-rockchip-spi.bin.sum Builds/RP64-rk3399/u-boot-rockchip-spi.bin.sum
 
-mv /tmp/PBP/sdcard.img Builds/PBP/sdcard.img
-mv /tmp/PBP/sdcard.img.sum Builds/PBP/sdcard.img.sum
-mv /tmp/PBP/u-boot-rockchip.bin Builds/PBP/u-boot-rockchip.bin
-mv /tmp/PBP/u-boot-rockchip.bin.sum Builds/PBP/u-boot-rockchip.bin.sum
-mv /tmp/PBP/u-boot-rockchip-spi.bin Builds/PBP/u-boot-rockchip-spi.bin
-mv /tmp/PBP/u-boot-rockchip-spi.bin.sum Builds/PBP/u-boot-rockchip-spi.bin.sum
+mv /tmp/PBP/sdcard.img Builds/PBP-rk3399/sdcard.img
+mv /tmp/PBP/sdcard.img.sum Builds/PBP-rk3399/sdcard.img.sum
+mv /tmp/PBP/u-boot-rockchip.bin Builds/PBP-rk3399/u-boot-rockchip.bin
+mv /tmp/PBP/u-boot-rockchip.bin.sum Builds/PBP-rk3399/u-boot-rockchip.bin.sum
+mv /tmp/PBP/u-boot-rockchip-spi.bin Builds/PBP-rk3399/u-boot-rockchip-spi.bin
+mv /tmp/PBP/u-boot-rockchip-spi.bin.sum Builds/PBP-rk3399/u-boot-rockchip-spi.bin.sum
 
 git status && git add -A && git status
 read -p "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For rk3399: Sign -->"
