@@ -1,4 +1,4 @@
-# U-Boot RockChip rk3399 with StandaloneMM Support
+# U-Boot RockChip rk3399 with StandaloneMM Support (W.I.P.)
 Status:
 * [x] Build SPM StandaloneMM from EDK2 with GCC5 (Reproducable)
 * [x] Build Optee with StandaloneMM support (Reproducable)
