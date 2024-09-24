@@ -1,12 +1,11 @@
-# U-Boot RockChip rk3399 - Main Branch
+# U-Boot RockChip rk3399
 ## Rockchip rk3399 SPI U-Boot Assembler
 
 ### U-Boot Prebuilt Release v2024.07 W/ ATF lts-v2.10.4 & OP-TEE v4.3.0
+Prebuilt u-boot-rockchip.bin & u-boot-rockchip-spi.bin are included for convenience
   #### RockPro64 - `Builds/RP64`
   #### PinebookPro - `Builds/PBP`
   
-Prebuilt u-boot-rockchip.bin & u-boot-rockchip-spi.bin are included in `Builds/` for convenience
-
 Requirements:
 
 * [ ] Debian based OS already running on an ARM64 CPU
@@ -15,11 +14,11 @@ Requirements:
 
 
 # Post-Build
-## Initial-Flash From Bypassed and Erased SPI (Recommended)
-## or Update-Flash From Existing U-Boot
+### Initial-Flash From Bypassed and Erased SPI (Recommended)
+### or Update-Flash From Existing U-Boot
 
 
-### Erase current SPI, then boot into U-Boot Via SD/eMMC with Combined SD
+#### Erase current SPI, then boot into U-Boot Via SD/eMMC with Combined SD
 
 `Stop Autoboot by hitting any key`
 
@@ -29,7 +28,7 @@ Requirements:
 
 `reset`
 
-### Wait untill you see the environment fail to load from SPI
+#### Wait untill you see the environment fail to load from SPI
 
 `Reconnect SPI`
 
