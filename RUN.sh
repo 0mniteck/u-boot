@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 ##
-##	RockPro64 SPI U-Boot Assembler
+##	Rockchip rk3399 SPI U-Boot Assembler
 ##		Requirements: Debian based OS running on an ARM64 CPU & any size microSD in the MMCBLK1 slot
 ##		  By: Shant Tchatalbachian
 ##
