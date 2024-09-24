@@ -122,7 +122,7 @@ make rockpro64-rk3399_defconfig
 FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j$(nproc) all
 sha512sum u-boot-rockchip.bin
 sha512sum u-boot-rockchip-spi.bin
-read -p "Insert First SD Card, Then Press Enter to Continue"
+read -p "Insert First SD Card For RockPro64, Then Press Enter to Continue"
 dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=2000 status=progress
 parted /dev/mmcblk1 mktable gpt mkpart P1 fat32 16MB 1G -s && sleep 3
 mkfs.fat /dev/mmcblk1p1
@@ -155,7 +155,7 @@ make pinebook-pro-rk3399_defconfig
 FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j$(nproc) all
 sha512sum u-boot-rockchip.bin
 sha512sum u-boot-rockchip-spi.bin
-read -p "Insert Second SD Card, Then Press Enter to Continue"
+read -p "Insert Second SD Card For PinebookPro, Then Press Enter to Continue"
 dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=2000 status=progress
 parted /dev/mmcblk1 mktable gpt mkpart P1 fat32 16MB 1G -s && sleep 3
 mkfs.fat /dev/mmcblk1p1
