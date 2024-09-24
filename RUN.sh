@@ -6,8 +6,6 @@
 ##		  By: Shant Tchatalbachian
 ##
 
-EDK_VER=edk2-stable202408;
-EDKP_VER=2acddc92a4951ee885351c035ac19794644a1fd8;
 OPT_VER=4.3.0;
 ATF_VER=2.10.4;
 UB_VER=2024.07;
@@ -19,87 +17,33 @@ export FORCE_SOURCE_DATE;
 export SOURCE_DATE;
 export SOURCE_DATE_EPOCH;
 export BUILD_MESSAGE_TIMESTAMP;
-
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
-cp includes/platform_common.c /tmp/platform_common.c
-cp includes/platform_def.h /tmp/platform_def.h
-cp includes/plat_private.h /tmp/plat_private.h
-cp includes/platform.mk /tmp/platform.mk
-cp includes/rk3399_def.h /tmp/rk3399_def.h
-cp includes/bl31_param.h /tmp/bl31_param.h
 cp includes/logo.bmp /tmp/logo.bmp
-if [ -f Builds/BL32_AP_MM.fd ]; then
-  cp Builds/BL32_AP_MM.fd /tmp/BL32_AP_MM.fd
-else
-  pushd /tmp/
-  apt remove --purge bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y && apt autoremove -y
-  snap install lxd && lxd init --auto && lxc launch ubuntu:18.04 edk2
-  sleep 30
-  ufw reload
-  sleep 10
-  lxc exec edk2 apt update && lxc exec edk2 -- apt upgrade -y
-  lxc exec edk2 -- apt install build-essential gcc-5 acpica-tools nasm unzip uuid-dev wget python3-distutils -y
-  lxc exec edk2 -- git clone https://github.com/tianocore/edk2.git -b $(echo $EDK_VER) edk2-$(echo $EDK_VER)
-  lxc exec edk2 -- wget https://github.com/tianocore/edk2-platforms/archive/$(echo $EDKP_VER).zip
-  lxc exec edk2 -- bash -c "echo '00f69c101927bac3fe98efd0714f2418dd9be52ae6b9e30e7395b56f4f34f8691bc4da140a2b17bbfac0cb8ef772e15db64db76033b03b2c036992f5a95b8809  '$(echo $EDKP_VER)'.zip' > $(echo $EDKP_VER).zip.sum"
-  if [[ $(lxc exec edk2 -- bash -c "sha512sum -c $(echo $EDKP_VER).zip.sum") == $(echo $EDKP_VER)'.zip: OK' ]]; then echo 'EDK2 Platform Checksum Matched!'; else echo 'EDK2 Platform Checksum Mismatched!' & exit 1; fi;
-  lxc exec edk2 -- unzip $(echo $EDKP_VER).zip
-  echo "Entering EDK2 ------"
-  lxc exec edk2 --cwd /root/edk2-$(echo $EDK_VER) -- git submodule init
-  lxc exec edk2 --cwd /root/edk2-$(echo $EDK_VER) -- git submodule update --init --recursive
-  lxc exec edk2 --cwd /root/edk2-$(echo $EDK_VER) -- bash -i -c "export WORKSPACE=/root && \
-  export PACKAGES_PATH=/root/edk2-$(echo $EDK_VER):/root/edk2-platforms-$(echo $EDKP_VER) && \
-  export ACTIVE_PLATFORM='Platform/StandaloneMm/PlatformStandaloneMmPkg/PlatformStandaloneMmRpmb.dsc' && \
-  export GCC5_AARCH64_PREFIX=aarch64-linux-gnu- && \
-  source edksetup.sh && \
-  make -C BaseTools && \
-  build -p \$ACTIVE_PLATFORM -b RELEASE -a AARCH64 -t GCC5 -n `nproc`"
-  lxc file pull edk2/root/Build/MmStandaloneRpmb/RELEASE_GCC5/FV/BL32_AP_MM.fd /tmp/
-  snap remove lxd --purge
-  popd
-fi
 apt update && apt install bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y
-if [ -f Builds/tee.bin ]; then
-  cp Builds/tee.bin /tmp/tee.bin
-  export TEE=/tmp/tee.bin
-  pushd /tmp/
-else
-  pushd /tmp/
-  wget https://github.com/OP-TEE/optee_os/archive/refs/tags/$(echo $OPT_VER).zip
-  echo '04a2e85947283e49a79cb8d60fde383df28303a9be15080a7f5354268b01f16405178c0c570e253256c3be8e3084d812c8b46b6dc2cb5c8eb3bde8d2ba4c380e  '$(echo $OPT_VER)'.zip' > $(echo $OPT_VER).zip.sum
-  if [[ $(sha512sum -c $(echo $OPT_VER).zip.sum) == $(echo $OPT_VER)'.zip: OK' ]]; then echo 'OP-TEE Checksum Matched!'; else echo 'OP-TEE Checksum Mismatched!' & exit 1; fi;
-  unzip $(echo $OPT_VER).zip
-  cd optee_os-$(echo $OPT_VER)
-  echo "Entering OP-TEE ------"
-  ln -s /tmp/BL32_AP_MM.fd
-  make -j$(nproc) PLATFORM=rockchip-rk3399 CFG_ARM64_core=y CFG_STMM_PATH=BL32_AP_MM.fd CFG_RPMB_FS=y CFG_RPMB_FS_DEV_ID=0 CFG_CORE_HEAP_SIZE=524288 CFG_RPMB_WRITE_KEY=y CFG_CORE_DYN_SHM=y CFG_RPMB_TESTKEY=y CFG_REE_FS=n CFG_CORE_ARM64_PA_BITS=48 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_core=aarch64-linux-gnu- CROSS_COMPILE_ta_arm32=arm-linux-gnueabihf- \
-  CROSS_COMPILE_ta_arm64=aarch64-linux-gnu- CFG_TEE_CORE_LOG_LEVEL=3 CFG_TEE_TA_LOG_LEVEL=3 CFG_SCTLR_ALIGNMENT_CHECK=n DEBUG=1 CFG_EARLY_CONSOLE_BAUDRATE=115200
-  export TEE=/tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin
-  cd ..
-  ln -s /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin
-fi
+pushd /tmp/
+wget https://github.com/OP-TEE/optee_os/archive/refs/tags/$(echo $OPT_VER).zip
+echo '04a2e85947283e49a79cb8d60fde383df28303a9be15080a7f5354268b01f16405178c0c570e253256c3be8e3084d812c8b46b6dc2cb5c8eb3bde8d2ba4c380e  '$(echo $OPT_VER)'.zip' > $(echo $OPT_VER).zip.sum
+if [[ $(sha512sum -c $(echo $OPT_VER).zip.sum) == $(echo $OPT_VER)'.zip: OK' ]]; then echo 'OP-TEE Checksum Matched!'; else echo 'OP-TEE Checksum Mismatched!' & exit 1; fi;
 wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/lts-v$(echo $ATF_VER).zip
 echo '5252dc59f1133d9c3fae5560954d9810e97a7e3b018522fddea584343d742a110c65678115cb0f554c201b5f7326353eec9a54031485156b6ca0788f53d33882  lts-v'$(echo $ATF_VER)'.zip' > v$(echo $ATF_VER).zip.sum
 if [[ $(sha512sum -c v$(echo $ATF_VER).zip.sum) == 'lts-v'$(echo $ATF_VER)'.zip: OK' ]]; then echo 'ATF Checksum Matched!'; else echo 'ATF Checksum Mismatched!' & exit 1; fi;
 wget https://github.com/u-boot/u-boot/archive/refs/tags/v$(echo $UB_VER).zip
 echo '0a3e614ba0fd14224f52a8ad3e68e22df08f6e02c43e9183a459d80b4f37b4f384a4bfef7627a3863388fcffb1472c38d178810bed401f63eb8b5d0a21456603  v'$(echo $UB_VER)'.zip' > v$(echo $UB_VER).zip.sum
 if [[ $(sha512sum -c v$(echo $UB_VER).zip.sum) == 'v'$(echo $UB_VER)'.zip: OK' ]]; then echo 'U-Boot Checksum Matched!'; else echo 'U-Boot Checksum Mismatched!' & exit 1; fi;
+unzip $(echo $OPT_VER).zip
 unzip lts-v$(echo $ATF_VER).zip
 unzip v$(echo $UB_VER).zip
+cd optee_os-$(echo $OPT_VER)
+echo "Entering OP-TEE ------"
+make -j$(nproc) PLATFORM=rockchip-rk3399 CFG_ARM64_core=y CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_core=aarch64-linux-gnu- CROSS_COMPILE_ta_arm32=arm-linux-gnueabihf- CROSS_COMPILE_ta_arm64=aarch64-linux-gnu-
+export TEE=/tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin
+cd ..
 cd arm-trusted-firmware-lts-v$(echo $ATF_VER)
 echo "Entering TF-A ------"
 make realclean
-ln -s /tmp/BL32_AP_MM.fd
-ln -s /tmp/tee.bin
-cp /tmp/platform_common.c plat/rockchip/common/aarch64/platform_common.c
-cp /tmp/platform_def.h plat/rockchip/rk3399/include/platform_def.h
-cp /tmp/plat_private.h plat/rockchip/common/include/plat_private.h
-cp /tmp/platform.mk plat/rockchip/rk3399/platform.mk
-cp /tmp/rk3399_def.h plat/rockchip/rk3399/rk3399_def.h
-cp /tmp/bl31_param.h plat/rockchip/rk3399/include/shared/bl31_param.h
-BL33=tee.bin BL32=BL32_AP_MM.fd make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" SPM_MM=1 EL3_EXCEPTION_HANDLING=1 ARM_BL31_IN_DRAM=1 CTX_INCLUDE_FPREGS=1 DEBUG=1 LOG_LEVEL=50 PLAT=rk3399 bl31
-export BL31=/tmp/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/debug/bl31/bl31.elf
+make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" PLAT=rk3399 bl31
+export BL31=/tmp/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/release/bl31/bl31.elf
 cd ..
 cd u-boot-$(echo $UB_VER)
 echo "Entering U-Boot ------"
@@ -108,10 +52,10 @@ git apply ../0001-rockchip-rk3399.patch && echo "Patched SPI bug"
 rm tools/logos/denx.bmp && rm drivers/video/u_boot_logo.bmp
 cp /tmp/logo.bmp tools/logos/denx.bmp && cp /tmp/logo.bmp drivers/video/u_boot_logo.bmp
 sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3399_defconfig
-echo "CONFIG_LOG=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_LOG_MAX_LEVEL=6" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_LOG_CONSOLE=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_LOGLEVEL=6" >> configs/rockpro64-rk3399_defconfig
+# echo "CONFIG_LOG=y" >> configs/rockpro64-rk3399_defconfig
+# echo "CONFIG_LOG_MAX_LEVEL=6" >> configs/rockpro64-rk3399_defconfig
+# echo "CONFIG_LOG_CONSOLE=y" >> configs/rockpro64-rk3399_defconfig
+# echo "CONFIG_LOGLEVEL=6" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_ARMV8_SEC_FIRMWARE_SUPPORT=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_FIT_SIGNATURE=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_RSA=y" >> configs/rockpro64-rk3399_defconfig
@@ -155,12 +99,12 @@ echo "CONFIG_CHIMP_OPTEE=n" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_EFI_RNG_PROTOCOL=y" >> configs/rockpro64-rk3399_defconfig
 ## echo "CONFIG_EFI_TCG2_PROTOCOL=y" >> configs/rockpro64-rk3399_defconfig
 ## echo "CONFIG_EFI_TCG2_PROTOCOL_MEASURE_DTB=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_EFI_MM_COMM_TEE=y" >> configs/rockpro64-rk3399_defconfig
+##### echo "CONFIG_EFI_MM_COMM_TEE=y" >> configs/rockpro64-rk3399_defconfig
 #### echo "CONFIG_EFI_VAR_BUF_SIZE=7340032" >> configs/rockpro64-rk3399_defconfig
 ## echo "CONFIG_EFI_SECURE_BOOT=y" >> configs/rockpro64-rk3399_defconfig
 ## echo "CONFIG_SOFT_SPI=y" >> configs/rockpro64-rk3399_defconfig
 ## echo "CONFIG_CMD_MMC_RPMB=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_CMD_OPTEE_RPMB=y" >> configs/rockpro64-rk3399_defconfig
+##### echo "CONFIG_CMD_OPTEE_RPMB=y" >> configs/rockpro64-rk3399_defconfig
 ### echo "CONFIG_CMD_SCP03=y" >> configs/rockpro64-rk3399_defconfig
 ## echo "CONFIG_CMD_TPM=y" >> configs/rockpro64-rk3399_defconfig
 ## echo "CONFIG_CMD_TPM_TEST=y" >> configs/rockpro64-rk3399_defconfig
@@ -168,10 +112,6 @@ echo "CONFIG_CMD_OPTEE_RPMB=y" >> configs/rockpro64-rk3399_defconfig
 ## echo "CONFIG_CMD_BOOTEFI_BOOTMGR=y" >> configs/rockpro64-rk3399_defconfig
 ## echo "CONFIG_CMD_EFIDEBUG=y" >> configs/rockpro64-rk3399_defconfig
 make rockpro64-rk3399_defconfig
-cat configs/rockpro64-rk3399_defconfig
-read -p "menuconfig -->"
-make menuconfig
-read -p "Build U-Boot -->"
 FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j$(nproc) all
 sha512sum u-boot-rockchip.bin
 sha512sum u-boot-rockchip-spi.bin
@@ -200,17 +140,11 @@ cp /tmp/u-boot-rockchip.bin Builds/u-boot-rockchip.bin
 cp /tmp/u-boot-rockchip.bin.sum Builds/u-boot-rockchip.bin.sum
 cp /tmp/u-boot-rockchip-spi.bin Builds/u-boot-rockchip-spi.bin
 cp /tmp/u-boot-rockchip-spi.bin.sum Builds/u-boot-rockchip-spi.bin.sum
-cp /tmp/BL32_AP_MM.fd Builds/BL32_AP_MM.fd
-if [ -f /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin Builds/tee.bin ]; then
-  cp /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin Builds/tee.bin;
-else
-  echo "TEE Build Skipped";
-fi
 git status && git add -A && git status
 read -p "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For The RockPro64: Sign -->"
 git commit -a -S -m "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For The RockPro64"
 git push --set-upstream origin RP64-rk3399-A
 cd ..
 apt remove --purge bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y && apt autoremove -y
-rm -f -r /tmp/u-boot* && rm -f /tmp/4.* && rm -f /tmp/lts* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/optee_os-* && rm -f /tmp/plat* && rm -f /tmp/000* && rm -f /tmp/logo.bmp && rm -f /tmp/BL32_AP_MM.fd && rm -f /tmp/bl31_param.h && rm -f /tmp/rk3399_def.h && rm -f /tmp/tee.bin && rm -f -r U-Boot && cd ..
+rm -f -r /tmp/u-boot* && rm -f /tmp/4.* && rm -f /tmp/lts* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/optee_os-* && rm -f /tmp/000* && rm -f /tmp/logo.bmp && rm -f -r U-Boot && cd ..
 exit
