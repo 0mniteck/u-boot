@@ -5,8 +5,8 @@
 Prebuilt u-boot-rockchip.bin & u-boot-rockchip-spi.bin are included in `Builds/` for convenience
 
 # Rockchip rk3399 SPI U-Boot Assembler
-  # RockPro64 - `Builds/RP64`
-  # PinebookPro - `Builds/PBP`
+  ## RockPro64 - `Builds/RP64`
+  ## PinebookPro - `Builds/PBP`
 
 Requirements:
 
