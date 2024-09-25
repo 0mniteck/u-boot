@@ -70,7 +70,7 @@ cd u-boot-$(echo $UB_VER)
 echo "Entering U-Boot ------"
 make clean
 git apply ../0001-rockchip-rk3399.patch && echo "Patched SPI bug"
-cp /tmp/efi.var efi.var
+#cp /tmp/efi.var efi.var
 rm tools/logos/denx.bmp && rm drivers/video/u_boot_logo.bmp
 cp /tmp/logo.bmp tools/logos/denx.bmp && cp /tmp/logo.bmp drivers/video/u_boot_logo.bmp
 sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3399_defconfig
