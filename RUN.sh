@@ -201,7 +201,7 @@ cp /tmp/u-boot-rockchip.bin.sum Builds/u-boot-rockchip.bin.sum
 cp /tmp/u-boot-rockchip-spi.bin Builds/u-boot-rockchip-spi.bin
 cp /tmp/u-boot-rockchip-spi.bin.sum Builds/u-boot-rockchip-spi.bin.sum
 cp /tmp/BL32_AP_MM.fd Builds/BL32_AP_MM.fd
-if [ -f /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin Builds/tee.bin ]; then
+if [[ -f /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin ]]; then
   cp /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin Builds/tee.bin;
 else
   echo "TEE Build Skipped";
