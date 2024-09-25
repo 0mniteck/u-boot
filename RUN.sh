@@ -123,8 +123,8 @@ FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOC
 sha512sum u-boot-rockchip.bin
 sha512sum u-boot-rockchip-spi.bin
 read -p "Insert First SD Card For RockPro64, Then Press Enter to Continue"
-dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=2000 status=progress
-parted /dev/mmcblk1 mktable gpt mkpart P1 fat32 16MB 1G -s && sleep 3
+dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
+parted /dev/mmcblk1 mktable gpt mkpart P1 fat32 10MB 25MB -s && sleep 3
 mkfs.fat /dev/mmcblk1p1
 mount /dev/mmcblk1p1 /mnt
 sha512sum u-boot-rockchip.bin
@@ -139,7 +139,7 @@ sync
 umount /mnt
 dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 sync
-dd if=/dev/mmcblk1 of=sdcard.img bs=1M count=1024 status=progress
+dd if=/dev/mmcblk1 of=sdcard.img bs=1M count=30 status=progress
 sha512sum sdcard.img > sdcard.img.sum
 cd .. && cd ..
 
@@ -156,8 +156,8 @@ FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOC
 sha512sum u-boot-rockchip.bin
 sha512sum u-boot-rockchip-spi.bin
 read -p "Insert Second SD Card For PinebookPro, Then Press Enter to Continue"
-dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=2000 status=progress
-parted /dev/mmcblk1 mktable gpt mkpart P1 fat32 16MB 1G -s && sleep 3
+dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
+parted /dev/mmcblk1 mktable gpt mkpart P1 fat32 10MB 25MB -s && sleep 3
 mkfs.fat /dev/mmcblk1p1
 mount /dev/mmcblk1p1 /mnt
 sha512sum u-boot-rockchip.bin
@@ -172,7 +172,7 @@ sync
 umount /mnt
 dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 sync
-dd if=/dev/mmcblk1 of=sdcard.img bs=1M count=1024 status=progress
+dd if=/dev/mmcblk1 of=sdcard.img bs=1M count=30 status=progress
 sha512sum sdcard.img > sdcard.img.sum
 cd .. && cd ..
 popd
