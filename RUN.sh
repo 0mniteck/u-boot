@@ -86,7 +86,7 @@ sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3
 # echo "CONFIG_FIT_SIGNATURE=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_RSA=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_ECDSA=y" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_BOOTM_EFI=y" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_BOOTM_EFI=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_SPI_FLASH_UNLOCK_ALL=n" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_TPM2_FTPM_TEE=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_DM_RNG=y" >> configs/rockpro64-rk3399_defconfig
@@ -128,6 +128,8 @@ echo "CONFIG_CHIMP_OPTEE=n" >> configs/rockpro64-rk3399_defconfig
 ##### echo "CONFIG_EFI_MM_COMM_TEE=y" >> configs/rockpro64-rk3399_defconfig
 #### echo "CONFIG_EFI_VAR_BUF_SIZE=7340032" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_EFI_SECURE_BOOT=y" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_CMD_BOOTEFI=y" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_EFI_LOADER=y" >> configs/rockpro64-rk3399_defconfig
 ## echo "CONFIG_SOFT_SPI=y" >> configs/rockpro64-rk3399_defconfig
 ## echo "CONFIG_CMD_MMC_RPMB=y" >> configs/rockpro64-rk3399_defconfig
 ##### echo "CONFIG_CMD_OPTEE_RPMB=y" >> configs/rockpro64-rk3399_defconfig
@@ -143,8 +145,13 @@ read -p "menuconfig -->"
 make menuconfig
 read -p "Build U-Boot -->"
 FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j$(nproc) all
+tools/mkimage -n rk3399 -T rkspi -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin "spi_idbloader.img"
+padsize=$((0x60000 - 1))
+dd if=/dev/zero of="spi_idbloader.img" conv=notrunc bs=1 count=1 seek=${padsize}
+cat spi_idbloader.img u-boot.itb > "u-boot-rockchip-spi-signed.bin"
 sha512sum u-boot-rockchip.bin
 sha512sum u-boot-rockchip-spi.bin
+sha512sum u-boot-rockchip-spi-signed.bin
 read -p "Insert any SD Card, Then Press Enter to Continue"
 dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
 parted /dev/mmcblk1 mktable gpt mkpart P1 fat32 10MB 25MB -s && sleep 3
