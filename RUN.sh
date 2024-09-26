@@ -134,6 +134,7 @@ echo 'CONFIG_EFI_VAR_SEED_FILE="efi.var"' >> configs/rockpro64-rk3399_defconfig
 ## echo "CONFIG_EFI_TCG2_PROTOCOL_MEASURE_DTB=y" >> configs/rockpro64-rk3399_defconfig
 ##### echo "CONFIG_EFI_MM_COMM_TEE=y" >> configs/rockpro64-rk3399_defconfig
 #### echo "CONFIG_EFI_VAR_BUF_SIZE=7340032" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_CMD_NVEDIT_EFI=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_EFI_SECURE_BOOT=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_EFI_LOADER=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_CMD_BOOTEFI=y" >> configs/rockpro64-rk3399_defconfig
