@@ -151,9 +151,14 @@ read -p "menuconfig -->"
 make menuconfig
 read -p "Build U-Boot -->"
 FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j$(nproc) all
+mkdir keys
+openssl genpkey -algorithm RSA -out keys/dev.key -pkeyopt rsa_keygen_bits:2048 -pkeyopt rsa_keygen_pubexp:65537
+openssl req -batch -new -x509 -key keys/dev.key -out keys/dev.crt
+openssl rsa -in keys/dev.key -pubout
 tools/mkimage -n rk3399 -T rksd -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin sd_idbloader.img
 tools/mkimage -n rk3399 -T rkspi -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin spi_idbloader.img
-tools/mkimage -n rk3399 -T rksd -f auto -F -d simple-bin.fit.fit -A arm64 -O u-boot rk3399.sd.itb
+tools/mkimage -k keys -K simple-bin.fit.fit -r
+tools/mkimage -n rk3399 -T rksd -f auto -F -k -d simple-bin.fit.fit -A arm64 -O u-boot rk3399.sd.itb
 tools/mkimage -n rk3399 -T rkspi -f auto -F -d simple-bin.fit.fit -A arm64 -O u-boot rk3399.spi.itb
 dd if=/dev/zero of=sd_idbloader.img conv=notrunc bs=1 count=1 seek=${padsize}
 dd if=/dev/zero of=spi_idbloader.img conv=notrunc bs=1 count=1 seek=${padsize}
