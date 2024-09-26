@@ -156,13 +156,14 @@ FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOC
 dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
 dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 read -p "Insert another SD Card, Then Press Enter to Continue"
+# wip
 mkdir keys
-openssl genpkey -algorithm RSA -out keys/dev.key -pkeyopt rsa_keygen_bits:2048 -pkeyopt rsa_keygen_pubexp:65537
-openssl req -batch -new -x509 -key keys/dev.key -out keys/dev.crt
-openssl rsa -in keys/dev.key -pubout
+PKCS11_MODULE_PATH=/lib/aarch64-linux-gnu/libykcs11.so.2.2.0 openssl genpkey -algorithm RSA -out keys/dev.key -pkeyopt rsa_keygen_bits:2048 -pkeyopt rsa_keygen_pubexp:65537
+PKCS11_MODULE_PATH=/lib/aarch64-linux-gnu/libykcs11.so.2.2.0 openssl req -batch -new -x509 -key keys/dev.key -out keys/dev.crt
+PKCS11_MODULE_PATH=/lib/aarch64-linux-gnu/libykcs11.so.2.2.0 openssl rsa -in keys/dev.key -pubout
 tools/mkimage -n rk3399 -T rksd -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin sd_idbloader.img
 tools/mkimage -n rk3399 -T rkspi -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin spi_idbloader.img
-tools/mkimage -F -k keys -K simple-bin.fit.fit -r rk3399.fit
+PKCS11_MODULE_PATH=/lib/aarch64-linux-gnu/libykcs11.so.2.2.0 tools/mkimage -F -N "" -K simple-bin.fit.fit -r rk3399.fit
 tools/mkimage -n rk3399 -T rksd -f auto -d rk3399.fit -A arm64 -O u-boot rk3399.sd.itb
 tools/mkimage -n rk3399 -T rkspi -f auto -d rk3399.fit -A arm64 -O u-boot rk3399.spi.itb
 dd if=/dev/zero of=sd_idbloader.img conv=notrunc bs=1 count=1 seek=${padsize}
