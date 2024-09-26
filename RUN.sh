@@ -20,6 +20,81 @@ export SOURCE_DATE;
 export SOURCE_DATE_EPOCH;
 export BUILD_MESSAGE_TIMESTAMP;
 
+pushd /tmp/
+echo "CONFIG_LOG=y" >> rk3399_defconfig
+echo "CONFIG_LOG_MAX_LEVEL=6" >> rk3399_defconfig
+echo "CONFIG_LOG_CONSOLE=y" >> rk3399_defconfig
+echo "CONFIG_LOGLEVEL=6" >> rk3399_defconfig
+# echo "CONFIG_ARMV8_SEC_FIRMWARE_SUPPORT=y" >> rk3399_defconfig
+# echo "CONFIG_ARM64=y" >> rk3399_defconfig
+# echo "CONFIG_FIT=y" >> rk3399_defconfig
+# echo "CONFIG_FIT_VERBOSE=y" >> rk3399_defconfig
+# echo "CONFIG_SPL_FIT=y" >> rk3399_defconfig
+# echo "CONFIG_SPL_LOAD_FIT=y" >> rk3399_defconfig
+# echo "CONFIG_SPL_FIT_SIGNATURE=y" >> rk3399_defconfig
+echo "CONFIG_FIT_SIGNATURE=y" >> rk3399_defconfig
+# echo "CONFIG_RSA=y" >> rk3399_defconfig
+# echo "CONFIG_ECDSA=y" >> rk3399_defconfig
+# echo "CONFIG_SPI_FLASH_UNLOCK_ALL=n" >> rk3399_defconfig
+# echo "CONFIG_TPM2_FTPM_TEE=y" >> rk3399_defconfig
+# echo "CONFIG_DM_RNG=y" >> rk3399_defconfig
+## echo "CONFIG_TPM=y" >> rk3399_defconfig
+## echo "CONFIG_TPM_V1=n" >> rk3399_defconfig
+## echo "CONFIG_TPM_V2=y" >> rk3399_defconfig
+# echo "CONFIG_TPM_RNG=y" >> rk3399_defconfig
+## echo "CONFIG_TPM2_TIS_SPI=y" >> rk3399_defconfig
+# echo "CONFIG_TPL_TPM=y" >> rk3399_defconfig
+# echo "CONFIG_SPL_TPM=y" >> rk3399_defconfig
+## echo "CONFIG_SOFT_SPI=y" >> rk3399_defconfig
+## echo "CONFIG_MEASURED_BOOT=y" >> rk3399_defconfig
+## echo "CONFIG_STACKPROTECTOR=y" >> rk3399_defconfig
+## echo "CONFIG_TPL_STACKPROTECTOR=y" >> rk3399_defconfig
+## echo "CONFIG_SPL_STACKPROTECTOR=y" >> rk3399_defconfig
+# echo "CONFIG_SPL_OPTEE_IMAGE=y" >> rk3399_defconfig
+echo "CONFIG_TEE=y" >> rk3399_defconfig
+echo "CONFIG_OPTEE=y" >> rk3399_defconfig
+# echo "CONFIG_OPTEE_TZDRAM_BASE=0x30000000" >> rk3399_defconfig
+echo "CONFIG_OPTEE_TZDRAM_SIZE=0x02000000" >> rk3399_defconfig
+echo "CONFIG_OPTEE_SERVICE_DISCOVERY=y" >> rk3399_defconfig
+# echo "CONFIG_OPTEE_IMAGE=y" >> rk3399_defconfig
+echo "CONFIG_BOOTM_EFI=y" >> rk3399_defconfig
+echo "CONFIG_BOOTM_OPTEE=y" >> rk3399_defconfig
+echo "CONFIG_OPTEE_TA_SCP03=n" >> rk3399_defconfig
+echo "CONFIG_OPTEE_TA_AVB=n" >> rk3399_defconfig
+echo "CONFIG_CHIMP_OPTEE=n" >> rk3399_defconfig
+### echo "CONFIG_SCP03=Y" >> rk3399_defconfig
+# echo "CONFIG_RNG_OPTEE=y" >> rk3399_defconfig
+# echo "CONFIG_LIB_HW_RAND=y" >> rk3399_defconfig
+# echo "CONFIG_ARM_FFA_TRANSPORT=y" >> rk3399_defconfig
+# echo "CONFIG_FFA_SHARED_MM_BUF_SIZE=4000" >> rk3399_defconfig
+# echo "CONFIG_FFA_SHARED_MM_BUF_OFFSET=0" >> rk3399_defconfig
+# echo "CONFIG_FFA_SHARED_MM_BUF_ADDR=0x0" >> rk3399_defconfig
+#### echo "CONFIG_SUPPORT_EMMC_RPMB=y" >> rk3399_defconfig
+## echo "CONFIG_SUPPORT_EMMC_BOOT=y" >> rk3399_defconfig
+## echo "CONFIG_EFI_VARIABLE_FILE_STORE=n" >> rk3399_defconfig
+echo "CONFIG_EFI_VARIABLE_NO_STORE=y" >> rk3399_defconfig
+echo "CONFIG_EFI_VARIABLES_PRESEED=y" >> rk3399_defconfig
+echo 'CONFIG_EFI_VAR_SEED_FILE="efi.var"' >> rk3399_defconfig
+# echo "CONFIG_EFI_RNG_PROTOCOL=y" >> rk3399_defconfig
+## echo "CONFIG_EFI_TCG2_PROTOCOL=y" >> rk3399_defconfig
+## echo "CONFIG_EFI_TCG2_PROTOCOL_MEASURE_DTB=y" >> rk3399_defconfig
+echo "CONFIG_EFI_MM_COMM_TEE=y" >> rk3399_defconfig
+#### echo "CONFIG_EFI_VAR_BUF_SIZE=7340032" >> rk3399_defconfig
+echo "CONFIG_EFI_SECURE_BOOT=y" >> rk3399_defconfig
+echo "CONFIG_EFI_LOADER=y" >> rk3399_defconfig
+echo "CONFIG_CMD_BOOTEFI=y" >> rk3399_defconfig
+# echo "CONFIG_HEXDUMP=y" >> rk3399_defconfig
+# echo "CONFIG_CMD_NVEDIT_EFI=y" >> rk3399_defconfig
+## echo "CONFIG_CMD_MMC_RPMB=y" >> rk3399_defconfig
+echo "CONFIG_CMD_OPTEE_RPMB=y" >> rk3399_defconfig
+### echo "CONFIG_CMD_SCP03=y" >> rk3399_defconfig
+## echo "CONFIG_CMD_TPM=y" >> rk3399_defconfig
+## echo "CONFIG_CMD_TPM_TEST=y" >> rk3399_defconfig
+## echo "CONFIG_CMD_BOOTMENU=y" >> rk3399_defconfig
+## echo "CONFIG_CMD_BOOTEFI_BOOTMGR=y" >> rk3399_defconfig
+## echo "CONFIG_CMD_EFIDEBUG=y" >> rk3399_defconfig
+popd
+
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
 cp includes/platform_common.c /tmp/platform_common.c
@@ -29,6 +104,7 @@ cp includes/platform.mk /tmp/platform.mk
 cp includes/rk3399_def.h /tmp/rk3399_def.h
 cp includes/bl31_param.h /tmp/bl31_param.h
 cp includes/logo.bmp /tmp/logo.bmp
+cp includes/efi.var /tmp/efi.var
 if [ -f Builds/BL32_AP_MM.fd ]; then
   cp Builds/BL32_AP_MM.fd /tmp/BL32_AP_MM.fd
 else
@@ -73,10 +149,14 @@ else
   cd optee_os-$(echo $OPT_VER)
   echo "Entering OP-TEE ------"
   ln -s /tmp/BL32_AP_MM.fd
-  make -j$(nproc) PLATFORM=rockchip-rk3399 CFG_ARM64_core=y CFG_STMM_PATH=BL32_AP_MM.fd CFG_RPMB_FS=y CFG_RPMB_FS_DEV_ID=0 CFG_CORE_HEAP_SIZE=524288 CFG_RPMB_WRITE_KEY=y CFG_CORE_DYN_SHM=y CFG_RPMB_TESTKEY=y CFG_REE_FS=n CFG_CORE_ARM64_PA_BITS=48 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_core=aarch64-linux-gnu- CROSS_COMPILE_ta_arm32=arm-linux-gnueabihf- \
-  CROSS_COMPILE_ta_arm64=aarch64-linux-gnu- CFG_TEE_CORE_LOG_LEVEL=3 CFG_TEE_TA_LOG_LEVEL=3 CFG_SCTLR_ALIGNMENT_CHECK=n DEBUG=1 CFG_EARLY_CONSOLE_BAUDRATE=115200
+  make -j$(nproc) PLATFORM=rockchip-rk3399 CFG_ARM64_core=y CFG_STMM_PATH=BL32_AP_MM.fd CFG_RPMB_FS=y CFG_RPMB_FS_DEV_ID=0 CFG_CORE_HEAP_SIZE=524288 CFG_RPMB_WRITE_KEY=y \
+  CFG_CORE_DYN_SHM=y CFG_RPMB_TESTKEY=y CFG_REE_FS=n CFG_CORE_ARM64_PA_BITS=48 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE32=arm-linux-gnueabihf- CROSS_COMPILE_core=aarch64-linux-gnu- \
+  CROSS_COMPILE_ta_arm32=arm-linux-gnueabihf- CROSS_COMPILE_ta_arm64=aarch64-linux-gnu- CFG_TEE_CORE_LOG_LEVEL=3 CFG_TEE_TA_LOG_LEVEL=3 CFG_SCTLR_ALIGNMENT_CHECK=n DEBUG=1 CFG_EARLY_CONSOLE_BAUDRATE=115200
   export TEE=/tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin
   cd ..
+  ln -s /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee-header_v2.bin
+  ln -s /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee-pager_v2.bin
+  ln -s /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee-pageable_v2.bin
   ln -s /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin
 fi
 wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/lts-v$(echo $ATF_VER).zip
@@ -90,84 +170,31 @@ unzip v$(echo $UB_VER).zip
 cd arm-trusted-firmware-lts-v$(echo $ATF_VER)
 echo "Entering TF-A ------"
 make realclean
-ln -s /tmp/BL32_AP_MM.fd
-ln -s /tmp/tee.bin
+# ln -s /tmp/BL32_AP_MM.fd
+ln -s /tmp/tee-header_v2.bin
+ln -s /tmp/tee-pager_v2.bin
+ln -s /tmp/tee-pageable_v2.bin
+# ln -s /tmp/tee.bin
 cp /tmp/platform_common.c plat/rockchip/common/aarch64/platform_common.c
 cp /tmp/platform_def.h plat/rockchip/rk3399/include/platform_def.h
 cp /tmp/plat_private.h plat/rockchip/common/include/plat_private.h
 cp /tmp/platform.mk plat/rockchip/rk3399/platform.mk
 cp /tmp/rk3399_def.h plat/rockchip/rk3399/rk3399_def.h
 cp /tmp/bl31_param.h plat/rockchip/rk3399/include/shared/bl31_param.h
+# make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" PLAT=rk3399 bl31
 # BL33=tee.bin BL32=BL32_AP_MM.fd make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" SPM_MM=1 EL3_EXCEPTION_HANDLING=1 ARM_BL31_IN_DRAM=1 CTX_INCLUDE_FPREGS=1 DEBUG=1 LOG_LEVEL=50 PLAT=rk3399 bl31
-BL33=tee.bin BL32=tee-header_v2.bin BL32_EXTRA1=tee-pager_v2.bin BL32_EXTRA2=tee-pageable_v2.bin make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" SPM_MM=1 EL3_EXCEPTION_HANDLING=1 ARM_BL31_IN_DRAM=1 CTX_INCLUDE_FPREGS=1 DEBUG=1 LOG_LEVEL=50 PLAT=rk3399 bl31
+BL32=tee-header_v2.bin BL32_EXTRA1=tee-pager_v2.bin BL32_EXTRA2=tee-pageable_v2.bin make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" SPM_MM=1 EL3_EXCEPTION_HANDLING=1 ARM_BL31_IN_DRAM=1 CTX_INCLUDE_FPREGS=1 DEBUG=1 LOG_LEVEL=50 PLAT=rk3399 bl31
 export BL31=/tmp/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/debug/bl31/bl31.elf
 cd ..
 cd u-boot-$(echo $UB_VER)
 echo "Entering U-Boot ------"
 make clean
 git apply ../0001-rockchip-rk3399.patch && echo "Patched SPI bug"
+cp /tmp/efi.var efi.var
 rm tools/logos/denx.bmp && rm drivers/video/u_boot_logo.bmp
 cp /tmp/logo.bmp tools/logos/denx.bmp && cp /tmp/logo.bmp drivers/video/u_boot_logo.bmp
 sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3399_defconfig
-echo "CONFIG_LOG=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_LOG_MAX_LEVEL=6" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_LOG_CONSOLE=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_LOGLEVEL=6" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_ARMV8_SEC_FIRMWARE_SUPPORT=y" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_FIT_SIGNATURE=y" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_RSA=y" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_ECDSA=y" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_BOOTM_EFI=y" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_SPI_FLASH_UNLOCK_ALL=n" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_TPM2_FTPM_TEE=y" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_DM_RNG=y" >> configs/rockpro64-rk3399_defconfig
-## echo "CONFIG_TPM=y" >> configs/rockpro64-rk3399_defconfig
-## echo "CONFIG_TPM_V1=n" >> configs/rockpro64-rk3399_defconfig
-## echo "CONFIG_TPM_V2=y" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_TPM_RNG=y" >> configs/rockpro64-rk3399_defconfig
-## echo "CONFIG_TPM2_TIS_SPI=y" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_TPL_TPM=y" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_SPL_TPM=y" >> configs/rockpro64-rk3399_defconfig
-## echo "CONFIG_MEASURED_BOOT=y" >> configs/rockpro64-rk3399_defconfig
-## echo "CONFIG_STACKPROTECTOR=y" >> configs/rockpro64-rk3399_defconfig
-## echo "CONFIG_TPL_STACKPROTECTOR=y" >> configs/rockpro64-rk3399_defconfig
-## echo "CONFIG_SPL_STACKPROTECTOR=y" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_SPL_OPTEE_IMAGE=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_TEE=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_OPTEE=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_OPTEE_TZDRAM_BASE=0x30000000" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_OPTEE_TZDRAM_SIZE=0x02000000" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_OPTEE_SERVICE_DISCOVERY=y" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_OPTEE_IMAGE=y" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_BOOTM_OPTEE=y" >> configs/rockpro64-rk3399_defconfig
-### echo "CONFIG_SCP03=Y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_OPTEE_TA_SCP03=n" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_OPTEE_TA_AVB=n" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_CHIMP_OPTEE=n" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_RNG_OPTEE=y" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_LIB_HW_RAND=y" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_ARM_FFA_TRANSPORT=y" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_FFA_SHARED_MM_BUF_SIZE=4000" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_FFA_SHARED_MM_BUF_OFFSET=0" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_FFA_SHARED_MM_BUF_ADDR=0x0" >> configs/rockpro64-rk3399_defconfig
-#### echo "CONFIG_SUPPORT_EMMC_RPMB=y" >> configs/rockpro64-rk3399_defconfig
-## echo "CONFIG_SUPPORT_EMMC_BOOT=y" >> configs/rockpro64-rk3399_defconfig
-## echo "CONFIG_EFI_VARIABLE_FILE_STORE=n" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_EFI_RNG_PROTOCOL=y" >> configs/rockpro64-rk3399_defconfig
-## echo "CONFIG_EFI_TCG2_PROTOCOL=y" >> configs/rockpro64-rk3399_defconfig
-## echo "CONFIG_EFI_TCG2_PROTOCOL_MEASURE_DTB=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_EFI_MM_COMM_TEE=y" >> configs/rockpro64-rk3399_defconfig
-#### echo "CONFIG_EFI_VAR_BUF_SIZE=7340032" >> configs/rockpro64-rk3399_defconfig
-## echo "CONFIG_EFI_SECURE_BOOT=y" >> configs/rockpro64-rk3399_defconfig
-## echo "CONFIG_SOFT_SPI=y" >> configs/rockpro64-rk3399_defconfig
-## echo "CONFIG_CMD_MMC_RPMB=y" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_CMD_OPTEE_RPMB=y" >> configs/rockpro64-rk3399_defconfig
-### echo "CONFIG_CMD_SCP03=y" >> configs/rockpro64-rk3399_defconfig
-## echo "CONFIG_CMD_TPM=y" >> configs/rockpro64-rk3399_defconfig
-## echo "CONFIG_CMD_TPM_TEST=y" >> configs/rockpro64-rk3399_defconfig
-## echo "CONFIG_CMD_BOOTMENU=y" >> configs/rockpro64-rk3399_defconfig
-## echo "CONFIG_CMD_BOOTEFI_BOOTMGR=y" >> configs/rockpro64-rk3399_defconfig
-## echo "CONFIG_CMD_EFIDEBUG=y" >> configs/rockpro64-rk3399_defconfig
+cat /tmp/rk3399_defconfig >> configs/rockpro64-rk3399_defconfig
 make rockpro64-rk3399_defconfig
 cat configs/rockpro64-rk3399_defconfig
 read -p "menuconfig -->"
@@ -213,5 +240,5 @@ git commit -a -S -m "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUIL
 git push --set-upstream origin RP64-rk3399-StandaloneMM
 cd ..
 apt remove --purge bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y && apt autoremove -y
-rm -f -r /tmp/u-boot* && rm -f /tmp/4.* && rm -f /tmp/lts* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/optee_os-* && rm -f /tmp/plat* && rm -f /tmp/000* && rm -f /tmp/logo.bmp && rm -f /tmp/BL32_AP_MM.fd && rm -f /tmp/bl31_param.h && rm -f /tmp/rk3399_def.h && rm -f /tmp/tee.bin && rm -f -r U-Boot && cd ..
+rm -f -r /tmp/u-boot* && rm -f /tmp/4.* && rm -f /tmp/lts* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/optee_os-* && rm -f /tmp/plat* && rm -f /tmp/000* && rm -f /tmp/logo.bmp && rm -f /tmp/BL32_AP_MM.fd && rm -f /tmp/bl31_param.h && rm -f /tmp/rk3399* && rm -f /tmp/tee* && rm -f -r U-Boot && cd ..
 exit
