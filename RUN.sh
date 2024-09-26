@@ -178,7 +178,7 @@ cp rk3399-spi.bin /mnt/rk3399-spi.bin.bin
 cp rk3399-spi.bin /tmp/rk3399-spi.bin.bin
 sync
 umount /mnt
-dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
+dd if=rk3399-sd.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 cd ..
 sync
 popd
