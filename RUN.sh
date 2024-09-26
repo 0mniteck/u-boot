@@ -134,10 +134,11 @@ echo 'CONFIG_EFI_VAR_SEED_FILE="efi.var"' >> configs/rockpro64-rk3399_defconfig
 ## echo "CONFIG_EFI_TCG2_PROTOCOL_MEASURE_DTB=y" >> configs/rockpro64-rk3399_defconfig
 ##### echo "CONFIG_EFI_MM_COMM_TEE=y" >> configs/rockpro64-rk3399_defconfig
 #### echo "CONFIG_EFI_VAR_BUF_SIZE=7340032" >> configs/rockpro64-rk3399_defconfig
-echo "CONFIG_CMD_NVEDIT_EFI=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_EFI_SECURE_BOOT=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_EFI_LOADER=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_CMD_BOOTEFI=y" >> configs/rockpro64-rk3399_defconfig
+# echo "CONFIG_HEXDUMP=y" >> rk3399_defconfig
+# echo "CONFIG_CMD_NVEDIT_EFI=y" >> configs/rockpro64-rk3399_defconfig
 ## echo "CONFIG_CMD_MMC_RPMB=y" >> configs/rockpro64-rk3399_defconfig
 ##### echo "CONFIG_CMD_OPTEE_RPMB=y" >> configs/rockpro64-rk3399_defconfig
 ### echo "CONFIG_CMD_SCP03=y" >> configs/rockpro64-rk3399_defconfig
@@ -158,9 +159,9 @@ openssl req -batch -new -x509 -key keys/dev.key -out keys/dev.crt
 openssl rsa -in keys/dev.key -pubout
 tools/mkimage -n rk3399 -T rksd -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin sd_idbloader.img
 tools/mkimage -n rk3399 -T rkspi -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin spi_idbloader.img
-tools/mkimage -k keys -K simple-bin.fit.fit -r
-tools/mkimage -n rk3399 -T rksd -f auto -F -k -d simple-bin.fit.fit -A arm64 -O u-boot rk3399.sd.itb
-tools/mkimage -n rk3399 -T rkspi -f auto -F -d simple-bin.fit.fit -A arm64 -O u-boot rk3399.spi.itb
+tools/mkimage -F -k keys -K simple-bin.fit.fit -r
+tools/mkimage -n rk3399 -T rksd -f auto -d simple-bin.fit.fit -A arm64 -O u-boot rk3399.sd.itb
+tools/mkimage -n rk3399 -T rkspi -f auto -d simple-bin.fit.fit -A arm64 -O u-boot rk3399.spi.itb
 dd if=/dev/zero of=sd_idbloader.img conv=notrunc bs=1 count=1 seek=${padsize}
 dd if=/dev/zero of=spi_idbloader.img conv=notrunc bs=1 count=1 seek=${padsize}
 cat spi_idbloader.img rk3399.sd.itb > rk3399-sd.bin
