@@ -9,6 +9,7 @@
 OPT_VER=4.3.0;
 ATF_VER=2.10.4;
 UB_VER=2024.07;
+padsize=$((0x60000 - 1));
 FORCE_SOURCE_DATE=1;
 SOURCE_DATE_EPOCH="$(date -d "$(date +%D)" +%s)";
 SOURCE_DATE="@$SOURCE_DATE_EPOCH";
@@ -150,38 +151,41 @@ read -p "menuconfig -->"
 make menuconfig
 read -p "Build U-Boot -->"
 FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j$(nproc) all
-tools/mkimage -n rk3399 -T rkspi -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin "spi_idbloader.img"
-padsize=$((0x60000 - 1))
-dd if=/dev/zero of="spi_idbloader.img" conv=notrunc bs=1 count=1 seek=${padsize}
-cat spi_idbloader.img u-boot.itb > "u-boot-rockchip-spi-signed.bin"
-sha512sum u-boot-rockchip.bin
-sha512sum u-boot-rockchip-spi.bin
-sha512sum u-boot-rockchip-spi-signed.bin
+tools/mkimage -n rk3399 -T rksd -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin sd_idbloader.img
+tools/mkimage -n rk3399 -T rkspi -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin spi_idbloader.img
+tools/mkimage -n rk3399 -T rksd -f auto -F -d simple-bin.fit.fit -A arm64 -O u-boot rk3399.sd.itb
+tools/mkimage -n rk3399 -T rkspi -f auto -F -d simple-bin.fit.fit -A arm64 -O u-boot rk3399.spi.itb
+dd if=/dev/zero of=sd_idbloader.img conv=notrunc bs=1 count=1 seek=${padsize}
+dd if=/dev/zero of=spi_idbloader.img conv=notrunc bs=1 count=1 seek=${padsize}
+cat spi_idbloader.img rk3399.sd.itb > rk3399-sd.bin
+cat sd_idbloader.img rk3399.spi.itb > rk3399-spi.bin
+sha512sum rk3399-sd.bin
+sha512sum rk3399-spi.bin
 read -p "Insert any SD Card, Then Press Enter to Continue"
 dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
 parted /dev/mmcblk1 mktable gpt mkpart P1 fat32 10MB 25MB -s && sleep 3
 mkfs.fat /dev/mmcblk1p1
 mount /dev/mmcblk1p1 /mnt
-sha512sum u-boot-rockchip.bin
-sha512sum u-boot-rockchip.bin > /mnt/u-boot-rockchip.bin.sum
-sha512sum u-boot-rockchip.bin > /tmp/u-boot-rockchip.bin.sum
-cp u-boot-rockchip.bin /mnt/u-boot-rockchip.bin
-cp u-boot-rockchip.bin /tmp/u-boot-rockchip.bin
-sha512sum u-boot-rockchip-spi.bin
-sha512sum u-boot-rockchip-spi.bin > /mnt/u-boot-rockchip-spi.bin.sum
-sha512sum u-boot-rockchip-spi.bin > /tmp/u-boot-rockchip-spi.bin.sum
-cp u-boot-rockchip-spi.bin /mnt/u-boot-rockchip-spi.bin
-cp u-boot-rockchip-spi.bin /tmp/u-boot-rockchip-spi.bin
+sha512sum rk3399-sd.bin
+sha512sum rk3399-sd.bin > /mnt/rk3399-sd.bin.sum
+sha512sum rk3399-sd.bin > /tmp/rk3399-sd.bin.sum
+cp rk3399-sd.bin /mnt/rk3399-sd.bin
+cp rk3399-sd.bin /tmp/rk3399-sd.bin
+sha512sum rk3399-spi.bin
+sha512sum rk3399-spi.bin > /mnt/rk3399-spi.bin.sum
+sha512sum rk3399-spi.bin > /tmp/rk3399-spi.bin.sum
+cp rk3399-spi.bin /mnt/rk3399-spi.bin.bin
+cp rk3399-spi.bin /tmp/rk3399-spi.bin.bin
 sync
 umount /mnt
 dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 cd ..
 sync
 popd
-cp /tmp/u-boot-rockchip.bin Builds/u-boot-rockchip.bin
-cp /tmp/u-boot-rockchip.bin.sum Builds/u-boot-rockchip.bin.sum
-cp /tmp/u-boot-rockchip-spi.bin Builds/u-boot-rockchip-spi.bin
-cp /tmp/u-boot-rockchip-spi.bin.sum Builds/u-boot-rockchip-spi.bin.sum
+cp /tmp/rk3399-sd.bin Builds/rk3399-sd.bin
+cp /tmp/rk3399-sd.bin.sum Builds/rk3399-sd.bin.sum
+cp /tmp/rk3399-spi.bin Builds/rk3399-spi.bin
+cp /tmp/rk3399-spi.bin.sum Builds/rk3399-spi.bin.sum
 if [[ -f /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin ]]; then
   cp /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin Builds/tee.bin;
 else
@@ -193,5 +197,5 @@ git commit -a -S -m "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUIL
 git push --set-upstream origin RP64-rk3399-Dev
 cd ..
 apt remove --purge bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y && apt autoremove -y
-rm -f -r /tmp/u-boot* && rm -f /tmp/4.* && rm -f /tmp/lts* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/optee_os-* && rm -f /tmp/plat* && rm -f /tmp/000* && rm -f /tmp/logo.bmp && rm -f /tmp/bl31_param.h && rm -f /tmp/rk3399_def.h && rm -f /tmp/tee.bin && rm -f /tmp/efi.var && rm -f -r U-Boot && cd ..
+rm -f -r /tmp/u-boot* && rm -f /tmp/rk3399* && rm -f /tmp/4.* && rm -f /tmp/lts* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/optee_os-* && rm -f /tmp/plat* && rm -f /tmp/000* && rm -f /tmp/logo.bmp && rm -f /tmp/bl31_param.h && rm -f /tmp/rk3399_def.h && rm -f /tmp/tee.bin && rm -f /tmp/efi.var && rm -f -r U-Boot && cd ..
 exit
