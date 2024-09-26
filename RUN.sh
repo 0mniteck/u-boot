@@ -153,6 +153,9 @@ read -p "menuconfig -->"
 make menuconfig
 read -p "Build U-Boot -->"
 FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j$(nproc) all
+dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
+dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
+read -p "Insert another SD Card, Then Press Enter to Continue"
 mkdir keys
 openssl genpkey -algorithm RSA -out keys/dev.key -pkeyopt rsa_keygen_bits:2048 -pkeyopt rsa_keygen_pubexp:65537
 openssl req -batch -new -x509 -key keys/dev.key -out keys/dev.crt
@@ -168,7 +171,6 @@ cat spi_idbloader.img rk3399.sd.itb > rk3399-sd.bin
 cat sd_idbloader.img rk3399.spi.itb > rk3399-spi.bin
 sha512sum rk3399-sd.bin
 sha512sum rk3399-spi.bin
-read -p "Insert any SD Card, Then Press Enter to Continue"
 dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
 parted /dev/mmcblk1 mktable gpt mkpart P1 fat32 10MB 25MB -s && sleep 3
 mkfs.fat /dev/mmcblk1p1
