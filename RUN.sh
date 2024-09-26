@@ -72,6 +72,7 @@ echo "CONFIG_CHIMP_OPTEE=n" >> rk3399_defconfig
 ## echo "CONFIG_EFI_TCG2_PROTOCOL_MEASURE_DTB=y" >> rk3399_defconfig
 ##### echo "CONFIG_EFI_MM_COMM_TEE=y" >> rk3399_defconfig
 #### echo "CONFIG_EFI_VAR_BUF_SIZE=7340032" >> rk3399_defconfig
+echo "CONFIG_CMD_NVEDIT_EFI=y" >> rk3399_defconfig
 ## echo "CONFIG_EFI_SECURE_BOOT=y" >> rk3399_defconfig
 ## echo "CONFIG_SOFT_SPI=y" >> rk3399_defconfig
 ## echo "CONFIG_CMD_MMC_RPMB=y" >> rk3399_defconfig
