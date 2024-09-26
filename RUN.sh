@@ -159,9 +159,9 @@ openssl req -batch -new -x509 -key keys/dev.key -out keys/dev.crt
 openssl rsa -in keys/dev.key -pubout
 tools/mkimage -n rk3399 -T rksd -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin sd_idbloader.img
 tools/mkimage -n rk3399 -T rkspi -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin spi_idbloader.img
-tools/mkimage -F -k keys -K simple-bin.fit.fit -r
-tools/mkimage -n rk3399 -T rksd -f auto -d simple-bin.fit.fit -A arm64 -O u-boot rk3399.sd.itb
-tools/mkimage -n rk3399 -T rkspi -f auto -d simple-bin.fit.fit -A arm64 -O u-boot rk3399.spi.itb
+tools/mkimage -F -k keys -K simple-bin.fit.fit -r rk3399.fit
+tools/mkimage -n rk3399 -T rksd -f auto -d rk3399.fit -A arm64 -O u-boot rk3399.sd.itb
+tools/mkimage -n rk3399 -T rkspi -f auto -d rk3399.fit -A arm64 -O u-boot rk3399.spi.itb
 dd if=/dev/zero of=sd_idbloader.img conv=notrunc bs=1 count=1 seek=${padsize}
 dd if=/dev/zero of=spi_idbloader.img conv=notrunc bs=1 count=1 seek=${padsize}
 cat spi_idbloader.img rk3399.sd.itb > rk3399-sd.bin
