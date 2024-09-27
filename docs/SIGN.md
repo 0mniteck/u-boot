@@ -14,7 +14,7 @@
 You can generate a key pair directly on the YubiKey using the YubiKey PIV application. Here’s how to do it:
 
 ```
-ykman piv keys generate -a RSA2048 --touch-policy ALWAYS --pin-policy ALWAYS 9a public_key.pem
+pushd /etc/platform/keys && ykman piv keys generate -a RSA2048 --touch-policy ALWAYS --pin-policy ALWAYS 9a public_key.pem
 ```
 
 #### 2. Create a Self-Signed Certificate
@@ -23,7 +23,6 @@ Next, you need to create a self-signed certificate using the private key stored 
 ```
 PKCS11_MODULE_PATH=/usr/lib/aarch64-linux-gnu/libykcs11.so.2.2.0 or
 PKCS11_MODULE_PATH=/usr/lib/x86_64-linux-gnu/libykcs11.so.2.2.0 openssl x509 -new -engine pkcs11 -keyform ENGINE -key 1 -out ca.pem -subj "/C=US/ST=CA/O=OMNITECK/CN=Root CA" -days 1826
-openssl x509 -inform PEM -outform DER -in ca.pem -out ca.der
 ```
 
 #### 3. Import the Certificate to YubiKey
@@ -69,12 +68,18 @@ sign-efi-sig-list -c KEK.crt -e "pkcs11:1" db db.esl db.auth
 #### 4. Sign shimaa64.efi
 
 ```
-rm -f /boot/efi/EFI/ubuntu/shimaa64.efi.signed && cd tmp && sbsign --engine "pkcs11:1" --key 1 --cert db.crt /usr/lib/shim/shimaa64.efi --output /boot/efi/EFI/ubuntu/shimaa64.efi.signed
+rm -f /boot/efi/EFI/ubuntu/shimaa64.efi.signed && sbsign --engine "pkcs11:1" --key 1 --cert db.crt /usr/lib/shim/shimaa64.efi --output /boot/efi/EFI/ubuntu/shimaa64.efi.signed && popd
 ```
 
-#### 5. Set up secureboot platform keys.
+#### 5. Build mutable U-boot & set up secureboot platform keys.
 
 ```
+Build U-boot in mutable mode
+
+reboot
+
+stop autoboot
+
 fatload mmc 0:1 $kernel_addr_r PK.auth
 setenv -e -nv -bs -rt -at -i $kernel_addr_r:$filesize PK
 fatload mmc 0:1 $kernel_addr_r KEK.auth
@@ -83,8 +88,10 @@ fatload mmc 0:1 $kernel_addr_r db.auth
 setenv -e -nv -bs -rt -at -i $kernel_addr_r:$filesize db
 ```
 
-#### 6. Boot to create efi.var store and upload to git to bake into future builds.
+#### 6. Boot to create efi.var store at /boot/efi/ubootefi.var and upload to git to bake into future builds.
 
 ```
 run bootcmd
 ```
+
+#### 7. Build immutable U-boot with new efi.vars
