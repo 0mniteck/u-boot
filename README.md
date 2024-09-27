@@ -13,3 +13,9 @@ Prebuilt u-boot-rockchip.bin & u-boot-rockchip-spi.bin are included in a bootabl
 * [ ] Debian based OS already running on an ARM64 CPU
 
 * [ ] Any microSD in the /dev/mmcblk1 slot
+
+### Docs:
+
+https://github.com/0mniteck/U-Boot/tree/rk3399-A/docs
+--> https://github.com/0mniteck/U-Boot/blob/rk3399-A/docs/FLASH.md
+--> https://github.com/0mniteck/U-Boot/blob/rk3399-A/docs/SIGN.md
