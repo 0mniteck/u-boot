@@ -3,10 +3,10 @@
 ### Prerequisites
 1. **YubiKey**: Ensure you have a YubiKey that supports PIV (Personal Identity Verification).
 2. **OpenSSL**: Install OpenSSL on your system.
-3. **YubiKey Manager**: Install the YubiKey Manager to manage your YubiKey.
+3. **Ykman**: Install the YubiKey Manager to manage your YubiKey, might need pcscd.
 4. **Ykcs11**: Install ykcs11 library on your system.
 5. **libengine-pkcs11-openssl**: Install ykcs11 libengine dynamic extention on your system.
-6. **OpenSC**: Install OpenSC on your system.
+6. **OpenSC**: Install OpenSC on your system if you need to debug using pkcs11-tools.
 
 ### Steps to Create a Root CA on YubiKey
 
