@@ -93,7 +93,7 @@ sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3
 # echo "CONFIG_SPL_LOAD_FIT=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_SPL_FIT_SIGNATURE=y" >> configs/rockpro64-rk3399_defconfig
 echo "CONFIG_FIT_SIGNATURE=y" >> configs/rockpro64-rk3399_defconfig
-# echo "CONFIG_RSA=y" >> configs/rockpro64-rk3399_defconfig
+echo "CONFIG_RSA=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_ECDSA=y" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_SPI_FLASH_UNLOCK_ALL=n" >> configs/rockpro64-rk3399_defconfig
 # echo "CONFIG_TPM2_FTPM_TEE=y" >> configs/rockpro64-rk3399_defconfig
