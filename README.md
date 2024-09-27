@@ -2,7 +2,7 @@
 ## Rockchip rk3399 SPI U-Boot Assembler
 
 ### U-Boot Prebuilt Release
-### v2024.07 W/ ATF lts-v2.10.4 & OP-TEE v4.3.0
+### [v2024.07 W/ ATF lts-v2.10.4 & OP-TEE v4.3.0](https://github.com/0mniteck/U-Boot/releases/tag/v2024.07%2Bv2.10.4%2Bv4.3.0)
 Prebuilt u-boot-rockchip.bin & u-boot-rockchip-spi.bin are included in a bootable `sdcard.img` for convenience
 #### RockPro64 - `Builds/RP64/`
 #### PinebookPro - `Builds/PBP/`
