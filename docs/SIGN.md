@@ -7,7 +7,7 @@
 4. **Ykcs11**: Install ykcs11 library on your system.
 5. **libengine-pkcs11-openssl**: Install ykcs11 libengine dynamic extention on your system.
 6. **OpenSC**: Install OpenSC on your system if you need to debug the
-   openssl module using pkcs11-tools --module `` -t.
+   openssl module using pkcs11-tools --module ` ` -t.
 
 ### Steps to Create a Root CA on YubiKey
 
