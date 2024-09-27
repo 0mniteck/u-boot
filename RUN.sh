@@ -41,7 +41,7 @@ else
   ufw reload
   sleep 10
   lxc exec tee apt update && lxc exec tee -- apt upgrade -y
-  lxc exec tee -- apt install -y adb acpica-tools autoconf automake bc bison build-essential ccache cpio cscope curl device-tree-compiler e2tools expect fastboot flex ftp-upload gdisk git libattr1-dev libcap-ng-dev libfdt-dev libftdi-dev libglib2.0-dev libgmp3-dev libhidapi-dev libmpc-dev libncurses5-dev libpixman-1-dev libslirp-dev libssl-dev libtool libusb-1.0-0-dev make mtools netcat ninja-build python3-cryptography python3-pip python3-pyelftools python3-serial python-is-python3 rsync swig unzip uuid-dev wget xalan xdg-utils xterm xz-utils zlib1g-dev
+  lxc exec tee -- apt install -y adb acpica-tools autoconf automake bc bison build-essential ccache cpio cscope curl device-tree-compiler e2tools expect fastboot flex ftp-upload gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi gdisk git libattr1-dev libcap-ng-dev libfdt-dev libftdi-dev libglib2.0-dev libgmp3-dev libhidapi-dev libmpc-dev libncurses5-dev libpixman-1-dev libslirp-dev libssl-dev libtool libusb-1.0-0-dev make mtools netcat ninja-build python3-cryptography python3-pip python3-pyelftools python3-serial python-is-python3 rsync swig unzip uuid-dev wget xalan xdg-utils xterm xz-utils zlib1g-dev
   lxc exec tee -- wget https://github.com/OP-TEE/optee_os/archive/refs/tags/$(echo $OPT_VER).zip
   lxc exec tee -- bash -c "echo '04a2e85947283e49a79cb8d60fde383df28303a9be15080a7f5354268b01f16405178c0c570e253256c3be8e3084d812c8b46b6dc2cb5c8eb3bde8d2ba4c380e  '$(echo $OPT_VER)'.zip' > $(echo $OPT_VER).zip.sum"
   if [[ $(lxc exec tee -- bash -c "sha512sum -c $(echo $OPT_VER).zip.sum") == $(echo $OPT_VER)'.zip: OK' ]]; then echo 'OP-TEE Checksum Matched!'; else echo 'OP-TEE Checksum Mismatched!' & exit 1; fi;
@@ -202,11 +202,7 @@ cp /tmp/rk3399-sd.bin Builds/rk3399-sd.bin
 cp /tmp/rk3399-sd.bin.sum Builds/rk3399-sd.bin.sum
 cp /tmp/rk3399-spi.bin Builds/rk3399-spi.bin
 cp /tmp/rk3399-spi.bin.sum Builds/rk3399-spi.bin.sum
-if [[ -f /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin ]]; then
-  cp /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin Builds/tee.bin;
-else
-  echo "TEE Build Skipped";
-fi
+cp /tmp/tee.bin Builds/tee.bin
 git status && git add -A && git status
 read -p "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For The RockPro64: Sign -->"
 git commit -a -S -m "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For The RockPro64"
