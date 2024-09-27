@@ -69,7 +69,7 @@ echo "CONFIG_CHIMP_OPTEE=n" >> rk3399_defconfig
 # echo "CONFIG_FFA_SHARED_MM_BUF_SIZE=4000" >> rk3399_defconfig
 # echo "CONFIG_FFA_SHARED_MM_BUF_OFFSET=0" >> rk3399_defconfig
 # echo "CONFIG_FFA_SHARED_MM_BUF_ADDR=0x0" >> rk3399_defconfig
-#### echo "CONFIG_SUPPORT_EMMC_RPMB=y" >> rk3399_defconfig
+echo "CONFIG_SUPPORT_EMMC_RPMB=y" >> rk3399_defconfig
 ## echo "CONFIG_SUPPORT_EMMC_BOOT=y" >> rk3399_defconfig
 ## echo "CONFIG_EFI_VARIABLE_FILE_STORE=n" >> rk3399_defconfig
 echo "CONFIG_EFI_VARIABLE_NO_STORE=y" >> rk3399_defconfig
@@ -130,7 +130,7 @@ else
   export GCC5_AARCH64_PREFIX=aarch64-linux-gnu- && \
   source edksetup.sh && \
   make -C BaseTools && \
-  build -p \$ACTIVE_PLATFORM -b RELEASE -a AARCH64 -t GCC5 -n `nproc`"
+  build -n `getconf _NPROCESSORS_ONLN` -p \$ACTIVE_PLATFORM -b RELEASE -a AARCH64 -t GCC5 -D DO_X86EMU=TRUE -n `nproc`"
   lxc file pull edk2/root/Build/MmStandaloneRpmb/RELEASE_GCC5/FV/BL32_AP_MM.fd /tmp/
   snap remove lxd --purge
   popd
@@ -150,13 +150,13 @@ else
   echo "Entering OP-TEE ------"
   ln -s /tmp/BL32_AP_MM.fd
   make -j$(nproc) PLATFORM=rockchip-rk3399 CFG_ARM64_core=y CFG_STMM_PATH=BL32_AP_MM.fd CFG_RPMB_FS=y CFG_RPMB_FS_DEV_ID=0 CFG_CORE_HEAP_SIZE=524288 CFG_RPMB_WRITE_KEY=y \
-  CFG_CORE_DYN_SHM=y CFG_RPMB_TESTKEY=y CFG_REE_FS=n CFG_CORE_ARM64_PA_BITS=48 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE32=arm-linux-gnueabihf- CROSS_COMPILE_core=aarch64-linux-gnu- \
-  CROSS_COMPILE_ta_arm32=arm-linux-gnueabihf- CROSS_COMPILE_ta_arm64=aarch64-linux-gnu- CFG_TEE_CORE_LOG_LEVEL=3 CFG_TEE_TA_LOG_LEVEL=3 CFG_SCTLR_ALIGNMENT_CHECK=n DEBUG=1 CFG_EARLY_CONSOLE_BAUDRATE=115200
+  CFG_CORE_DYN_SHM=y CFG_RPMB_TESTKEY=y CFG_REE_FS=n CFG_CORE_ARM64_PA_BITS=48 CFG_ENABLE_EMBEDDED_TESTS=y CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE32=arm-linux-gnueabihf- CROSS_COMPILE_core=aarch64-linux-gnu- \
+  CROSS_COMPILE_ta_arm32=arm-linux-gnueabihf- CROSS_COMPILE_ta_arm64=aarch64-linux-gnu- CFG_USER_TA_TARGETS=ta_arm64 CFG_TEE_CORE_LOG_LEVEL=3 CFG_TEE_TA_LOG_LEVEL=3 CFG_SCTLR_ALIGNMENT_CHECK=n DEBUG=1 CFG_EARLY_CONSOLE_BAUDRATE=115200
   export TEE=/tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin
   cd ..
-  ln -s /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee-header_v2.bin
-  ln -s /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee-pager_v2.bin
-  ln -s /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee-pageable_v2.bin
+  #ln -s /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee-header_v2.bin
+  #ln -s /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee-pager_v2.bin
+  #ln -s /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee-pageable_v2.bin
   ln -s /tmp/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin
 fi
 wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/lts-v$(echo $ATF_VER).zip
@@ -171,9 +171,9 @@ cd arm-trusted-firmware-lts-v$(echo $ATF_VER)
 echo "Entering TF-A ------"
 make realclean
 # ln -s /tmp/BL32_AP_MM.fd
-ln -s /tmp/tee-header_v2.bin
-ln -s /tmp/tee-pager_v2.bin
-ln -s /tmp/tee-pageable_v2.bin
+# ln -s /tmp/tee-header_v2.bin
+# ln -s /tmp/tee-pager_v2.bin
+# ln -s /tmp/tee-pageable_v2.bin
 # ln -s /tmp/tee.bin
 cp /tmp/platform_common.c plat/rockchip/common/aarch64/platform_common.c
 cp /tmp/platform_def.h plat/rockchip/rk3399/include/platform_def.h
@@ -182,8 +182,9 @@ cp /tmp/platform.mk plat/rockchip/rk3399/platform.mk
 cp /tmp/rk3399_def.h plat/rockchip/rk3399/rk3399_def.h
 cp /tmp/bl31_param.h plat/rockchip/rk3399/include/shared/bl31_param.h
 # make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" PLAT=rk3399 bl31
+make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" SPD=opteed DEBUG=1 LOG_LEVEL=50 CRASH_REPORTING=1 ARCH=aarch64 PLAT=rk3399 bl31
 # BL33=tee.bin BL32=BL32_AP_MM.fd make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" SPM_MM=1 EL3_EXCEPTION_HANDLING=1 ARM_BL31_IN_DRAM=1 CTX_INCLUDE_FPREGS=1 DEBUG=1 LOG_LEVEL=50 PLAT=rk3399 bl31
-BL32=tee-header_v2.bin BL32_EXTRA1=tee-pager_v2.bin BL32_EXTRA2=tee-pageable_v2.bin make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" SPM_MM=1 EL3_EXCEPTION_HANDLING=1 ARM_BL31_IN_DRAM=1 CTX_INCLUDE_FPREGS=1 DEBUG=1 LOG_LEVEL=50 PLAT=rk3399 bl31
+# NEED_BL32=yes BL32=tee-header_v2.bin BL32_EXTRA1=tee-pager_v2.bin BL32_EXTRA2=tee-pageable_v2.bin SPD=opteed make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" SPM_MM=1 EL3_EXCEPTION_HANDLING=1 ARM_BL31_IN_DRAM=1 CTX_INCLUDE_FPREGS=1 DEBUG=1 LOG_LEVEL=50 CRASH_REPORTING=1 PLAT=rk3399 bl31
 export BL31=/tmp/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/debug/bl31/bl31.elf
 cd ..
 cd u-boot-$(echo $UB_VER)
