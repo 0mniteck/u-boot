@@ -65,9 +65,10 @@ cert-to-efi-sig-list -g cc1e39bc-7c39-11ef-b26d-9b41b973d7e9 db.crt db.esl
 sign-efi-sig-list -c KEK.crt -e "pkcs11:1" db db.esl db.auth
 ```
 
-#### 4. Sign shimaa64.efi
+#### 4. Copy .auth files & sign shimaa64.efi
 
 ```
+cp /etc/platform/keys/*.auth /boot/efi/
 rm -f /boot/efi/EFI/ubuntu/shimaa64.efi.signed && sbsign --engine "pkcs11:1" --key 1 --cert db.crt /usr/lib/shim/shimaa64.efi --output /boot/efi/EFI/ubuntu/shimaa64.efi.signed && popd
 ```
 
