@@ -162,10 +162,10 @@ dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
 dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 read -p "Insert another SD Card + yubikey, Then Press Enter to Continue"
 # wip
-PKCS11_MODULE_PATH=/lib/aarch64-linux-gnu/libykcs11.so.2.2.0 openssl req -new -x509 -engine pkcs11 -keyform ENGINE -key 1 -passin pass: -out dev.crt
+PKCS11_MODULE_PATH=/lib/aarch64-linux-gnu/libykcs11.so.2.2.0 openssl req -new -x509 -engine pkcs11 -keyform ENGINE -key 1 -out dev.crt
 tools/mkimage -n rk3399 -T rksd -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin sd_idbloader.img
 tools/mkimage -n rk3399 -T rkspi -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin spi_idbloader.img
-PKCS11_MODULE_PATH=/lib/aarch64-linux-gnu/libykcs11.so.2.2.0 tools/mkimage -F -N "" -K simple-bin.fit.fit -r rk3399.fit
+PKCS11_MODULE_PATH=/lib/aarch64-linux-gnu/libykcs11.so.2.2.0 tools/mkimage -F -N "pkcs11:1" -K simple-bin.fit.fit -r rk3399.fit
 tools/mkimage -n rk3399 -T rksd -f auto -d rk3399.fit -A arm64 -O u-boot rk3399.sd.itb
 tools/mkimage -n rk3399 -T rkspi -f auto -d rk3399.fit -A arm64 -O u-boot rk3399.spi.itb
 dd if=/dev/zero of=sd_idbloader.img conv=notrunc bs=1 count=1 seek=${padsize}
