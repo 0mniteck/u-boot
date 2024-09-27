@@ -1,4 +1,4 @@
-# Post-Build
+# Flashing Recipe
 ### Initial-Flash From Bypassed and Erased SPI (Recommended)
 ### or Update-Flash From Existing U-Boot
 #### Erase current SPI, then boot into U-Boot Via SD/eMMC with Combined SD
