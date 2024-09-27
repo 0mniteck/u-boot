@@ -74,11 +74,11 @@ rm -f /boot/efi/EFI/ubuntu/shimaa64.efi.signed && sbsign --engine "pkcs11:1" --k
 #### 5. Build mutable U-boot & set up secureboot platform keys.
 
 ```
-Build U-boot in mutable mode
+# Build U-boot in mutable mode
 
 reboot
 
-stop autoboot
+# stop autoboot
 
 fatload mmc 0:1 $kernel_addr_r PK.auth
 setenv -e -nv -bs -rt -at -i $kernel_addr_r:$filesize PK
