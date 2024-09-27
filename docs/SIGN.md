@@ -21,7 +21,7 @@ ykman piv keys generate -a RSA2048 --touch-policy ALWAYS --pin-policy ALWAYS 9a 
 Next, you need to create a self-signed certificate using the private key stored on the YubiKey. You can do this with OpenSSL:
 
 ```
-PKCS11_MODULE_PATH=/usr/lib/aarch64-linux-gnu/libykcs11.so.2.2.0
+PKCS11_MODULE_PATH=/usr/lib/aarch64-linux-gnu/libykcs11.so.2.2.0 or
 PKCS11_MODULE_PATH=/usr/lib/x86_64-linux-gnu/libykcs11.so.2.2.0 openssl x509 -new -engine pkcs11 -keyform ENGINE -key 1 -out ca.pem -subj "/C=US/ST=CA/O=OMNITECK/CN=Root CA" -days 1826
 openssl x509 -inform PEM -outform DER -in ca.pem -out ca.der
 ```
