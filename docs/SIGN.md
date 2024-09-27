@@ -1,5 +1,6 @@
 ## Signing Recipe
 
+```
 openssl req -x509 -sha256 -engine pkcs11 -keyform ENGINE -key 1 -subj /CN=OMNITECK_PK/ -out PK.crt -nodes -days 1826
 cert-to-efi-sig-list -g cc1e39bc-7c39-11ef-b26d-9b41b973d7e9 PK.crt PK.esl;
 sign-efi-sig-list -c PK.crt -e "pkcs11:1" PK PK.esl PK.auth
@@ -23,3 +24,4 @@ setenv -e -nv -bs -rt -at -i $kernel_addr_r:$filesize KEK
 fatload mmc 0:1 $kernel_addr_r db.auth
 setenv -e -nv -bs -rt -at -i $kernel_addr_r:$filesize db
 run bootcmd
+```
