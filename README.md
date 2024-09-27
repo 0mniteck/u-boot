@@ -14,7 +14,6 @@ Prebuilt u-boot-rockchip.bin & u-boot-rockchip-spi.bin are included in a bootabl
 
 * [ ] Any microSD in the /dev/mmcblk1 slot
 
-### Docs:
 
 ### [Docs:](https://github.com/0mniteck/U-Boot/tree/rk3399-A/docs)
 
