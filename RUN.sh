@@ -94,6 +94,22 @@ echo "CONFIG_CMD_NVEDIT_EFI=y" >> rk3399_defconfig
 ## echo "CONFIG_CMD_EFIDEBUG=y" >> rk3399_defconfig
 popd
 
+snap install lxd && lxd init --auto && lxc launch ubuntu:24.04 sbtools && sleep 30 && ufw reload && sleep 10 && \
+lxc exec sbtools apt update && lxc exec sbtools -- apt upgrade -y && lxc exec sbtools -- apt install binutils-dev build-essential make automake -y && \
+lxc exec sbtools -- git clone https://git.kernel.org/pub/scm/linux/kernel/git/jejb/sbsigntools.git
+# https://git.kernel.org/pub/scm/linux/kernel/git/jejb/sbsigntools.git/snapshot/sbsigntools-0.9.5.tar.gz
+# lxc exec sbtools -- bash -c "echo '3b23bdf1855132a91e2063039bd4d14c5564e9cd8f551711aa89a91646ff783afb6e318479e9cf46eedbc914a1eade142398c774d8dbfef8fd1d65cbbe60aabd  sbsigntools-0.9.5.tar.gz' > sbsigntools-0.9.5.tar.gz.sum"
+# if [[ $(lxc exec sbtools -- bash -c "sha512sum -c sbsigntools-0.9.5.tar.gz.sum") == 'sbsigntools-0.9.5.tar.gz: OK' ]]; then echo 'sbsign Checksum Matched!'; else echo 'sbsign Checksum Mismatched!' & exit 1; fi;
+# lxc exec sbtools -- gunzip sbsigntools-0.9.5.tar.gz
+# lxc exec sbtools -- tar -xf sbsigntools-0.9.5.tar
+echo "Entering sbsign ------"
+lxc exec sbtools --cwd /root/sbsigntools -- ./autogen.sh && \
+lxc exec sbtools --cwd /root/sbsigntools -- ./configure && \
+lxc exec sbtools --cwd /root/sbsigntools -- make && \
+lxc exec sbtools --cwd /root/sbsigntools -- make install
+# lxc file pull tee/root/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin /tmp/
+snap remove lxd --purge
+
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
 #cp includes/platform_common.c /tmp/platform_common.c
