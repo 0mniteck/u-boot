@@ -7,7 +7,8 @@
    - you need to restart pcscd 'sudo service pcscd start'.
 5. **Ykcs11**: Install ykcs11 library on your system.
 6. **libengine-pkcs11-openssl**: Install ykcs11 libengine dynamic extention on your system.
-7. **OpenSC**: Install OpenSC on your system if you need to debug the module using pkcs11-tools --module ` ` -t.
+7. **OpenSC**: Install OpenSC on your system if you need to debug the module
+   - pkcs11-tools --module ` ` -t.
 
 ### Steps to Create a Root CA on YubiKey
 
