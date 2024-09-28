@@ -95,7 +95,7 @@ echo "CONFIG_CMD_NVEDIT_EFI=y" >> rk3399_defconfig
 popd
 
 snap install lxd && lxd init --auto && lxc launch ubuntu:24.04 sbtools && sleep 30 && ufw reload && sleep 10 && \
-lxc exec sbtools apt update && lxc exec sbtools -- apt upgrade -y && lxc exec sbtools -- apt install binutils-dev build-essential make automake -y && \
+lxc exec sbtools apt update && lxc exec sbtools -- apt upgrade -y && lxc exec sbtools -- apt install binutils-dev build-essential make automake pkg-config -y && \
 lxc exec sbtools -- git clone https://git.kernel.org/pub/scm/linux/kernel/git/jejb/sbsigntools.git
 # https://git.kernel.org/pub/scm/linux/kernel/git/jejb/sbsigntools.git/snapshot/sbsigntools-0.9.5.tar.gz
 # lxc exec sbtools -- bash -c "echo '3b23bdf1855132a91e2063039bd4d14c5564e9cd8f551711aa89a91646ff783afb6e318479e9cf46eedbc914a1eade142398c774d8dbfef8fd1d65cbbe60aabd  sbsigntools-0.9.5.tar.gz' > sbsigntools-0.9.5.tar.gz.sum"
