@@ -75,8 +75,7 @@ sign-efi-sig-list -i db.signed -t 'Sep 28 00:00:00 PDT 2024' db db.esl db.auth
 #### 4. Copy .auth files & sign shimaa64.efi
 
 ```
-cp /etc/platform/keys/*.auth /boot/efi/
-rm -f /boot/efi/EFI/ubuntu/shimaa64.efi.signed && sbsign --engine "pkcs11" --key 1 --cert db.crt /usr/lib/shim/shimaa64.efi --output /boot/efi/EFI/ubuntu/shimaa64.efi.signed && popd
+cp /etc/platform/keys/*.auth /boot/efi/ && rm -f /boot/efi/EFI/ubuntu/shimaa64.efi.signed && sbsign --engine "pkcs11" --key 1 --cert db.crt /usr/lib/shim/shimaa64.efi --output /boot/efi/EFI/ubuntu/shimaa64.efi.signed && popd
 ```
 
 #### 5. Build mutable U-boot & set up secureboot platform keys.
