@@ -16,7 +16,7 @@
 You can generate a key pair directly on the YubiKey using the YubiKey PIV application. Here’s how to do it:
 
 ```
-sudo su && ykman piv keys generate -a RSA2048 --touch-policy ALWAYS --pin-policy ALWAYS 9a /tmp/public_key.pem && mv /tmp/public_key.pem /etc/platform/keys/public_key.pem
+sudo su && ykman piv keys generate -a RSA2048 --touch-policy ALWAYS --pin-policy ALWAYS 9a /tmp/public_key.pem && mv /tmp/snap-private-tmp/snap.ykman/tmp/public_key.pem /etc/platform/keys/public_key.pem
 ```
 
 #### 2. Create a Self-Signed Certificate
