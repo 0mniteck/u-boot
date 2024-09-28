@@ -30,7 +30,7 @@ pushd /etc/platform/keys/ && PKCS11_MODULE_PATH=/usr/lib/aarch64-linux-gnu/libyk
 You can import the self-signed certificate back to the YubiKey:
 
 ```
-ykman piv certificates import -v 9a ca.pem
+mv /etc/platform/keys/ca.pem /tmp/snap-private-tmp/snap.ykman/tmp/ca.pem && ykman piv certificates import -v 9a /tmp/snap-private-tmp/snap.ykman/tmp/ca.pem
 ```
 
 #### 4. Verify the Certificate
