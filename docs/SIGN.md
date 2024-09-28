@@ -23,7 +23,7 @@ sudo su && ykman piv keys generate -a RSA2048 --touch-policy ALWAYS --pin-policy
 Next, you need to create a self-signed certificate using the private key stored on the YubiKey. You can do this with OpenSSL:
 
 ```
-pushd /etc/platform/keys/ && PKCS11_MODULE_PATH=/usr/lib/aarch64-linux-gnu/libykcs11.so.2.2.0 openssl x509 -new -engine pkcs11 -keyform ENGINE -key 1 -out ca.pem -subj "/C=US/ST=CA/O=OMNITECK/CN=Root CA" -days 1826
+pushd /etc/platform/keys/ && export PKCS11_MODULE_PATH=/usr/lib/aarch64-linux-gnu/libykcs11.so.2.2.0 && openssl x509 -new -engine pkcs11 -keyform ENGINE -key 1 -out ca.pem -subj "/C=US/ST=CA/O=OMNITECK/CN=Root CA" -days 1826
 ```
 
 #### 3. Import the Certificate to YubiKey
@@ -46,8 +46,12 @@ ykman piv info
 
 ```
 openssl req -x509 -sha256 -engine pkcs11 -keyform ENGINE -key 1 -subj /CN=OMNITECK_PK/ -out PK.crt -nodes -days 1826
-cert-to-efi-sig-list -g cc1e39bc-7c39-11ef-b26d-9b41b973d7e9 PK.crt PK.esl;
-sign-efi-sig-list -c PK.crt -e "pkcs11:1" PK PK.esl PK.auth
+cert-to-efi-sig-list -g cc1e39bc-7c39-11ef-b26d-9b41b973d7e9 PK.crt PK.esl
+sign-efi-sig-list -c PK.crt -t 'Sep 28 00:00:00 PDT 2024' -o PK PK.esl PK.forsig
+openssl smime -sign -binary -engine pkcs11 -keyform ENGINE -in PK.forsig -out PK.signed -signer PK.crt -inkey 1 -outform DER -md sha256
+sign-efi-sig-list -i PK.signed -t 'Sep 28 00:00:00 PDT 2024' PK PK.auth
+
+# (SEG_FAULT) sign-efi-sig-list -c PK.crt -k 1 -e "pkcs11" PK PK.esl PK.auth
 ```
 
 #### 2. Key Exchange Keys
@@ -55,7 +59,11 @@ sign-efi-sig-list -c PK.crt -e "pkcs11:1" PK PK.esl PK.auth
 ```
 openssl req -x509 -sha256 -engine pkcs11 -keyform ENGINE -key 1 -subj /CN=OMNITECK_KEK/ -out KEK.crt -nodes -days 1826
 cert-to-efi-sig-list -g cc1e39bc-7c39-11ef-b26d-9b41b973d7e9 KEK.crt KEK.esl
-sign-efi-sig-list -c PK.crt -e "pkcs11:1" KEK KEK.esl KEK.auth
+sign-efi-sig-list -c PK.crt -t 'Sep 28 00:00:00 PDT 2024' -o KEK KEK.esl KEK.forsig
+openssl smime -sign -binary -engine pkcs11 -keyform ENGINE -in KEK.forsig -out KEK.signed -signer PK.crt -inkey 1 -outform DER -md sha256
+sign-efi-sig-list -i KEK.signed -t 'Sep 28 00:00:00 PDT 2024' KEK KEK.auth
+
+# (SEG_FAULT) sign-efi-sig-list -c PK.crt -e "pkcs11:1" KEK KEK.esl KEK.auth
 ```
 
 #### 3. Database Keys
@@ -63,14 +71,18 @@ sign-efi-sig-list -c PK.crt -e "pkcs11:1" KEK KEK.esl KEK.auth
 ```
 openssl req -x509 -sha256 -engine pkcs11 -keyform ENGINE -key 1 -subj /CN=OMNITECK_db/ -out db.crt -nodes -days 1826
 cert-to-efi-sig-list -g cc1e39bc-7c39-11ef-b26d-9b41b973d7e9 db.crt db.esl
-sign-efi-sig-list -c KEK.crt -e "pkcs11:1" db db.esl db.auth
+sign-efi-sig-list -c KEK.crt -t 'Sep 28 00:00:00 PDT 2024' -o db db.esl db.forsig
+openssl smime -sign -binary -engine pkcs11 -keyform ENGINE -in db.forsig -out db.signed -signer KEK.crt -inkey 1 -outform DER -md sha256
+sign-efi-sig-list -i db.signed -t 'Sep 28 00:00:00 PDT 2024' db db.auth
+
+# (SEG_FAULT) sign-efi-sig-list -c KEK.crt -e "pkcs11:1" db db.esl db.auth
 ```
 
 #### 4. Copy .auth files & sign shimaa64.efi
 
 ```
 cp /etc/platform/keys/*.auth /boot/efi/
-rm -f /boot/efi/EFI/ubuntu/shimaa64.efi.signed && sbsign --engine "pkcs11:1" --key 1 --cert db.crt /usr/lib/shim/shimaa64.efi --output /boot/efi/EFI/ubuntu/shimaa64.efi.signed && popd
+rm -f /boot/efi/EFI/ubuntu/shimaa64.efi.signed && sbsign --engine "pkcs11" --key 1 --cert db.crt /usr/lib/shim/shimaa64.efi --output /boot/efi/EFI/ubuntu/shimaa64.efi.signed && popd
 ```
 
 #### 5. Build mutable U-boot & set up secureboot platform keys.
