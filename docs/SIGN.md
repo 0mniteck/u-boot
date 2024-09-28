@@ -49,9 +49,7 @@ openssl req -x509 -sha256 -engine pkcs11 -keyform ENGINE -key 1 -subj /CN=OMNITE
 cert-to-efi-sig-list -g cc1e39bc-7c39-11ef-b26d-9b41b973d7e9 PK.crt PK.esl
 sign-efi-sig-list -c PK.crt -t 'Sep 28 00:00:00 PDT 2024' -o PK PK.esl PK.forsig
 openssl smime -sign -binary -engine pkcs11 -keyform ENGINE -in PK.forsig -out PK.signed -signer PK.crt -inkey 1 -outform DER -md sha256
-sign-efi-sig-list -i PK.signed -t 'Sep 28 00:00:00 PDT 2024' PK PK.auth
-
-# (SEG_FAULT) sign-efi-sig-list -c PK.crt -k 1 -e "pkcs11" PK PK.esl PK.auth
+sign-efi-sig-list -i PK.signed -t 'Sep 28 00:00:00 PDT 2024' PK PK.esl PK.auth
 ```
 
 #### 2. Key Exchange Keys
@@ -61,9 +59,7 @@ openssl req -x509 -sha256 -engine pkcs11 -keyform ENGINE -key 1 -subj /CN=OMNITE
 cert-to-efi-sig-list -g cc1e39bc-7c39-11ef-b26d-9b41b973d7e9 KEK.crt KEK.esl
 sign-efi-sig-list -c PK.crt -t 'Sep 28 00:00:00 PDT 2024' -o KEK KEK.esl KEK.forsig
 openssl smime -sign -binary -engine pkcs11 -keyform ENGINE -in KEK.forsig -out KEK.signed -signer PK.crt -inkey 1 -outform DER -md sha256
-sign-efi-sig-list -i KEK.signed -t 'Sep 28 00:00:00 PDT 2024' KEK KEK.auth
-
-# (SEG_FAULT) sign-efi-sig-list -c PK.crt -e "pkcs11:1" KEK KEK.esl KEK.auth
+sign-efi-sig-list -i KEK.signed -t 'Sep 28 00:00:00 PDT 2024' KEK KEK.esl KEK.auth
 ```
 
 #### 3. Database Keys
@@ -73,9 +69,7 @@ openssl req -x509 -sha256 -engine pkcs11 -keyform ENGINE -key 1 -subj /CN=OMNITE
 cert-to-efi-sig-list -g cc1e39bc-7c39-11ef-b26d-9b41b973d7e9 db.crt db.esl
 sign-efi-sig-list -c KEK.crt -t 'Sep 28 00:00:00 PDT 2024' -o db db.esl db.forsig
 openssl smime -sign -binary -engine pkcs11 -keyform ENGINE -in db.forsig -out db.signed -signer KEK.crt -inkey 1 -outform DER -md sha256
-sign-efi-sig-list -i db.signed -t 'Sep 28 00:00:00 PDT 2024' db db.auth
-
-# (SEG_FAULT) sign-efi-sig-list -c KEK.crt -e "pkcs11:1" db db.esl db.auth
+sign-efi-sig-list -i db.signed -t 'Sep 28 00:00:00 PDT 2024' db db.esl db.auth
 ```
 
 #### 4. Copy .auth files & sign shimaa64.efi
