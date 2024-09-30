@@ -106,22 +106,26 @@ cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp
 cp includes/logo.bmp /tmp/logo.bmp
 cp includes/efi.var /tmp/efi.var
 
-# https://git.kernel.org/pub/scm/linux/kernel/git/jejb/sbsigntools.git/snapshot/sbsigntools-0.9.5.tar.gz
-# lxc exec sbtools -- bash -c "echo '3b23bdf1855132a91e2063039bd4d14c5564e9cd8f551711aa89a91646ff783afb6e318479e9cf46eedbc914a1eade142398c774d8dbfef8fd1d65cbbe60aabd  sbsigntools-0.9.5.tar.gz' > sbsigntools-0.9.5.tar.gz.sum"
-# if [[ $(lxc exec sbtools -- bash -c "sha512sum -c sbsigntools-0.9.5.tar.gz.sum") == 'sbsigntools-0.9.5.tar.gz: OK' ]]; then echo 'sbsign Checksum Matched!'; else echo 'sbsign Checksum Mismatched!' & exit 1; fi;
-# lxc exec sbtools -- gunzip sbsigntools-0.9.5.tar.gz
-# lxc exec sbtools -- tar -xf sbsigntools-0.9.5.tar
-snap install lxd && lxd init --auto && lxc launch ubuntu:24.04 sbtools && sleep 30 && ufw reload && sleep 10
-lxc exec sbtools apt update && lxc exec sbtools -- apt upgrade -y
-lxc exec sbtools -- apt install automake binutils-dev build-essential gnu-efi help2man libssl-dev make openssl pkg-config uuid uuid-dev -y
-lxc exec sbtools -- git clone https://git.kernel.org/pub/scm/linux/kernel/git/jejb/sbsigntools.git
-echo "Entering sbsign ------"
-lxc exec sbtools --cwd /root/sbsigntools -- ./autogen.sh
-lxc exec sbtools --cwd /root/sbsigntools -- ./configure
-lxc exec sbtools --cwd /root/sbsigntools -- make
-lxc exec sbtools --cwd /root/sbsigntools -- make install
-lxc file pull sbtools/root/sbsigntools/src/sbsign /tmp/
-snap remove lxd --purge
+if [ -f Builds/sbsign ]; then
+  cp Builds/sbsign /tmp/sbsign
+else
+  # https://git.kernel.org/pub/scm/linux/kernel/git/jejb/sbsigntools.git/snapshot/sbsigntools-0.9.5.tar.gz
+  # lxc exec sbtools -- bash -c "echo '3b23bdf1855132a91e2063039bd4d14c5564e9cd8f551711aa89a91646ff783afb6e318479e9cf46eedbc914a1eade142398c774d8dbfef8fd1d65cbbe60aabd  sbsigntools-0.9.5.tar.gz' > sbsigntools-0.9.5.tar.gz.sum"
+  # if [[ $(lxc exec sbtools -- bash -c "sha512sum -c sbsigntools-0.9.5.tar.gz.sum") == 'sbsigntools-0.9.5.tar.gz: OK' ]]; then echo 'sbsign Checksum Matched!'; else echo 'sbsign Checksum Mismatched!' & exit 1; fi;
+  # lxc exec sbtools -- gunzip sbsigntools-0.9.5.tar.gz
+  # lxc exec sbtools -- tar -xf sbsigntools-0.9.5.tar
+  snap install lxd && lxd init --auto && lxc launch ubuntu:24.04 sbtools && sleep 30 && ufw reload && sleep 10
+  lxc exec sbtools apt update && lxc exec sbtools -- apt upgrade -y
+  lxc exec sbtools -- apt install automake binutils-dev build-essential gnu-efi help2man libssl-dev make openssl pkg-config uuid uuid-dev -y
+  lxc exec sbtools -- git clone https://git.kernel.org/pub/scm/linux/kernel/git/jejb/sbsigntools.git
+  echo "Entering sbsign ------"
+  lxc exec sbtools --cwd /root/sbsigntools -- ./autogen.sh
+  lxc exec sbtools --cwd /root/sbsigntools -- ./configure
+  lxc exec sbtools --cwd /root/sbsigntools -- make
+  lxc exec sbtools --cwd /root/sbsigntools -- make install
+  lxc file pull sbtools/root/sbsigntools/src/sbsign /tmp/
+  snap remove lxd --purge
+fi
 
 if [ -f Builds/tee.bin ]; then
   cp Builds/tee.bin /tmp/tee.bin
@@ -226,6 +230,7 @@ cp /tmp/rk3399-sd.bin.sum Builds/rk3399-sd.bin.sum
 cp /tmp/rk3399-spi.bin Builds/rk3399-spi.bin
 cp /tmp/rk3399-spi.bin.sum Builds/rk3399-spi.bin.sum
 cp /tmp/tee.bin Builds/tee.bin
+cp /tmp/sbsign Builds/sbsign
 git status && git add -A && git status
 read -p "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For The RockPro64: Sign -->"
 git commit -a -S -m "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For The RockPro64"
