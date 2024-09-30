@@ -94,7 +94,6 @@ echo "CONFIG_CMD_NVEDIT_EFI=y" >> rk3399_defconfig
 ## echo "CONFIG_CMD_EFIDEBUG=y" >> rk3399_defconfig
 popd
 
-
 # https://git.kernel.org/pub/scm/linux/kernel/git/jejb/sbsigntools.git/snapshot/sbsigntools-0.9.5.tar.gz
 # lxc exec sbtools -- bash -c "echo '3b23bdf1855132a91e2063039bd4d14c5564e9cd8f551711aa89a91646ff783afb6e318479e9cf46eedbc914a1eade142398c774d8dbfef8fd1d65cbbe60aabd  sbsigntools-0.9.5.tar.gz' > sbsigntools-0.9.5.tar.gz.sum"
 # if [[ $(lxc exec sbtools -- bash -c "sha512sum -c sbsigntools-0.9.5.tar.gz.sum") == 'sbsigntools-0.9.5.tar.gz: OK' ]]; then echo 'sbsign Checksum Matched!'; else echo 'sbsign Checksum Mismatched!' & exit 1; fi;
@@ -122,6 +121,7 @@ cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp
 cp includes/logo.bmp /tmp/logo.bmp
 cp includes/efi.var /tmp/efi.var
 apt update && apt install bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y
+
 if [ -f Builds/tee.bin ]; then
   cp Builds/tee.bin /tmp/tee.bin
   export TEE=/tmp/tee.bin
@@ -144,6 +144,7 @@ else
   snap remove lxd --purge
   export TEE=/tmp/tee.bin
 fi
+
 wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/lts-v$(echo $ATF_VER).zip
 echo '5252dc59f1133d9c3fae5560954d9810e97a7e3b018522fddea584343d742a110c65678115cb0f554c201b5f7326353eec9a54031485156b6ca0788f53d33882  lts-v'$(echo $ATF_VER)'.zip' > v$(echo $ATF_VER).zip.sum
 if [[ $(sha512sum -c v$(echo $ATF_VER).zip.sum) == 'lts-v'$(echo $ATF_VER)'.zip: OK' ]]; then echo 'ATF Checksum Matched!'; else echo 'ATF Checksum Mismatched!' & exit 1; fi;
@@ -152,6 +153,7 @@ echo '0a3e614ba0fd14224f52a8ad3e68e22df08f6e02c43e9183a459d80b4f37b4f384a4bfef76
 if [[ $(sha512sum -c v$(echo $UB_VER).zip.sum) == 'v'$(echo $UB_VER)'.zip: OK' ]]; then echo 'U-Boot Checksum Matched!'; else echo 'U-Boot Checksum Mismatched!' & exit 1; fi;
 unzip lts-v$(echo $ATF_VER).zip
 unzip v$(echo $UB_VER).zip
+
 cd arm-trusted-firmware-lts-v$(echo $ATF_VER)
 echo "Entering TF-A ------"
 make realclean
@@ -164,6 +166,7 @@ make realclean
 make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" PLAT=rk3399 bl31
 export BL31=/tmp/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/release/bl31/bl31.elf
 cd ..
+
 cd u-boot-$(echo $UB_VER)
 echo "Entering U-Boot ------"
 make clean
