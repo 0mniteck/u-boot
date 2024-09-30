@@ -102,7 +102,7 @@ popd
 # lxc exec sbtools -- tar -xf sbsigntools-0.9.5.tar
 snap install lxd && lxd init --auto && lxc launch ubuntu:24.04 sbtools && sleep 30 && ufw reload && sleep 10 && \
 lxc exec sbtools apt update && lxc exec sbtools -- apt upgrade -y && \
-lxc exec sbtools -- apt install automake binutils-dev build-essential libssl-dev make openssl pkg-config uuid -y && \
+lxc exec sbtools -- apt install automake binutils-dev build-essential gnu-efi libssl-dev make openssl pkg-config uuid uuid-dev -y && \
 lxc exec sbtools -- git clone https://git.kernel.org/pub/scm/linux/kernel/git/jejb/sbsigntools.git && \
 echo "Entering sbsign ------" && \
 lxc exec sbtools --cwd /root/sbsigntools -- ./autogen.sh && \
