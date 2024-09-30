@@ -101,14 +101,14 @@ popd
 # if [[ $(lxc exec sbtools -- bash -c "sha512sum -c sbsigntools-0.9.5.tar.gz.sum") == 'sbsigntools-0.9.5.tar.gz: OK' ]]; then echo 'sbsign Checksum Matched!'; else echo 'sbsign Checksum Mismatched!' & exit 1; fi;
 # lxc exec sbtools -- gunzip sbsigntools-0.9.5.tar.gz
 # lxc exec sbtools -- tar -xf sbsigntools-0.9.5.tar
-snap install lxd && lxd init --auto && lxc launch ubuntu:24.04 sbtools && sleep 30 && ufw reload && sleep 10 && \
-lxc exec sbtools apt update && lxc exec sbtools -- apt upgrade -y && \
-lxc exec sbtools -- apt install automake binutils-dev build-essential gnu-efi help2man libssl-dev make openssl pkg-config uuid uuid-dev -y && \
-lxc exec sbtools -- git clone https://git.kernel.org/pub/scm/linux/kernel/git/jejb/sbsigntools.git && \
-echo "Entering sbsign ------" && \
-lxc exec sbtools --cwd /root/sbsigntools -- ./autogen.sh && \
-lxc exec sbtools --cwd /root/sbsigntools -- ./configure && \
-lxc exec sbtools --cwd /root/sbsigntools -- make && \
+snap install lxd && lxd init --auto && lxc launch ubuntu:24.04 sbtools && sleep 30 && ufw reload && sleep 10
+lxc exec sbtools apt update && lxc exec sbtools -- apt upgrade -y
+lxc exec sbtools -- apt install automake binutils-dev build-essential gnu-efi help2man libssl-dev make openssl pkg-config uuid uuid-dev -y
+lxc exec sbtools -- git clone https://git.kernel.org/pub/scm/linux/kernel/git/jejb/sbsigntools.git
+echo "Entering sbsign ------"
+lxc exec sbtools --cwd /root/sbsigntools -- ./autogen.sh
+lxc exec sbtools --cwd /root/sbsigntools -- ./configure
+lxc exec sbtools --cwd /root/sbsigntools -- make
 lxc exec sbtools --cwd /root/sbsigntools -- make install
 lxc file pull sbtools/root/sbsigntools/src/sbsign /tmp/
 snap remove lxd --purge
