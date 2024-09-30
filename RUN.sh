@@ -94,7 +94,26 @@ echo "CONFIG_CMD_NVEDIT_EFI=y" >> rk3399_defconfig
 ## echo "CONFIG_CMD_BOOTMENU=y" >> rk3399_defconfig
 ## echo "CONFIG_CMD_BOOTEFI_BOOTMGR=y" >> rk3399_defconfig
 ## echo "CONFIG_CMD_EFIDEBUG=y" >> rk3399_defconfig
+
+wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/lts-v$(echo $ATF_VER).zip
+echo '5252dc59f1133d9c3fae5560954d9810e97a7e3b018522fddea584343d742a110c65678115cb0f554c201b5f7326353eec9a54031485156b6ca0788f53d33882  lts-v'$(echo $ATF_VER)'.zip' > v$(echo $ATF_VER).zip.sum
+if [[ $(sha512sum -c v$(echo $ATF_VER).zip.sum) == 'lts-v'$(echo $ATF_VER)'.zip: OK' ]]; then echo 'ATF Checksum Matched!'; else echo 'ATF Checksum Mismatched!' & exit 1; fi;
+wget https://github.com/u-boot/u-boot/archive/refs/tags/v$(echo $UB_VER).zip
+echo '0a3e614ba0fd14224f52a8ad3e68e22df08f6e02c43e9183a459d80b4f37b4f384a4bfef7627a3863388fcffb1472c38d178810bed401f63eb8b5d0a21456603  v'$(echo $UB_VER)'.zip' > v$(echo $UB_VER).zip.sum
+if [[ $(sha512sum -c v$(echo $UB_VER).zip.sum) == 'v'$(echo $UB_VER)'.zip: OK' ]]; then echo 'U-Boot Checksum Matched!'; else echo 'U-Boot Checksum Mismatched!' & exit 1; fi;
+unzip lts-v$(echo $ATF_VER).zip
+unzip v$(echo $UB_VER).zip
 popd
+
+cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
+# cp includes/platform_common.c /tmp/platform_common.c
+# cp includes/platform_def.h /tmp/platform_def.h
+# cp includes/plat_private.h /tmp/plat_private.h
+# cp includes/platform.mk /tmp/platform.mk
+# cp includes/rk3399_def.h /tmp/rk3399_def.h
+# cp includes/bl31_param.h /tmp/bl31_param.h
+cp includes/logo.bmp /tmp/logo.bmp
+cp includes/efi.var /tmp/efi.var
 
 # https://git.kernel.org/pub/scm/linux/kernel/git/jejb/sbsigntools.git/snapshot/sbsigntools-0.9.5.tar.gz
 # lxc exec sbtools -- bash -c "echo '3b23bdf1855132a91e2063039bd4d14c5564e9cd8f551711aa89a91646ff783afb6e318479e9cf46eedbc914a1eade142398c774d8dbfef8fd1d65cbbe60aabd  sbsigntools-0.9.5.tar.gz' > sbsigntools-0.9.5.tar.gz.sum"
@@ -112,16 +131,6 @@ lxc exec sbtools --cwd /root/sbsigntools -- make
 lxc exec sbtools --cwd /root/sbsigntools -- make install
 lxc file pull sbtools/root/sbsigntools/src/sbsign /tmp/
 snap remove lxd --purge
-
-cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
-# cp includes/platform_common.c /tmp/platform_common.c
-# cp includes/platform_def.h /tmp/platform_def.h
-# cp includes/plat_private.h /tmp/plat_private.h
-# cp includes/platform.mk /tmp/platform.mk
-# cp includes/rk3399_def.h /tmp/rk3399_def.h
-# cp includes/bl31_param.h /tmp/bl31_param.h
-cp includes/logo.bmp /tmp/logo.bmp
-cp includes/efi.var /tmp/efi.var
 
 if [ -f Builds/tee.bin ]; then
   cp Builds/tee.bin /tmp/tee.bin
@@ -145,15 +154,6 @@ else
   snap remove lxd --purge
   export TEE=/tmp/tee.bin
 fi
-
-wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/lts-v$(echo $ATF_VER).zip
-echo '5252dc59f1133d9c3fae5560954d9810e97a7e3b018522fddea584343d742a110c65678115cb0f554c201b5f7326353eec9a54031485156b6ca0788f53d33882  lts-v'$(echo $ATF_VER)'.zip' > v$(echo $ATF_VER).zip.sum
-if [[ $(sha512sum -c v$(echo $ATF_VER).zip.sum) == 'lts-v'$(echo $ATF_VER)'.zip: OK' ]]; then echo 'ATF Checksum Matched!'; else echo 'ATF Checksum Mismatched!' & exit 1; fi;
-wget https://github.com/u-boot/u-boot/archive/refs/tags/v$(echo $UB_VER).zip
-echo '0a3e614ba0fd14224f52a8ad3e68e22df08f6e02c43e9183a459d80b4f37b4f384a4bfef7627a3863388fcffb1472c38d178810bed401f63eb8b5d0a21456603  v'$(echo $UB_VER)'.zip' > v$(echo $UB_VER).zip.sum
-if [[ $(sha512sum -c v$(echo $UB_VER).zip.sum) == 'v'$(echo $UB_VER)'.zip: OK' ]]; then echo 'U-Boot Checksum Matched!'; else echo 'U-Boot Checksum Mismatched!' & exit 1; fi;
-unzip lts-v$(echo $ATF_VER).zip
-unzip v$(echo $UB_VER).zip
 
 cd arm-trusted-firmware-lts-v$(echo $ATF_VER)
 echo "Entering TF-A ------"
