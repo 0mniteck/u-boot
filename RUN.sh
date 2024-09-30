@@ -110,6 +110,7 @@ lxc exec sbtools --cwd /root/sbsigntools -- ./autogen.sh && \
 lxc exec sbtools --cwd /root/sbsigntools -- ./configure && \
 lxc exec sbtools --cwd /root/sbsigntools -- make && \
 lxc exec sbtools --cwd /root/sbsigntools -- make install
+lxc file pull sbtools/root/sbsigntools/src/sbsign /tmp/sbsign
 snap remove lxd --purge
 
 cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
