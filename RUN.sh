@@ -110,7 +110,7 @@ lxc exec sbtools --cwd /root/sbsigntools -- ./autogen.sh && \
 lxc exec sbtools --cwd /root/sbsigntools -- ./configure && \
 lxc exec sbtools --cwd /root/sbsigntools -- make && \
 lxc exec sbtools --cwd /root/sbsigntools -- make install
-lxc file pull sbtools/root/sbsigntools/src/sbsign /tmp/sbsign
+lxc file pull sbtools/root/sbsigntools/src/sbsign /tmp/
 snap remove lxd --purge
 
 cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
@@ -190,7 +190,7 @@ read -p "Insert another SD Card + yubikey, Then Press Enter to Continue"
 openssl req -new -x509 -engine pkcs11 -keyform ENGINE -key 1 -out dev.crt
 tools/mkimage -n rk3399 -T rksd -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin sd_idbloader.img
 tools/mkimage -n rk3399 -T rkspi -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin spi_idbloader.img
-tools/mkimage -F -N "pkcs11:1" -K simple-bin.fit.fit -r rk3399.fit
+tools/mkimage -F -N pkcs11 -k 1 -K simple-bin.fit.fit -r rk3399.fit
 tools/mkimage -n rk3399 -T rksd -f auto -d rk3399.fit -A arm64 -O u-boot rk3399.sd.itb
 tools/mkimage -n rk3399 -T rkspi -f auto -d rk3399.fit -A arm64 -O u-boot rk3399.spi.itb
 dd if=/dev/zero of=sd_idbloader.img conv=notrunc bs=1 count=1 seek=${padsize}
