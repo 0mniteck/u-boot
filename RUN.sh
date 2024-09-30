@@ -18,6 +18,8 @@ export FORCE_SOURCE_DATE;
 export SOURCE_DATE;
 export SOURCE_DATE_EPOCH;
 export BUILD_MESSAGE_TIMESTAMP;
+git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
+apt update && apt install bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y
 
 pushd /tmp/
 # echo "CONFIG_LOG=y" >> rk3399_defconfig
@@ -110,7 +112,6 @@ lxc exec sbtools --cwd /root/sbsigntools -- make && \
 lxc exec sbtools --cwd /root/sbsigntools -- make install
 snap remove lxd --purge
 
-git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
 # cp includes/platform_common.c /tmp/platform_common.c
 # cp includes/platform_def.h /tmp/platform_def.h
@@ -120,7 +121,6 @@ cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp
 # cp includes/bl31_param.h /tmp/bl31_param.h
 cp includes/logo.bmp /tmp/logo.bmp
 cp includes/efi.var /tmp/efi.var
-apt update && apt install bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y
 
 if [ -f Builds/tee.bin ]; then
   cp Builds/tee.bin /tmp/tee.bin
