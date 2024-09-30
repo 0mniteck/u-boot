@@ -86,9 +86,13 @@ rm -f /boot/efi/*.auth && cp /etc/platform/keys/*.auth /boot/efi/ && rm -f /boot
 rm -f /boot/efi/ubootefi.var
 reboot
 
-# stop autoboot and remove any existing entries from eficonfig
+# Stop autoboot and remove any existing entries from eficonfig
 
 eficonfig
+reset
+
+# Load platform keys
+
 fatload mmc 0:1 $kernel_addr_r PK.auth
 setenv -e -nv -bs -rt -at -i $kernel_addr_r:$filesize PK
 fatload mmc 0:1 $kernel_addr_r KEK.auth
