@@ -75,7 +75,7 @@ sign-efi-sig-list -i db.signed -t 'Sep 28 00:00:00 PDT 2024' db db.esl db.auth
 #### 4. Copy .auth files & sign shimaa64.efi
 
 ```
-cp /etc/platform/keys/*.auth /boot/efi/ && rm -f /boot/efi/EFI/ubuntu/shimaa64.efi.signed && sbsign --engine "pkcs11" --key 1 --cert db.crt /usr/lib/shim/shimaa64.efi --output /boot/efi/EFI/ubuntu/shimaa64.efi.signed && popd
+rm -f /boot/efi/*.auth && cp /etc/platform/keys/*.auth /boot/efi/ && rm -f /boot/efi/EFI/ubuntu/shimaa64.efi.signed && sbsign --engine pkcs11 --key 1 --cert db.crt /usr/lib/shim/shimaa64.efi --output /boot/efi/EFI/ubuntu/shimaa64.efi.signed && popd
 ```
 
 #### 5. Build mutable U-boot & set up secureboot platform keys.
@@ -83,10 +83,12 @@ cp /etc/platform/keys/*.auth /boot/efi/ && rm -f /boot/efi/EFI/ubuntu/shimaa64.e
 ```
 # Build U-boot in mutable mode
 
+rm -f /boot/efi/ubootefi.var
 reboot
 
-# stop autoboot
+# stop autoboot and remove any existing entries from eficonfig
 
+eficonfig
 fatload mmc 0:1 $kernel_addr_r PK.auth
 setenv -e -nv -bs -rt -at -i $kernel_addr_r:$filesize PK
 fatload mmc 0:1 $kernel_addr_r KEK.auth
@@ -95,7 +97,7 @@ fatload mmc 0:1 $kernel_addr_r db.auth
 setenv -e -nv -bs -rt -at -i $kernel_addr_r:$filesize db
 ```
 
-#### 6. Boot to create efi.var store at /boot/efi/ubootefi.var and upload to git to bake into future builds.
+#### 6. Boot to create fresh efi.var store at /boot/efi/ubootefi.var and upload to git to bake into future builds.
 
 ```
 run bootcmd
