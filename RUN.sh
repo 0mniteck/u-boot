@@ -94,30 +94,30 @@ echo "CONFIG_CMD_NVEDIT_EFI=y" >> rk3399_defconfig
 ## echo "CONFIG_CMD_EFIDEBUG=y" >> rk3399_defconfig
 popd
 
-snap install lxd && lxd init --auto && lxc launch ubuntu:24.04 sbtools && sleep 30 && ufw reload && sleep 10 && \
-lxc exec sbtools apt update && lxc exec sbtools -- apt upgrade -y && lxc exec sbtools -- apt install binutils-dev build-essential make automake pkg-config -y && \
-lxc exec sbtools -- git clone https://git.kernel.org/pub/scm/linux/kernel/git/jejb/sbsigntools.git
+
 # https://git.kernel.org/pub/scm/linux/kernel/git/jejb/sbsigntools.git/snapshot/sbsigntools-0.9.5.tar.gz
 # lxc exec sbtools -- bash -c "echo '3b23bdf1855132a91e2063039bd4d14c5564e9cd8f551711aa89a91646ff783afb6e318479e9cf46eedbc914a1eade142398c774d8dbfef8fd1d65cbbe60aabd  sbsigntools-0.9.5.tar.gz' > sbsigntools-0.9.5.tar.gz.sum"
 # if [[ $(lxc exec sbtools -- bash -c "sha512sum -c sbsigntools-0.9.5.tar.gz.sum") == 'sbsigntools-0.9.5.tar.gz: OK' ]]; then echo 'sbsign Checksum Matched!'; else echo 'sbsign Checksum Mismatched!' & exit 1; fi;
 # lxc exec sbtools -- gunzip sbsigntools-0.9.5.tar.gz
 # lxc exec sbtools -- tar -xf sbsigntools-0.9.5.tar
+snap install lxd && lxd init --auto && lxc launch ubuntu:24.04 sbtools && sleep 30 && ufw reload && sleep 10 && \
+lxc exec sbtools apt update && lxc exec sbtools -- apt upgrade -y && lxc exec sbtools -- apt install binutils-dev build-essential make automake pkg-config -y && \
+lxc exec sbtools -- git clone https://git.kernel.org/pub/scm/linux/kernel/git/jejb/sbsigntools.git
 echo "Entering sbsign ------"
 lxc exec sbtools --cwd /root/sbsigntools -- ./autogen.sh && \
 lxc exec sbtools --cwd /root/sbsigntools -- ./configure && \
 lxc exec sbtools --cwd /root/sbsigntools -- make && \
 lxc exec sbtools --cwd /root/sbsigntools -- make install
-# lxc file pull tee/root/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin /tmp/
 snap remove lxd --purge
 
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
-#cp includes/platform_common.c /tmp/platform_common.c
-#cp includes/platform_def.h /tmp/platform_def.h
-#cp includes/plat_private.h /tmp/plat_private.h
-#cp includes/platform.mk /tmp/platform.mk
-#cp includes/rk3399_def.h /tmp/rk3399_def.h
-#cp includes/bl31_param.h /tmp/bl31_param.h
+# cp includes/platform_common.c /tmp/platform_common.c
+# cp includes/platform_def.h /tmp/platform_def.h
+# cp includes/plat_private.h /tmp/plat_private.h
+# cp includes/platform.mk /tmp/platform.mk
+# cp includes/rk3399_def.h /tmp/rk3399_def.h
+# cp includes/bl31_param.h /tmp/bl31_param.h
 cp includes/logo.bmp /tmp/logo.bmp
 cp includes/efi.var /tmp/efi.var
 apt update && apt install bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y
@@ -154,12 +154,12 @@ unzip v$(echo $UB_VER).zip
 cd arm-trusted-firmware-lts-v$(echo $ATF_VER)
 echo "Entering TF-A ------"
 make realclean
-#cp /tmp/platform_common.c plat/rockchip/common/aarch64/platform_common.c
-#cp /tmp/platform_def.h plat/rockchip/rk3399/include/platform_def.h
-#cp /tmp/plat_private.h plat/rockchip/common/include/plat_private.h
-#cp /tmp/platform.mk plat/rockchip/rk3399/platform.mk
-#cp /tmp/rk3399_def.h plat/rockchip/rk3399/rk3399_def.h
-#cp /tmp/bl31_param.h plat/rockchip/rk3399/include/shared/bl31_param.h
+# cp /tmp/platform_common.c plat/rockchip/common/aarch64/platform_common.c
+# cp /tmp/platform_def.h plat/rockchip/rk3399/include/platform_def.h
+# cp /tmp/plat_private.h plat/rockchip/common/include/plat_private.h
+# cp /tmp/platform.mk plat/rockchip/rk3399/platform.mk
+# cp /tmp/rk3399_def.h plat/rockchip/rk3399/rk3399_def.h
+# cp /tmp/bl31_param.h plat/rockchip/rk3399/include/shared/bl31_param.h
 make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" PLAT=rk3399 bl31
 export BL31=/tmp/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/release/bl31/bl31.elf
 cd ..
