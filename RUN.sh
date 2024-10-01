@@ -95,6 +95,7 @@ echo "CONFIG_CMD_NVEDIT_EFI=y" >> rk3399_defconfig
 popd
 
 cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
+cp includes/0001-pkcs11-leak-the-engine-to-avoid-segfault-when-using-.patch /tmp/0001-pkcs11-leak.patch
 # cp includes/platform_common.c /tmp/platform_common.c
 # cp includes/platform_def.h /tmp/platform_def.h
 # cp includes/plat_private.h /tmp/plat_private.h
@@ -116,9 +117,11 @@ else
   lxc exec sbtools apt update && lxc exec sbtools -- apt upgrade -y
   lxc exec sbtools -- apt install automake binutils-dev build-essential gnu-efi help2man libssl-dev make openssl pkg-config uuid uuid-dev -y
   lxc exec sbtools -- git clone https://git.kernel.org/pub/scm/linux/kernel/git/jejb/sbsigntools.git
+  lxc file push /tmp/0001-pkcs11-leak.patch sbtools/root/sbsigntools/
   echo "Entering sbsign ------"
+  lxc exec sbtools --cwd /root/sbsigntools -- git apply 0001-pkcs11-leak.patch && echo "Patched sbsign SEG_FAULT bug"
   lxc exec sbtools --cwd /root/sbsigntools -- ./autogen.sh
-  lxc exec sbtools --cwd /root/sbsigntools -- ./configure
+  lxc exec sbtools --cwd /root/sbsigntools -- ./configure --with-pkcs11-module
   lxc exec sbtools --cwd /root/sbsigntools -- make
   lxc exec sbtools --cwd /root/sbsigntools -- make install
   lxc file pull sbtools/root/sbsigntools/src/sbsign /tmp/
