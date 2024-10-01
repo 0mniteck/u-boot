@@ -21,8 +21,8 @@ git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
 cp includes/logo.bmp /tmp/logo.bmp
 apt update && apt install bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y
-pushd /tmp/
 
+pushd /tmp/
 # echo "CONFIG_LOG=y" >> rk3399_defconfig
 # echo "CONFIG_LOG_MAX_LEVEL=6" >> rk3399_defconfig
 # echo "CONFIG_LOG_CONSOLE=y" >> rk3399_defconfig
@@ -166,8 +166,16 @@ sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/pinebook-pro-
 cat /tmp/rk3399_defconfig >> configs/pinebook-pro-rk3399_defconfig
 make pinebook-pro-rk3399_defconfig
 FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j$(nproc) all
+image_name="u-boot.img"
+combined_name="u-boot-rockchip-spi.img"
+tools/mkimage -n rk3399 -T rkspi -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin "${image_name}"
+padsize=$((0x60000 - 1))
+image_size=$(wc -c < "${image_name}")
+[ $image_size -le $padsize ] || exit 1
+dd if=/dev/zero of="${image_name}" conv=notrunc bs=1 count=1 seek=${padsize}
+cat ${image_name} u-boot.itb > "${combined_name}"
 sha512sum u-boot-rockchip.bin
-sha512sum u-boot-rockchip-spi.bin
+sha512sum u-boot-rockchip-spi.img
 read -p "Insert Second SD Card For PinebookPro, Then Press Enter to Continue"
 dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
 parted /dev/mmcblk1 mktable gpt mkpart P1 fat32 10MB 25MB -s && sleep 3
@@ -177,10 +185,10 @@ sha512sum u-boot-rockchip.bin
 sha512sum u-boot-rockchip.bin > u-boot-rockchip.bin.sum
 sha512sum u-boot-rockchip.bin > /mnt/u-boot-rockchip.bin.sum
 cp u-boot-rockchip.bin /mnt/u-boot-rockchip.bin
-sha512sum u-boot-rockchip-spi.bin
-sha512sum u-boot-rockchip-spi.bin > u-boot-rockchip-spi.bin.sum
-sha512sum u-boot-rockchip-spi.bin > /mnt/u-boot-rockchip-spi.bin.sum
-cp u-boot-rockchip-spi.bin /mnt/u-boot-rockchip-spi.bin
+sha512sum u-boot-rockchip-spi.img
+sha512sum u-boot-rockchip-spi.img > u-boot-rockchip-spi.img.sum
+sha512sum u-boot-rockchip-spi.img > /mnt/u-boot-rockchip-spi.img.sum
+cp u-boot-rockchip-spi.img /mnt/u-boot-rockchip-spi.img
 sync
 umount /mnt
 dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
@@ -201,8 +209,8 @@ mv /tmp/PBP/u-boot-$(echo $UB_VER)/sdcard.img Builds/PBP-rk3399/sdcard.img
 mv /tmp/PBP/u-boot-$(echo $UB_VER)/sdcard.img.sum Builds/PBP-rk3399/sdcard.img.sum
 mv /tmp/PBP/u-boot-$(echo $UB_VER)/u-boot-rockchip.bin Builds/PBP-rk3399/u-boot-rockchip.bin
 mv /tmp/PBP/u-boot-$(echo $UB_VER)/u-boot-rockchip.bin.sum Builds/PBP-rk3399/u-boot-rockchip.bin.sum
-mv /tmp/PBP/u-boot-$(echo $UB_VER)/u-boot-rockchip-spi.bin Builds/PBP-rk3399/u-boot-rockchip-spi.bin
-mv /tmp/PBP/u-boot-$(echo $UB_VER)/u-boot-rockchip-spi.bin.sum Builds/PBP-rk3399/u-boot-rockchip-spi.bin.sum
+mv /tmp/PBP/u-boot-$(echo $UB_VER)/u-boot-rockchip-spi.img Builds/PBP-rk3399/u-boot-rockchip-spi.bin
+mv /tmp/PBP/u-boot-$(echo $UB_VER)/u-boot-rockchip-spi.img.sum Builds/PBP-rk3399/u-boot-rockchip-spi.bin.sum
 
 git status && git add -A && git status
 read -p "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For rk3399: Sign -->"
