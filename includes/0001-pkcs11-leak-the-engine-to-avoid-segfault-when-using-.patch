@@ -1,0 +1,25 @@
+From 5154c68bce6848b49222564675720d10a1caca2c Mon Sep 17 00:00:00 2001
+From: Trammell hudson <hudson@trmm.net>
+Date: Mon, 4 May 2020 20:19:00 +0200
+Subject: [PATCH] pkcs11: leak the engine to avoid segfault when using yubikeys
+
+---
+ src/fileio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/fileio.c b/src/fileio.c
+index 032eb1e..1588057 100644
+--- a/src/fileio.c
++++ b/src/fileio.c
+@@ -90,7 +90,7 @@ EVP_PKEY *fileio_read_engine_key(const char *engine, const char *filename)
+ 	}
+ 
+ 	pkey = ENGINE_load_private_key(e, filename, ui, NULL);
+-	ENGINE_finish(e);
++	//ENGINE_finish(e);
+ 
+  out_free:
+ 	ENGINE_free(e);
+-- 
+2.43.0
+
