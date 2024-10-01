@@ -209,8 +209,8 @@ mv /tmp/PBP/u-boot-$(echo $UB_VER)/sdcard.img Builds/PBP-rk3399/sdcard.img
 mv /tmp/PBP/u-boot-$(echo $UB_VER)/sdcard.img.sum Builds/PBP-rk3399/sdcard.img.sum
 mv /tmp/PBP/u-boot-$(echo $UB_VER)/u-boot-rockchip.bin Builds/PBP-rk3399/u-boot-rockchip.bin
 mv /tmp/PBP/u-boot-$(echo $UB_VER)/u-boot-rockchip.bin.sum Builds/PBP-rk3399/u-boot-rockchip.bin.sum
-mv /tmp/PBP/u-boot-$(echo $UB_VER)/u-boot-rockchip-spi.img Builds/PBP-rk3399/u-boot-rockchip-spi.bin
-mv /tmp/PBP/u-boot-$(echo $UB_VER)/u-boot-rockchip-spi.img.sum Builds/PBP-rk3399/u-boot-rockchip-spi.bin.sum
+mv /tmp/PBP/u-boot-$(echo $UB_VER)/u-boot-rockchip-spi.img Builds/PBP-rk3399/u-boot-rockchip-spi.img
+mv /tmp/PBP/u-boot-$(echo $UB_VER)/u-boot-rockchip-spi.img.sum Builds/PBP-rk3399/u-boot-rockchip-spi.img.sum
 
 git status && git add -A && git status
 read -p "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For rk3399: Sign -->"
