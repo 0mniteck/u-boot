@@ -121,7 +121,7 @@ else
   echo "Entering sbsign ------"
   lxc exec sbtools --cwd /root/sbsigntools -- git apply 0001-pkcs11-leak.patch && echo "Patched sbsign SEG_FAULT bug"
   lxc exec sbtools --cwd /root/sbsigntools -- ./autogen.sh
-  lxc exec sbtools --cwd /root/sbsigntools -- ./configure --with-pkcs11-module
+  lxc exec sbtools --cwd /root/sbsigntools -- ./configure
   lxc exec sbtools --cwd /root/sbsigntools -- make
   lxc exec sbtools --cwd /root/sbsigntools -- make install
   lxc file pull sbtools/root/sbsigntools/src/sbsign /tmp/
