@@ -71,9 +71,9 @@ echo "CONFIG_CHIMP_OPTEE=n" >> rk3399_defconfig
 # echo "CONFIG_SUPPORT_EMMC_RPMB=y" >> rk3399_defconfig
 ## echo "CONFIG_SUPPORT_EMMC_BOOT=y" >> rk3399_defconfig
 ## echo "CONFIG_EFI_VARIABLE_FILE_STORE=n" >> rk3399_defconfig
-#echo "CONFIG_EFI_VARIABLE_NO_STORE=y" >> rk3399_defconfig
-#echo "CONFIG_EFI_VARIABLES_PRESEED=y" >> rk3399_defconfig
-#echo 'CONFIG_EFI_VAR_SEED_FILE="efi.var"' >> rk3399_defconfig
+echo "CONFIG_EFI_VARIABLE_NO_STORE=y" >> rk3399_defconfig
+echo "CONFIG_EFI_VARIABLES_PRESEED=y" >> rk3399_defconfig
+echo 'CONFIG_EFI_VAR_SEED_FILE="efi.var"' >> rk3399_defconfig
 # echo "CONFIG_EFI_RNG_PROTOCOL=y" >> rk3399_defconfig
 ## echo "CONFIG_EFI_TCG2_PROTOCOL=y" >> rk3399_defconfig
 ## echo "CONFIG_EFI_TCG2_PROTOCOL_MEASURE_DTB=y" >> rk3399_defconfig
@@ -82,8 +82,8 @@ echo "CONFIG_CHIMP_OPTEE=n" >> rk3399_defconfig
 echo "CONFIG_EFI_SECURE_BOOT=y" >> rk3399_defconfig
 echo "CONFIG_EFI_LOADER=y" >> rk3399_defconfig
 echo "CONFIG_CMD_BOOTEFI=y" >> rk3399_defconfig
-echo "CONFIG_HEXDUMP=y" >> rk3399_defconfig
-echo "CONFIG_CMD_NVEDIT_EFI=y" >> rk3399_defconfig
+# echo "CONFIG_HEXDUMP=y" >> rk3399_defconfig
+# echo "CONFIG_CMD_NVEDIT_EFI=y" >> rk3399_defconfig
 ## echo "CONFIG_CMD_MMC_RPMB=y" >> rk3399_defconfig
 # echo "CONFIG_CMD_OPTEE_RPMB=y" >> rk3399_defconfig
 ### echo "CONFIG_CMD_SCP03=y" >> rk3399_defconfig
@@ -108,11 +108,6 @@ cp includes/efi.var /tmp/efi.var
 if [ -f Builds/sbsign ]; then
   cp Builds/sbsign /tmp/sbsign
 else
-  # https://git.kernel.org/pub/scm/linux/kernel/git/jejb/sbsigntools.git/snapshot/sbsigntools-0.9.5.tar.gz
-  # lxc exec sbtools -- bash -c "echo '3b23bdf1855132a91e2063039bd4d14c5564e9cd8f551711aa89a91646ff783afb6e318479e9cf46eedbc914a1eade142398c774d8dbfef8fd1d65cbbe60aabd  sbsigntools-0.9.5.tar.gz' > sbsigntools-0.9.5.tar.gz.sum"
-  # if [[ $(lxc exec sbtools -- bash -c "sha512sum -c sbsigntools-0.9.5.tar.gz.sum") == 'sbsigntools-0.9.5.tar.gz: OK' ]]; then echo 'sbsign Checksum Matched!'; else echo 'sbsign Checksum Mismatched!' & exit 1; fi;
-  # lxc exec sbtools -- gunzip sbsigntools-0.9.5.tar.gz
-  # lxc exec sbtools -- tar -xf sbsigntools-0.9.5.tar
   snap install lxd && lxd init --auto && lxc launch ubuntu:24.04 sbtools && sleep 30 && ufw reload && sleep 10
   lxc exec sbtools apt update && lxc exec sbtools -- apt upgrade -y
   lxc exec sbtools -- apt install automake binutils-dev build-essential gnu-efi help2man libssl-dev make openssl pkg-config uuid uuid-dev -y
@@ -195,7 +190,6 @@ dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
 dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 
 read -p "Insert another SD Card + yubikey, Then Press Enter to Continue"
-openssl req -new -x509 -engine pkcs11 -keyform ENGINE -key 1 -out dev.crt
 tools/mkimage -n rk3399 -T rksd -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin sd_idbloader.img
 tools/mkimage -n rk3399 -T rkspi -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin spi_idbloader.img
 tools/mkimage -F -N pkcs11 -k 1 -K simple-bin.fit.fit -r rk3399.fit
