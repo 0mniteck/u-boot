@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 ##
-##	Rockchip rk3399 SPI U-Boot Assembler
+##	Rockchip rk3399 SPI U-Boot Assembler With UEFI Secure Boot
 ##		Requirements: Debian based OS running on an ARM64 CPU & any size microSD in the MMCBLK1 slot
 ##		  By: Shant Tchatalbachian
 ##
