@@ -20,6 +20,7 @@ export BUILD_MESSAGE_TIMESTAMP;
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
 cp includes/logo.bmp /tmp/logo.bmp
+cp includes/efi.var /tmp/efi.var
 apt update && apt install bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y
 
 pushd /tmp/
@@ -35,7 +36,7 @@ pushd /tmp/
 # echo "CONFIG_SPL_LOAD_FIT=y" >> rk3399_defconfig
 # echo "CONFIG_SPL_FIT_SIGNATURE=y" >> rk3399_defconfig
 echo "CONFIG_FIT_SIGNATURE=y" >> rk3399_defconfig
-# echo "CONFIG_RSA=y" >> rk3399_defconfig
+echo "CONFIG_RSA=y" >> rk3399_defconfig
 # echo "CONFIG_ECDSA=y" >> rk3399_defconfig
 # echo "CONFIG_SPI_FLASH_UNLOCK_ALL=n" >> rk3399_defconfig
 # echo "CONFIG_TPM2_FTPM_TEE=y" >> rk3399_defconfig
@@ -59,7 +60,7 @@ echo "CONFIG_OPTEE=y" >> rk3399_defconfig
 echo "CONFIG_OPTEE_TZDRAM_SIZE=0x02000000" >> rk3399_defconfig
 echo "CONFIG_OPTEE_SERVICE_DISCOVERY=y" >> rk3399_defconfig
 # echo "CONFIG_OPTEE_IMAGE=y" >> rk3399_defconfig
-# echo "CONFIG_BOOTM_EFI=y" >> rk3399_defconfig
+echo "CONFIG_BOOTM_EFI=y" >> rk3399_defconfig
 echo "CONFIG_BOOTM_OPTEE=y" >> rk3399_defconfig
 echo "CONFIG_OPTEE_TA_SCP03=n" >> rk3399_defconfig
 echo "CONFIG_OPTEE_TA_AVB=n" >> rk3399_defconfig
@@ -74,17 +75,17 @@ echo "CONFIG_CHIMP_OPTEE=n" >> rk3399_defconfig
 #### echo "CONFIG_SUPPORT_EMMC_RPMB=y" >> rk3399_defconfig
 ## echo "CONFIG_SUPPORT_EMMC_BOOT=y" >> rk3399_defconfig
 ## echo "CONFIG_EFI_VARIABLE_FILE_STORE=n" >> rk3399_defconfig
-# echo "CONFIG_EFI_VARIABLE_NO_STORE=y" >> rk3399_defconfig
-# echo "CONFIG_EFI_VARIABLES_PRESEED=y" >> rk3399_defconfig
-# echo 'CONFIG_EFI_VAR_SEED_FILE="efi.var"' >> rk3399_defconfig
+echo "CONFIG_EFI_VARIABLE_NO_STORE=y" >> rk3399_defconfig
+echo "CONFIG_EFI_VARIABLES_PRESEED=y" >> rk3399_defconfig
+echo 'CONFIG_EFI_VAR_SEED_FILE="efi.var"' >> rk3399_defconfig
 # echo "CONFIG_EFI_RNG_PROTOCOL=y" >> rk3399_defconfig
 ## echo "CONFIG_EFI_TCG2_PROTOCOL=y" >> rk3399_defconfig
 ## echo "CONFIG_EFI_TCG2_PROTOCOL_MEASURE_DTB=y" >> rk3399_defconfig
 ##### echo "CONFIG_EFI_MM_COMM_TEE=y" >> rk3399_defconfig
 #### echo "CONFIG_EFI_VAR_BUF_SIZE=7340032" >> rk3399_defconfig
-## echo "CONFIG_EFI_SECURE_BOOT=y" >> rk3399_defconfig
-# echo "CONFIG_EFI_LOADER=y" >> rk3399_defconfig
-# echo "CONFIG_CMD_BOOTEFI=y" >> rk3399_defconfig
+echo "CONFIG_EFI_SECURE_BOOT=y" >> rk3399_defconfig
+echo "CONFIG_EFI_LOADER=y" >> rk3399_defconfig
+echo "CONFIG_CMD_BOOTEFI=y" >> rk3399_defconfig
 # echo "CONFIG_HEXDUMP=y" >> rk3399_defconfig
 # echo "CONFIG_CMD_NVEDIT_EFI=y" >> rk3399_defconfig
 ## echo "CONFIG_CMD_MMC_RPMB=y" >> rk3399_defconfig
@@ -127,6 +128,7 @@ cd RP64/u-boot-$(echo $UB_VER)
 echo "Entering U-Boot ------"
 make clean
 git apply ../../0001-rockchip-rk3399.patch && echo "Patched SPI bug"
+cp /tmp/efi.var efi.var
 rm tools/logos/denx.bmp && rm drivers/video/u_boot_logo.bmp
 cp /tmp/logo.bmp tools/logos/denx.bmp && cp /tmp/logo.bmp drivers/video/u_boot_logo.bmp
 sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3399_defconfig
@@ -160,6 +162,7 @@ cd PBP/u-boot-$(echo $UB_VER)
 echo "Entering U-Boot ------"
 make clean
 git apply ../../0001-rockchip-rk3399.patch && echo "Patched SPI bug"
+cp /tmp/efi.var efi.var
 rm tools/logos/denx.bmp && rm drivers/video/u_boot_logo.bmp
 cp /tmp/logo.bmp tools/logos/denx.bmp && cp /tmp/logo.bmp drivers/video/u_boot_logo.bmp
 sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/pinebook-pro-rk3399_defconfig
@@ -209,8 +212,8 @@ mv /tmp/PBP/u-boot-$(echo $UB_VER)/sdcard.img Builds/PBP-rk3399/sdcard.img
 mv /tmp/PBP/u-boot-$(echo $UB_VER)/sdcard.img.sum Builds/PBP-rk3399/sdcard.img.sum
 mv /tmp/PBP/u-boot-$(echo $UB_VER)/u-boot-rockchip.bin Builds/PBP-rk3399/u-boot-rockchip.bin
 mv /tmp/PBP/u-boot-$(echo $UB_VER)/u-boot-rockchip.bin.sum Builds/PBP-rk3399/u-boot-rockchip.bin.sum
-mv /tmp/PBP/u-boot-$(echo $UB_VER)/u-boot-rockchip-spi.img Builds/PBP-rk3399/u-boot-rockchip-spi.bin
-mv /tmp/PBP/u-boot-$(echo $UB_VER)/u-boot-rockchip-spi.img.sum Builds/PBP-rk3399/u-boot-rockchip-spi.bin.sum
+mv /tmp/PBP/u-boot-$(echo $UB_VER)/u-boot-rockchip-spi.img Builds/PBP-rk3399/u-boot-rockchip-spi.img
+mv /tmp/PBP/u-boot-$(echo $UB_VER)/u-boot-rockchip-spi.img.sum Builds/PBP-rk3399/u-boot-rockchip-spi.img.sum
 
 git status && git add -A && git status
 read -p "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For rk3399: Sign -->"
@@ -218,5 +221,5 @@ git commit -a -S -m "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUIL
 git push --set-upstream origin rk3399-A
 cd ..
 apt remove --purge bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y && apt autoremove -y
-rm -f /tmp/4.* && rm -f /tmp/lts* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/optee_os-* && rm -f -r /tmp/RP64 && rm -f -r /tmp/PBP && rm -f /tmp/000* && rm -f /tmp/logo.bmp && rm -f /tmp/rk3399_defconfig && rm -f -r U-Boot && cd ..
+rm -f /tmp/4.* && rm -f /tmp/lts* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/optee_os-* && rm -f -r /tmp/RP64 && rm -f -r /tmp/PBP && rm -f /tmp/000* && rm -f /tmp/logo.bmp && rm -f /tmp/rk3399_defconfig && rm -f /tmp/efi.var && rm -f -r U-Boot && cd ..
 exit
