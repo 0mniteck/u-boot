@@ -26,9 +26,11 @@
 	bootph-pre-ram;
 };
 
-&spiflash {
-	bootph-pre-ram;
-	bootph-some-ram;
+&spi1 {
+	flash@0 {
+		bootph-pre-ram;
+		bootph-some-ram;
+	};
 };
 
 &vcc3v0_sd {
