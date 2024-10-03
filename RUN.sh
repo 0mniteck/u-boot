@@ -123,7 +123,7 @@ else
   lxc exec sbtools apt update && lxc exec sbtools -- apt upgrade -y
   lxc exec sbtools -- apt install automake binutils-dev build-essential gnu-efi help2man libssl-dev make openssl pkg-config uuid uuid-dev -y
   lxc exec sbtools -- git clone https://git.kernel.org/pub/scm/linux/kernel/git/jejb/sbsigntools.git
-  lxc file push 0001-pkcs11-leak-the-engine-to-avoid-segfault-when-using-.patch sbtools/root/sbsigntools/0001-pkcs11-leak.patch
+  lxc file push includes/0001-pkcs11-leak-the-engine-to-avoid-segfault-when-using-.patch sbtools/root/sbsigntools/0001-pkcs11-leak.patch
   echo "Entering sbsign ------"
   lxc exec sbtools --cwd /root/sbsigntools -- git apply 0001-pkcs11-leak.patch && echo "Patched sbsign SEG_FAULT bug"
   lxc exec sbtools --cwd /root/sbsigntools -- ./autogen.sh
@@ -274,6 +274,5 @@ read -p "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TI
 git commit -a -S -m "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For The RockPro64"
 git push --set-upstream origin RP64-rk3399-Dev
 
-rm -f -r /tmp/u-boot* && rm -f /tmp/rk3399* && rm -f /tmp/bl31.elf && rm -f /tmp/tee.bin && rm -f /tmp/sbsign && rm -f -r ../U-Boot &
-snap remove lxd --purge
+rm -f -r /tmp/u-boot* && rm -f /tmp/rk3399* && rm -f /tmp/bl31.elf && rm -f /tmp/tee.bin && rm -f /tmp/sbsign && rm -f -r ../U-Boot && snap remove lxd --purge
 exit
