@@ -207,7 +207,7 @@ echo "Entering U-Boot ------"
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- make clean
 lxc file push includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch ub/root/u-boot-$(echo $UB_VER)/0001-rockchip-rk3399.patch
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- git apply 0001-rockchip-rk3399.patch && echo "Patched SPI bug"
-lxc file push includes/rk3399-rockpro64.dtsi ub/root/u-boot-$(echo $UB_VER)/dts/upstream/src/arm64/rockchip/rk3399-rockpro64.dtsi && echo "Patched Device Tree for TPM"
+# lxc file push includes/rk3399-rockpro64.dtsi ub/root/u-boot-$(echo $UB_VER)/dts/upstream/src/arm64/rockchip/rk3399-rockpro64.dtsi && echo "Patched Device Tree for TPM"
 lxc file push includes/efi.var ub/root/u-boot-$(echo $UB_VER)/efi.var && echo "Deployed efi.var"
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- rm -f tools/logos/denx.bmp
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- rm -f drivers/video/u_boot_logo.bmp
