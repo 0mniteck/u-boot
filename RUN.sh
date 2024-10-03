@@ -179,7 +179,7 @@ else
   lxc exec tf-a -- apt install -y bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libengine-pkcs11-openssl libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip
   lxc exec tf-a -- wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/lts-v$(echo $ATF_VER).zip
   lxc exec tf-a -- bash -c "echo '5252dc59f1133d9c3fae5560954d9810e97a7e3b018522fddea584343d742a110c65678115cb0f554c201b5f7326353eec9a54031485156b6ca0788f53d33882  lts-v'$(echo $ATF_VER)'.zip' > $(echo $ATF_VER).zip.sum"
-  if [[ $(lxc exec tf-a -- bash -c "sha512sum -c $(echo $ATF_VER).zip.sum") == $(echo $ATF_VER)'.zip: OK' ]]; then echo 'TF-A Checksum Matched! Checksum Matched!'; else echo 'TF-A Checksum Mismatched!' & exit 1; fi;
+  if [[ $(lxc exec tf-a -- bash -c "sha512sum -c $(echo $ATF_VER).zip.sum") == 'lts-v'$(echo $ATF_VER)'.zip: OK' ]]; then echo 'TF-A Checksum Matched! Checksum Matched!'; else echo 'TF-A Checksum Mismatched!' & exit 1; fi;
   lxc exec tf-a -- unzip lts-v$(echo $ATF_VER).zip
   echo "Entering TF-A ------"
   lxc exec tf-a --cwd /root/arm-trusted-firmware-lts-v$(echo $ATF_VER) -- make realclean
