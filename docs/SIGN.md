@@ -104,10 +104,11 @@ setenv -e -nv -bs -rt -at -i $kernel_addr_r:$filesize db
 ```
 
 #### 6. Boot to create fresh efi.var store at /boot/efi/ubootefi.var
-#### 7. Upload to git to bake into build with UEFI Secure Boot enabled.
 
 ```
 run bootcmd
 ```
+
+#### 7. Upload to git to bake into build with UEFI Secure Boot enabled.
 
 #### 8. Build immutable U-boot with new efi.vars
