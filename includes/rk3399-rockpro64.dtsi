@@ -238,6 +238,15 @@
 		regulator-min-microvolt = <800000>;
 		regulator-max-microvolt = <1700000>;
 	};
+	regulatot-tpm0-rst: TPM_REG {
+		compatible = "regulator-fixed";
+		regulator-name = "tpm0-rst";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		gpio = <&gpio4 31 GPIO_ACTIVE_HIGH>;
+		regulator-always-on;
+		enable-active-high;
+		};
 };
 
 &cpu_l0 {
@@ -508,16 +517,6 @@
 				regulator-name = "vcc3v3_s0";
 				regulator-state-mem {
 					regulator-off-in-suspend;
-				};
-
-			regulatot-tpm0-rst: TPM_REG {
-				compatible = "regulator-fixed";
-				regulator-name = "tpm0-rst";
-				regulator-min-microvolt = <3300000>;
-				regulator-max-microvolt = <3300000>;
-				gpio = <&gpio4 31 GPIO_ACTIVE_HIGH>;
-				regulator-always-on;
-				enable-active-high;
 				};
 			};
 		};
