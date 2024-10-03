@@ -1,4 +1,4 @@
-## Signing Recipe
+# Signing Recipe
 
 ### Prerequisites
 1. **YubiKey**: Ensure you have a YubiKey that supports PIV (Personal Identity Verification).
