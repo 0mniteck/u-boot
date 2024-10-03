@@ -18,16 +18,6 @@
 		u-boot,spl-boot-order = "same-as-spl", &sdhci, &sdmmc;
 	};
 
-	regulatot-tpm0-rst {
-		compatible = "regulator-fixed";
-		regulator-name = "tpm0-rst";
-		regulator-min-microvolt = <3300000>;
-		regulator-max-microvolt = <3300000>;
-		gpio = <&gpio4 31 GPIO_ACTIVE_HIGH>;
-		regulator-always-on;
-		enable-active-high;
-	};
-
 	pmusgrf: syscon@ff330000 {
 		compatible = "rockchip,rk3399-pmusgrf", "syscon";
 		reg = <0x0 0xff330000 0x0 0xe3d4>;
