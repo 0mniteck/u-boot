@@ -848,7 +848,7 @@
 		reg = <0>;
 		spi-max-frequency = <10000000>;
 	};	
-	tpm0: tpm@0 {
+	tpm@0 {
 		compatible =  "infineon,slb9670", "tcg,tpm_tis-spi";
 		reg = <0>;
  		pinctrl-names = "default";
