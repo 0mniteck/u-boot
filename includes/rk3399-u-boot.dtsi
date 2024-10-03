@@ -150,7 +150,7 @@
 	bootph-pre-ram;
 	bootph-some-ram;
 	tpm0: tpm@0 {
-		compatible = "infineon,slb9670";
+		compatible = "infineon,slb9670,tcg,tpm_tis-spi";
 		reg = <0>;
 		spi-max-frequency = <10000000>;
 		interrupts = <0>;
