@@ -209,7 +209,8 @@ lxc file push includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- git apply 0001-rockchip-rk3399.patch && echo "Patched SPI bug"
 lxc file push includes/rk3399-u-boot.dtsi ub/root/u-boot-$(echo $UB_VER)/arch/arm/dts/rk3399-u-boot.dtsi && echo "Patched Device Tree for TPM"
 lxc file push includes/efi.var ub/root/u-boot-$(echo $UB_VER)/efi.var && echo "Deployed efi.var"
-lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- rm tools/logos/denx.bmp && rm drivers/video/u_boot_logo.bmp
+lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- rm -f tools/logos/denx.bmp
+lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- rm -f drivers/video/u_boot_logo.bmp
 lxc file push includes/logo.bmp ub/root/u-boot-$(echo $UB_VER)/tools/logos/denx.bmp
 lxc file push includes/logo.bmp ub/root/u-boot-$(echo $UB_VER)/drivers/video/u_boot_logo.bmp
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3399_defconfig
