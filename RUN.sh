@@ -184,7 +184,7 @@ else
   lxc exec tf-a -- unzip lts-v$(echo $ATF_VER).zip
   echo "Entering TF-A ------"
   lxc exec tf-a --cwd /root/arm-trusted-firmware-lts-v$(echo $ATF_VER) -- make realclean
-  lxc exec tf-a --cwd /root/arm-trusted-firmware-lts-v$(echo $ATF_VER) -- make -j\$(nproc) BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" PLAT=rk3399 bl31
+  lxc exec tf-a --cwd /root/arm-trusted-firmware-lts-v$(echo $ATF_VER) -- make -j$(nproc) BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" PLAT=rk3399 bl31
   lxc file pull tf-a/root/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/release/bl31/bl31.bin /tmp/
   snap remove lxd --purge
 fi
