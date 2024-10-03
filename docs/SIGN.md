@@ -10,7 +10,7 @@
 7. **OpenSC**: Install OpenSC on your system if you need to debug the module
    - `pkcs11-tools --module /usr/lib/aarch64-linux-gnu/libykcs11.so.2.2.0 -t`.
 8. **U-Boot**: Build "mutably" with `CONFIG_HEXDUMP=y` and `CONFIG_CMD_NVEDIT_EFI=y` to make efi vars editable.
-9. **sbsign**: Build with slight patch as described in (https://github.com/osresearch/sbsigntools/commit/5154c68bce6848b49222564675720d10a1caca2c)
+9. **sbsign**: Build with slight patch as described in [osresearch/sbsigntools@5154c68](https://github.com/osresearch/sbsigntools/commit/5154c68bce6848b49222564675720d10a1caca2c)
 
 ### Steps to Create a Root CA on YubiKey
 
