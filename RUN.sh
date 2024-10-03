@@ -143,10 +143,7 @@ git push --set-upstream origin RP64-rk3399-Dev
 if [ -f Builds/tee.bin ]; then
   cp Builds/tee.bin /tmp/tee.bin
 else
-  snap install lxd && lxd init --auto && lxc launch ubuntu:24.04 tee
-  sleep 30
-  ufw reload
-  sleep 10
+  snap install lxd && lxd init --auto && lxc launch ubuntu:24.04 tee && sleep 30 && ufw reload && sleep 10
   lxc exec tee apt update && lxc exec tee -- apt upgrade -y
   lxc exec tee -- apt install -y adb acpica-tools autoconf automake bc bison build-essential ccache cpio cscope curl device-tree-compiler e2tools expect fastboot flex ftp-upload gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi \
   gdisk git libattr1-dev libcap-ng-dev libfdt-dev libftdi-dev libglib2.0-dev libgmp3-dev libhidapi-dev libmpc-dev libncurses5-dev libpixman-1-dev libslirp-dev libssl-dev libtool libusb-1.0-0-dev make mtools netcat-openbsd ninja-build python3-cryptography \
@@ -159,7 +156,6 @@ else
   lxc exec tee --cwd /root/optee_os-$(echo $OPT_VER) -- bash -i -c "make -j\$(nproc) PLATFORM=rockchip-rk3399 CFG_ARM64_core=y CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE32=arm-linux-gnueabihf- CROSS_COMPILE_core=aarch64-linux-gnu- CROSS_COMPILE_ta_arm32=arm-linux-gnueabihf- CROSS_COMPILE_ta_arm64=aarch64-linux-gnu-"
   lxc file pull tee/root/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin /tmp/
   snap remove lxd --purge
-  export TEE=/tmp/tee.bin
 fi
 
 export TEE=/tmp/tee.bin
@@ -173,9 +169,7 @@ if [ -f Builds/bl31.elf ]; then
   cp Builds/bl31.elf /tmp/bl31.elf
 else
   snap install lxd && lxd init --auto && lxc launch ubuntu:24.04 tf-a
-  sleep 30
-  ufw reload
-  sleep 10
+  sleep 30 && ufw reload && sleep 10
   # cp /tmp/platform_common.c plat/rockchip/common/aarch64/platform_common.c
   # cp /tmp/platform_def.h plat/rockchip/rk3399/include/platform_def.h
   # cp /tmp/plat_private.h plat/rockchip/common/include/plat_private.h
@@ -202,10 +196,7 @@ read -p "Successful Build of TF-A: Sign -->"
 git commit -a -S -m "Successful Build of TF-A"
 git push --set-upstream origin RP64-rk3399-Dev
 
-snap install ub && lxd init --auto && lxc launch ubuntu:24.04 ub
-sleep 30
-ufw reload
-sleep 10
+snap install ub && lxd init --auto && lxc launch ubuntu:24.04 ub && sleep 30 && ufw reload && sleep 10
 # cp /tmp/rk3399-rockpro64-u-boot.dtsi arch/arm/dts/rk3399-rockpro64-u-boot.dtsi && echo "Patched Device Tree for TPM"
 lxc exec ub apt update && lxc exec ub -- apt upgrade -y
 lxc exec ub -- apt install -y bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libengine-pkcs11-openssl libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip
@@ -213,7 +204,6 @@ lxc exec ub -- wget https://github.com/u-boot/u-boot/archive/refs/tags/v$(echo $
 lxc exec ub -- bash -c "echo '0a3e614ba0fd14224f52a8ad3e68e22df08f6e02c43e9183a459d80b4f37b4f384a4bfef7627a3863388fcffb1472c38d178810bed401f63eb8b5d0a21456603  v'$(echo $UB_VER)'.zip' > $(echo $UB_VER).zip.sum"
 if [[ $(lxc exec ub -- bash -c "sha512sum -c $(echo $UB_VER).zip.sum") == $(echo $UB_VER)'.zip: OK' ]]; then echo 'U-Boot Checksum Matched! Checksum Matched!'; else echo 'U-Boot Checksum Mismatched!' & exit 1; fi;
 lxc exec ub -- unzip v$(echo $UB_VER).zip
-cp /tmp/rk3399_defconfig
 echo "Entering U-Boot ------"
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- make clean
 lxc file push includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch ub/root/u-boot-$(echo $UB_VER)/0001-rockchip-rk3399.patch
