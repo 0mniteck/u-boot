@@ -195,6 +195,7 @@ read -p "Insert another SD Card + yubikey, Then Press Enter to Continue"
 # openssl req -new -x509 -engine pkcs11 -keyform ENGINE -key 1 -out dev.crt
 tools/mkimage -n rk3399 -T rksd -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin sd_idbloader.img
 tools/mkimage -n rk3399 -T rkspi -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin spi_idbloader.img
+export PKCS11_MODULE_PATH=/usr/lib/aarch64-linux-gnu/libykcs11.so.2.2.0
 tools/mkimage -F -N pkcs11 -k 1 -K simple-bin.fit.fit -r rk3399.fit
 tools/mkimage -n rk3399 -T rksd -f auto -d rk3399.fit -A arm64 -O u-boot rk3399.sd.itb
 tools/mkimage -n rk3399 -T rkspi -f auto -d rk3399.fit -A arm64 -O u-boot rk3399.spi.itb
