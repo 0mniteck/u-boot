@@ -132,13 +132,12 @@ else
   lxc exec sbtools --cwd /root/sbsigntools -- make install
   lxc file pull sbtools/root/sbsigntools/src/sbsign /tmp/
   snap remove lxd --purge
+  cp /tmp/sbsign Builds/sbsign
+  git status && git add -A && git status
+  read -p "Successful Build of sbsign: Sign -->"
+  git commit -a -S -m "Successful Build of sbsign"
+  git push --set-upstream origin RP64-rk3399-Dev
 fi
-
-cp /tmp/sbsign Builds/sbsign
-git status && git add -A && git status
-read -p "Successful Build of sbsign: Sign -->"
-git commit -a -S -m "Successful Build of sbsign"
-git push --set-upstream origin RP64-rk3399-Dev
 
 if [ -f Builds/tee.bin ]; then
   cp Builds/tee.bin /tmp/tee.bin
@@ -156,14 +155,13 @@ else
   lxc exec tee --cwd /root/optee_os-$(echo $OPT_VER) -- bash -i -c "make -j\$(nproc) PLATFORM=rockchip-rk3399 CFG_ARM64_core=y CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE32=arm-linux-gnueabihf- CROSS_COMPILE_core=aarch64-linux-gnu- CROSS_COMPILE_ta_arm32=arm-linux-gnueabihf- CROSS_COMPILE_ta_arm64=aarch64-linux-gnu-"
   lxc file pull tee/root/optee_os-$(echo $OPT_VER)/out/arm-plat-rockchip/core/tee.bin /tmp/
   snap remove lxd --purge
+  export TEE=/tmp/tee.bin
+  cp /tmp/tee.bin Builds/tee.bin
+  git status && git add -A && git status
+  read -p "Successful Build of OP-TEE: Sign -->"
+  git commit -a -S -m "Successful Build of OP-TEE"
+  git push --set-upstream origin RP64-rk3399-Dev
 fi
-
-export TEE=/tmp/tee.bin
-cp /tmp/tee.bin Builds/tee.bin
-git status && git add -A && git status
-read -p "Successful Build of OP-TEE: Sign -->"
-git commit -a -S -m "Successful Build of OP-TEE"
-git push --set-upstream origin RP64-rk3399-Dev
 
 if [ -f Builds/bl31.elf ]; then
   cp Builds/bl31.elf /tmp/bl31.elf
@@ -187,14 +185,13 @@ else
   lxc exec tf-a --cwd /root/arm-trusted-firmware-lts-v$(echo $ATF_VER) -- make -j$(nproc) BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" PLAT=rk3399 bl31
   lxc file pull tf-a/root/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/release/bl31/bl31.bin /tmp/
   snap remove lxd --purge
+  export BL31=/tmp/bl31.elf
+  cp /tmp/bl31.elf Builds/bl31.elf
+  git status && git add -A && git status
+  read -p "Successful Build of TF-A: Sign -->"
+  git commit -a -S -m "Successful Build of TF-A"
+  git push --set-upstream origin RP64-rk3399-Dev
 fi
-
-export BL31=/tmp/bl31.elf
-cp /tmp/bl31.elf Builds/bl31.elf
-git status && git add -A && git status
-read -p "Successful Build of TF-A: Sign -->"
-git commit -a -S -m "Successful Build of TF-A"
-git push --set-upstream origin RP64-rk3399-Dev
 
 snap install ub && lxd init --auto && lxc launch ubuntu:24.04 ub && sleep 30 && ufw reload && sleep 10
 # cp /tmp/rk3399-rockpro64-u-boot.dtsi arch/arm/dts/rk3399-rockpro64-u-boot.dtsi && echo "Patched Device Tree for TPM"
