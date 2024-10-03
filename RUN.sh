@@ -96,6 +96,7 @@ popd
 
 cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
 cp includes/0001-pkcs11-leak-the-engine-to-avoid-segfault-when-using-.patch /tmp/0001-pkcs11-leak.patch
+cp includes/rk3399-rockpro64-u-boot.dtsi /tmp/rk3399-rockpro64-u-boot.dtsi
 # cp includes/platform_common.c /tmp/platform_common.c
 # cp includes/platform_def.h /tmp/platform_def.h
 # cp includes/plat_private.h /tmp/plat_private.h
@@ -175,7 +176,8 @@ cd u-boot-$(echo $UB_VER)
 echo "Entering U-Boot ------"
 make clean
 git apply ../0001-rockchip-rk3399.patch && echo "Patched SPI bug"
-cp /tmp/efi.var efi.var
+cp /tmp/rk3399-rockpro64-u-boot.dtsi arch/arm/dts/rk3399-rockpro64-u-boot.dtsi && echo "Patched Device Tree for TPM"
+cp /tmp/efi.var efi.var && echo "Deployed efi.var"
 rm tools/logos/denx.bmp && rm drivers/video/u_boot_logo.bmp
 cp /tmp/logo.bmp tools/logos/denx.bmp && cp /tmp/logo.bmp drivers/video/u_boot_logo.bmp
 sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3399_defconfig
@@ -188,9 +190,9 @@ read -p "Build U-Boot -->"
 FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j$(nproc) all
 dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
 dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
-
+# WIP
 read -p "Insert another SD Card + yubikey, Then Press Enter to Continue"
-openssl req -new -x509 -engine pkcs11 -keyform ENGINE -key 1 -out dev.crt
+# openssl req -new -x509 -engine pkcs11 -keyform ENGINE -key 1 -out dev.crt
 tools/mkimage -n rk3399 -T rksd -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin sd_idbloader.img
 tools/mkimage -n rk3399 -T rkspi -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin spi_idbloader.img
 tools/mkimage -F -N pkcs11 -k 1 -K simple-bin.fit.fit -r rk3399.fit
@@ -218,7 +220,7 @@ cp rk3399-spi.bin /mnt/rk3399-spi.bin.bin
 cp rk3399-spi.bin /tmp/rk3399-spi.bin.bin
 sync
 umount /mnt
-dd if=rk3399-sd.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
+dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 cd ..
 sync
 popd
@@ -234,5 +236,5 @@ git commit -a -S -m "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUIL
 git push --set-upstream origin RP64-rk3399-Dev
 cd ..
 apt remove --purge bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libengine-pkcs11-openssl libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y && apt autoremove -y
-rm -f -r /tmp/u-boot* && rm -f /tmp/rk3399* && rm -f /tmp/4.* && rm -f /tmp/lts* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/optee_os-* && rm -f /tmp/plat* && rm -f /tmp/000* && rm -f /tmp/logo.bmp && rm -f /tmp/bl31_param.h && rm -f /tmp/rk3399_def.h && rm -f /tmp/tee.bin && rm -f /tmp/efi.var && rm -f -r U-Boot && cd ..
+rm -f -r /tmp/u-boot* && rm -f /tmp/rk3399* && rm -f /tmp/4.* && rm -f /tmp/lts* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/optee_os-* && rm -f /tmp/plat* && rm -f /tmp/000* && rm -f /tmp/logo.bmp && rm -f /tmp/bl31_param.h && rm -f /tmp/rk3399_def.h && rm -f /tmp/tee.bin && rm -f /tmp/efi.var && rm -f /tmp/rk3399-rockpro64-u-boot.dtsi && rm -f -r U-Boot && cd ..
 exit
