@@ -105,6 +105,7 @@ popd
 ## cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
 ## cp includes/0001-pkcs11-leak-the-engine-to-avoid-segfault-when-using-.patch /tmp/0001-pkcs11-leak.patch
 # cp includes/rk3399-rockpro64-u-boot.dtsi /tmp/rk3399-rockpro64-u-boot.dtsi
+# dts/upstream/src/arm64/rockchip/rk3399-rockpro64.dtsi
 ## cp includes/rk3399-u-boot.dtsi /tmp/rk3399-u-boot.dtsi
 # cp includes/platform_common.c /tmp/platform_common.c
 # cp includes/platform_def.h /tmp/platform_def.h
@@ -207,7 +208,7 @@ echo "Entering U-Boot ------"
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- make clean
 lxc file push includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch ub/root/u-boot-$(echo $UB_VER)/0001-rockchip-rk3399.patch
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- git apply 0001-rockchip-rk3399.patch && echo "Patched SPI bug"
-lxc file push includes/rk3399-u-boot.dtsi ub/root/u-boot-$(echo $UB_VER)/arch/arm/dts/rk3399-u-boot.dtsi && echo "Patched Device Tree for TPM"
+lxc file push includes/rk3399-rockpro64.dtsi ub/root/u-boot-$(echo $UB_VER)/dts/upstream/src/arm64/rockchip/rk3399-rockpro64.dtsi && echo "Patched Device Tree for TPM"
 lxc file push includes/efi.var ub/root/u-boot-$(echo $UB_VER)/efi.var && echo "Deployed efi.var"
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- rm -f tools/logos/denx.bmp
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- rm -f drivers/video/u_boot_logo.bmp
