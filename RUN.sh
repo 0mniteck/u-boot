@@ -197,7 +197,6 @@ fi
 export BL31=/tmp/bl31.elf
 
 snap install lxd && lxd init --auto && lxc launch ubuntu:24.04 ub && sleep 30 && ufw reload && sleep 10
-# cp /tmp/rk3399-rockpro64-u-boot.dtsi arch/arm/dts/rk3399-rockpro64-u-boot.dtsi && echo "Patched Device Tree for TPM"
 lxc exec ub apt update && lxc exec ub -- apt upgrade -y
 lxc exec ub -- apt install -y bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libengine-pkcs11-openssl libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip
 lxc exec ub -- wget https://github.com/u-boot/u-boot/archive/refs/tags/v$(echo $UB_VER).zip
