@@ -135,6 +135,7 @@ else
 fi
 
 cp /tmp/sbsign Builds/sbsign
+git status && git add -A && git status
 read -p "Successful Build of sbsign: Sign -->"
 git commit -a -S -m "Successful Build of sbsign"
 git push --set-upstream origin RP64-rk3399-Dev
@@ -163,6 +164,7 @@ fi
 
 export TEE=/tmp/tee.bin
 cp /tmp/tee.bin Builds/tee.bin
+git status && git add -A && git status
 read -p "Successful Build of OP-TEE: Sign -->"
 git commit -a -S -m "Successful Build of OP-TEE"
 git push --set-upstream origin RP64-rk3399-Dev
@@ -195,6 +197,7 @@ fi
 
 export BL31=/tmp/bl31.elf
 cp /tmp/bl31.elf Builds/bl31.elf
+git status && git add -A && git status
 read -p "Successful Build of TF-A: Sign -->"
 git commit -a -S -m "Successful Build of TF-A"
 git push --set-upstream origin RP64-rk3399-Dev
@@ -231,9 +234,11 @@ read -p "Build U-Boot -->"
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j$(nproc) all
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- make -j\$(nproc) BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" PLAT=rk3399 bl31
 lxc file pull ub/root/u-boot-$(echo $UB_VER) /tmp/u-boot
+pushd /tmp/u-boot/
 
 dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
-dd if=/tmp/u-boot/u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
+dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
+
 # WIP
 read -p "Insert another SD Card + yubikey, Then Press Enter to Continue"
 # openssl req -new -x509 -engine pkcs11 -keyform ENGINE -key 1 -out dev.crt
@@ -266,19 +271,19 @@ cp rk3399-spi.bin /tmp/rk3399-spi.bin.bin
 sync
 umount /mnt
 dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
-cd ..
 sync
 popd
-cp /tmp/rk3399-sd.bin Builds/rk3399-sd.bin
-cp /tmp/rk3399-sd.bin.sum Builds/rk3399-sd.bin.sum
-cp /tmp/rk3399-spi.bin Builds/rk3399-spi.bin
-cp /tmp/rk3399-spi.bin.sum Builds/rk3399-spi.bin.sum
+
+cp /tmp/u-boot/rk3399-sd.bin Builds/rk3399-sd.bin
+cp /tmp/u-boot/rk3399-sd.bin.sum Builds/rk3399-sd.bin.sum
+cp /tmp/u-boot/rk3399-spi.bin Builds/rk3399-spi.bin
+cp /tmp/u-boot/rk3399-spi.bin.sum Builds/rk3399-spi.bin.sum
+
 git status && git add -A && git status
 read -p "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For The RockPro64: Sign -->"
 git commit -a -S -m "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For The RockPro64"
 git push --set-upstream origin RP64-rk3399-Dev
-cd ..
-apt remove --purge bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libengine-pkcs11-openssl libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y && apt autoremove -y
-rm -f -r /tmp/u-boot* && rm -f /tmp/rk3399* && rm -f /tmp/4.* && rm -f /tmp/lts* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/optee_os-* && rm -f /tmp/plat* && rm -f /tmp/000* && rm -f /tmp/logo.bmp && rm -f /tmp/bl31_param.h && rm -f /tmp/tee.bin && rm -f /tmp/efi.var && rm -f /tmp/sbsign && rm -f -r U-Boot && cd ..
+
+rm -f -r /tmp/u-boot* && rm -f /tmp/rk3399* && rm -f /tmp/bl31.elf && rm -f /tmp/tee.bin && rm -f /tmp/sbsign && rm -f -r ../U-Boot &
 snap remove lxd --purge
 exit
