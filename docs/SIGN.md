@@ -9,6 +9,7 @@
 6. **libengine-pkcs11-openssl**: Install ykcs11 libengine dynamic extention on your system.
 7. **OpenSC**: Install OpenSC on your system if you need to debug the module
    - pkcs11-tools --module ` ` -t.
+8. **U-Boot**: Build "mutably" with `CONFIG_HEXDUMP=y` and `CONFIG_CMD_NVEDIT_EFI=y` to make efi vars editable.
 
 ### Steps to Create a Root CA on YubiKey
 
@@ -101,7 +102,7 @@ fatload mmc 0:1 $kernel_addr_r db.auth
 setenv -e -nv -bs -rt -at -i $kernel_addr_r:$filesize db
 ```
 
-#### 6. Boot to create fresh efi.var store at /boot/efi/ubootefi.var and upload to git to bake into future builds.
+#### 6. Boot to create fresh efi.var store at /boot/efi/ubootefi.var and upload to git to bake into build with EFI Secure Boot enabled.
 
 ```
 run bootcmd
