@@ -139,10 +139,7 @@ git push --set-upstream origin RP64-rk3399-Dev
 
 if [ -f Builds/tee.bin ]; then
   cp Builds/tee.bin /tmp/tee.bin
-  export TEE=/tmp/tee.bin
-  pushd /tmp/
 else
-  pushd /tmp/
   snap install lxd && lxd init --auto && lxc launch ubuntu:24.04 tee
   sleep 30
   ufw reload
@@ -162,34 +159,52 @@ else
   export TEE=/tmp/tee.bin
 fi
 
+export TEE=/tmp/tee.bin
 cp /tmp/tee.bin Builds/tee.bin
 read -p "Successful Build of OP-TEE: Sign -->"
 git commit -a -S -m "Successful Build of OP-TEE"
 git push --set-upstream origin RP64-rk3399-Dev
 
+if [ -f Builds/bl31.elf ]; then
+  cp Builds/bl31.elf /tmp/bl31.elf
+else
+  snap install lxd && lxd init --auto && lxc launch ubuntu:24.04 tf-a
+  sleep 30
+  ufw reload
+  sleep 10
+  # cp /tmp/platform_common.c plat/rockchip/common/aarch64/platform_common.c
+  # cp /tmp/platform_def.h plat/rockchip/rk3399/include/platform_def.h
+  # cp /tmp/plat_private.h plat/rockchip/common/include/plat_private.h
+  # cp /tmp/platform.mk plat/rockchip/rk3399/platform.mk
+  # cp /tmp/rk3399_def.h plat/rockchip/rk3399/rk3399_def.h
+  # cp /tmp/bl31_param.h plat/rockchip/rk3399/include/shared/bl31_param.h
+  lxc exec tf-a apt update && lxc exec tf-a -- apt upgrade -y
+  lxc exec tf-a -- apt install -y bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libengine-pkcs11-openssl libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip
+  lxc exec tf-a -- wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/lts-v$(echo $ATF_VER).zip
+  lxc exec tf-a -- bash -c "echo '5252dc59f1133d9c3fae5560954d9810e97a7e3b018522fddea584343d742a110c65678115cb0f554c201b5f7326353eec9a54031485156b6ca0788f53d33882  lts-v'$(echo $ATF_VER)'.zip' > $(echo $ATF_VER).zip.sum"
+  if [[ $(lxc exec tf-a -- bash -c "sha512sum -c $(echo $ATF_VER).zip.sum") == $(echo $ATF_VER)'.zip: OK' ]]; then echo 'TF-A Checksum Matched! Checksum Matched!'; else echo 'TF-A Checksum Mismatched!' & exit 1; fi;
+  lxc exec tf-a -- unzip lts-v$(echo $ATF_VER).zip
+  echo "Entering TF-A ------"
+  lxc exec tf-a --cwd /root/arm-trusted-firmware-lts-v$(echo $ATF_VER) -- make realclean
+  lxc exec tf-a --cwd /root/arm-trusted-firmware-lts-v$(echo $ATF_VER) -- make -j\$(nproc) BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" PLAT=rk3399 bl31
+  lxc file pull tf-a/root/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/release/bl31 /tmp/
+  snap remove lxd --purge
+fi
+
+export BL31=/tmp/bl31.elf
+cp /tmp/bl31.elf Builds/bl31.elf
+read -p "Successful Build of TF-A: Sign -->"
+git commit -a -S -m "Successful Build of TF-A"
+git push --set-upstream origin RP64-rk3399-Dev
+
 apt update && apt install bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libengine-pkcs11-openssl libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y
-wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/lts-v$(echo $ATF_VER).zip
-echo '5252dc59f1133d9c3fae5560954d9810e97a7e3b018522fddea584343d742a110c65678115cb0f554c201b5f7326353eec9a54031485156b6ca0788f53d33882  lts-v'$(echo $ATF_VER)'.zip' > v$(echo $ATF_VER).zip.sum
-if [[ $(sha512sum -c v$(echo $ATF_VER).zip.sum) == 'lts-v'$(echo $ATF_VER)'.zip: OK' ]]; then echo 'ATF Checksum Matched!'; else echo 'ATF Checksum Mismatched!' & exit 1; fi;
 wget https://github.com/u-boot/u-boot/archive/refs/tags/v$(echo $UB_VER).zip
 echo '0a3e614ba0fd14224f52a8ad3e68e22df08f6e02c43e9183a459d80b4f37b4f384a4bfef7627a3863388fcffb1472c38d178810bed401f63eb8b5d0a21456603  v'$(echo $UB_VER)'.zip' > v$(echo $UB_VER).zip.sum
 if [[ $(sha512sum -c v$(echo $UB_VER).zip.sum) == 'v'$(echo $UB_VER)'.zip: OK' ]]; then echo 'U-Boot Checksum Matched!'; else echo 'U-Boot Checksum Mismatched!' & exit 1; fi;
-unzip lts-v$(echo $ATF_VER).zip
 unzip v$(echo $UB_VER).zip
 
-cd arm-trusted-firmware-lts-v$(echo $ATF_VER)
-echo "Entering TF-A ------"
-make realclean
-# cp /tmp/platform_common.c plat/rockchip/common/aarch64/platform_common.c
-# cp /tmp/platform_def.h plat/rockchip/rk3399/include/platform_def.h
-# cp /tmp/plat_private.h plat/rockchip/common/include/plat_private.h
-# cp /tmp/platform.mk plat/rockchip/rk3399/platform.mk
-# cp /tmp/rk3399_def.h plat/rockchip/rk3399/rk3399_def.h
-# cp /tmp/bl31_param.h plat/rockchip/rk3399/include/shared/bl31_param.h
-make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" PLAT=rk3399 bl31
-export BL31=/tmp/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/release/bl31/bl31.elf
 cd ..
-
+pushd /tmp/
 cd u-boot-$(echo $UB_VER)
 echo "Entering U-Boot ------"
 make clean
