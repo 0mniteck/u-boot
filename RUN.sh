@@ -215,7 +215,7 @@ lxc file push includes/logo.bmp ub/root/u-boot-$(echo $UB_VER)/tools/logos/denx.
 lxc file push includes/logo.bmp ub/root/u-boot-$(echo $UB_VER)/drivers/video/u_boot_logo.bmp
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3399_defconfig
 lxc file push /tmp/rk3399_defconfig ub/root/u-boot-$(echo $UB_VER)/rk3399_defconfig
-lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- cat rk3399_defconfig >> configs/rockpro64-rk3399_defconfig
+lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- cat rk3399_defconfig \>\> configs/rockpro64-rk3399_defconfig
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- make rockpro64-rk3399_defconfig
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- cat configs/rockpro64-rk3399_defconfig
 read -p "menuconfig -->"
