@@ -155,13 +155,12 @@
 	tpm0: tpm@0 {
 		compatible =  "infineon,slb9670", "tcg,tpm_tis-spi";
 		reg = <0>;
- 		pinctrl-names = "default";
-            	pinctrl-0 = <&pinctrl_tpm0>;
+ 		/* pinctrl-names = "default"; */
+            	/* pinctrl-0 = <&pinctrl_tpm0>; */
 		spi-max-frequency = <10000000>;
-		interrupts = <0>;
+		/* interrupts = <0>; */
 		status = "okay";
 		/* interrupts-extended = <&pio 88 IRQ_TYPE_EDGE_FALLING>; */
-		/* interrupt = <0>; */
 	};
 };
 
