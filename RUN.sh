@@ -98,7 +98,7 @@ echo "CONFIG_CMD_HASH=y" >> rk3399_defconfig
 ## echo "CONFIG_CMD_BOOTMENU=y" >> rk3399_defconfig
 ## echo "CONFIG_CMD_BOOTEFI_BOOTMGR=y" >> rk3399_defconfig
 ## echo "CONFIG_CMD_EFIDEBUG=y" >> rk3399_defconfig
-echo "CONFIG_SYS_PROMPT="OMNITECK # " >> rk3399_defconfig
+echo "CONFIG_SYS_PROMPT='OMNITECK # '" >> rk3399_defconfig
 popd
 
 cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
