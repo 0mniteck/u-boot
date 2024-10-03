@@ -3,7 +3,8 @@
 ### Prerequisites (subject to change)
 1. **YubiKey**: Ensure you have a YubiKey that supports PIV (Personal Identity Verification).
 2. **OpenSSL**: Install OpenSSL on your system.
-3. **Ykman**: Install the YubiKey Manager to manage your YubiKey,
+3. **Ykman**: Install the snap version YubiKey Manager to manage your YubiKey,
+   - `snap install ykman`
    - you may need to restart pcscd `sudo service pcscd start`.
 5. **Ykcs11**: Install ykcs11 library on your system.
 6. **libengine-pkcs11-openssl**: Install ykcs11 libengine dynamic extention on your system.
