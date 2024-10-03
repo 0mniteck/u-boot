@@ -10,6 +10,7 @@
 		mmc1 = &sdmmc;
 		pci0 = &pcie0;
 		spi1 = &spi1;
+		tpm0 = &tpm;
 	};
 
 	chosen {
@@ -26,6 +27,15 @@
 		compatible = "rockchip,rk3399-cic", "syscon";
 		reg = <0x0 0xff620000 0x0 0x100>;
 		bootph-all;
+	};
+
+	tpm: tpm@0 {
+		compatible = "infineon,slb9670";
+		reg = <0>;
+		spi-max-frequency = <10000000>;
+		interrupts = <0>;
+		#address-cells = <1>;
+		#size-cells = <0>;
 	};
 };
 
@@ -148,6 +158,12 @@
 &spi1 {
 	bootph-pre-ram;
 	bootph-some-ram;
+	tpm0: tpm@0 {
+		compatible = "infineon,slb9670";
+		reg = <0>;
+		spi-max-frequency = <10000000>;
+		interrupts = <0>;
+	};
 };
 
 &spi1_clk {
