@@ -132,6 +132,11 @@ else
   snap remove lxd --purge
 fi
 
+cp /tmp/sbsign Builds/sbsign
+read -p "Successful Build of sbsign: Sign -->"
+git commit -a -S -m "Successful Build of sbsign"
+git push --set-upstream origin RP64-rk3399-Dev
+
 if [ -f Builds/tee.bin ]; then
   cp Builds/tee.bin /tmp/tee.bin
   export TEE=/tmp/tee.bin
@@ -156,6 +161,11 @@ else
   snap remove lxd --purge
   export TEE=/tmp/tee.bin
 fi
+
+cp /tmp/tee.bin Builds/tee.bin
+read -p "Successful Build of OP-TEE: Sign -->"
+git commit -a -S -m "Successful Build of OP-TEE"
+git push --set-upstream origin RP64-rk3399-Dev
 
 apt update && apt install bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libengine-pkcs11-openssl libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y
 wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/lts-v$(echo $ATF_VER).zip
@@ -238,8 +248,6 @@ cp /tmp/rk3399-sd.bin Builds/rk3399-sd.bin
 cp /tmp/rk3399-sd.bin.sum Builds/rk3399-sd.bin.sum
 cp /tmp/rk3399-spi.bin Builds/rk3399-spi.bin
 cp /tmp/rk3399-spi.bin.sum Builds/rk3399-spi.bin.sum
-cp /tmp/tee.bin Builds/tee.bin
-cp /tmp/sbsign Builds/sbsign
 git status && git add -A && git status
 read -p "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For The RockPro64: Sign -->"
 git commit -a -S -m "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For The RockPro64"
