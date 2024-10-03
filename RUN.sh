@@ -221,8 +221,7 @@ lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- cat configs/rockpro64-rk3399_d
 read -p "menuconfig -->"
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- make menuconfig
 read -p "Build U-Boot -->"
-lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j$(nproc) all
-lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- make -j$(nproc) BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" PLAT=rk3399 bl31
+lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- make FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH -j$(nproc) all
 lxc file pull ub/root/u-boot-$(echo $UB_VER) /tmp/u-boot
 pushd /tmp/u-boot/
 
