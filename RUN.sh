@@ -98,21 +98,23 @@ echo "CONFIG_CMD_HASH=y" >> rk3399_defconfig
 ## echo "CONFIG_CMD_BOOTMENU=y" >> rk3399_defconfig
 ## echo "CONFIG_CMD_BOOTEFI_BOOTMGR=y" >> rk3399_defconfig
 ## echo "CONFIG_CMD_EFIDEBUG=y" >> rk3399_defconfig
-echo "CONFIG_SYS_PROMPT='OMNITECK # '" >> rk3399_defconfig
+echo 'CONFIG_SYS_PROMPT="0MNITECK # "' >> rk3399_defconfig
+echo 'CONFIG_LOCALVERSION="0MNITECK"' >> rk3399_defconfig
 popd
 
-cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
-cp includes/0001-pkcs11-leak-the-engine-to-avoid-segfault-when-using-.patch /tmp/0001-pkcs11-leak.patch
+## cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
+## cp includes/0001-pkcs11-leak-the-engine-to-avoid-segfault-when-using-.patch /tmp/0001-pkcs11-leak.patch
 # cp includes/rk3399-rockpro64-u-boot.dtsi /tmp/rk3399-rockpro64-u-boot.dtsi
-cp includes/rk3399-u-boot.dtsi /tmp/rk3399-u-boot.dtsi
+## cp includes/rk3399-u-boot.dtsi /tmp/rk3399-u-boot.dtsi
 # cp includes/platform_common.c /tmp/platform_common.c
 # cp includes/platform_def.h /tmp/platform_def.h
 # cp includes/plat_private.h /tmp/plat_private.h
 # cp includes/platform.mk /tmp/platform.mk
 # cp includes/rk3399_def.h /tmp/rk3399_def.h
 # cp includes/bl31_param.h /tmp/bl31_param.h
-cp includes/logo.bmp /tmp/logo.bmp
-cp includes/efi.var /tmp/efi.var
+## cp includes/logo.bmp /tmp/logo.bmp
+## cp includes/efi.var /tmp/efi.var
+## cp /tmp/rk3399_defconfig
 
 if [ -f Builds/sbsign ]; then
   cp Builds/sbsign /tmp/sbsign
@@ -121,7 +123,7 @@ else
   lxc exec sbtools apt update && lxc exec sbtools -- apt upgrade -y
   lxc exec sbtools -- apt install automake binutils-dev build-essential gnu-efi help2man libssl-dev make openssl pkg-config uuid uuid-dev -y
   lxc exec sbtools -- git clone https://git.kernel.org/pub/scm/linux/kernel/git/jejb/sbsigntools.git
-  lxc file push /tmp/0001-pkcs11-leak.patch sbtools/root/sbsigntools/
+  lxc file push 0001-pkcs11-leak-the-engine-to-avoid-segfault-when-using-.patch sbtools/root/sbsigntools/0001-pkcs11-leak.patch
   echo "Entering sbsign ------"
   lxc exec sbtools --cwd /root/sbsigntools -- git apply 0001-pkcs11-leak.patch && echo "Patched sbsign SEG_FAULT bug"
   lxc exec sbtools --cwd /root/sbsigntools -- ./autogen.sh
@@ -187,7 +189,7 @@ else
   echo "Entering TF-A ------"
   lxc exec tf-a --cwd /root/arm-trusted-firmware-lts-v$(echo $ATF_VER) -- make realclean
   lxc exec tf-a --cwd /root/arm-trusted-firmware-lts-v$(echo $ATF_VER) -- make -j\$(nproc) BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" PLAT=rk3399 bl31
-  lxc file pull tf-a/root/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/release/bl31 /tmp/
+  lxc file pull tf-a/root/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/release/bl31/bl31.bin /tmp/
   snap remove lxd --purge
 fi
 
@@ -197,33 +199,41 @@ read -p "Successful Build of TF-A: Sign -->"
 git commit -a -S -m "Successful Build of TF-A"
 git push --set-upstream origin RP64-rk3399-Dev
 
-apt update && apt install bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libengine-pkcs11-openssl libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y
-wget https://github.com/u-boot/u-boot/archive/refs/tags/v$(echo $UB_VER).zip
-echo '0a3e614ba0fd14224f52a8ad3e68e22df08f6e02c43e9183a459d80b4f37b4f384a4bfef7627a3863388fcffb1472c38d178810bed401f63eb8b5d0a21456603  v'$(echo $UB_VER)'.zip' > v$(echo $UB_VER).zip.sum
-if [[ $(sha512sum -c v$(echo $UB_VER).zip.sum) == 'v'$(echo $UB_VER)'.zip: OK' ]]; then echo 'U-Boot Checksum Matched!'; else echo 'U-Boot Checksum Mismatched!' & exit 1; fi;
-unzip v$(echo $UB_VER).zip
-
-cd ..
-pushd /tmp/
-cd u-boot-$(echo $UB_VER)
-echo "Entering U-Boot ------"
-make clean
-git apply ../0001-rockchip-rk3399.patch && echo "Patched SPI bug"
-cp /tmp/rk3399-u-boot.dtsi arch/arm/dts/rk3399-u-boot.dtsi && echo "Patched Device Tree for TPM"
+snap install ub && lxd init --auto && lxc launch ubuntu:24.04 ub
+sleep 30
+ufw reload
+sleep 10
 # cp /tmp/rk3399-rockpro64-u-boot.dtsi arch/arm/dts/rk3399-rockpro64-u-boot.dtsi && echo "Patched Device Tree for TPM"
-cp /tmp/efi.var efi.var && echo "Deployed efi.var"
-rm tools/logos/denx.bmp && rm drivers/video/u_boot_logo.bmp
-cp /tmp/logo.bmp tools/logos/denx.bmp && cp /tmp/logo.bmp drivers/video/u_boot_logo.bmp
-sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3399_defconfig
-cat /tmp/rk3399_defconfig >> configs/rockpro64-rk3399_defconfig
-make rockpro64-rk3399_defconfig
-cat configs/rockpro64-rk3399_defconfig
+lxc exec ub apt update && lxc exec ub -- apt upgrade -y
+lxc exec ub -- apt install -y bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libengine-pkcs11-openssl libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip
+lxc exec ub -- wget https://github.com/u-boot/u-boot/archive/refs/tags/v$(echo $UB_VER).zip
+lxc exec ub -- bash -c "echo '0a3e614ba0fd14224f52a8ad3e68e22df08f6e02c43e9183a459d80b4f37b4f384a4bfef7627a3863388fcffb1472c38d178810bed401f63eb8b5d0a21456603  v'$(echo $UB_VER)'.zip' > $(echo $UB_VER).zip.sum"
+if [[ $(lxc exec ub -- bash -c "sha512sum -c $(echo $UB_VER).zip.sum") == $(echo $UB_VER)'.zip: OK' ]]; then echo 'U-Boot Checksum Matched! Checksum Matched!'; else echo 'U-Boot Checksum Mismatched!' & exit 1; fi;
+lxc exec ub -- unzip v$(echo $UB_VER).zip
+cp /tmp/rk3399_defconfig
+echo "Entering U-Boot ------"
+lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- make clean
+lxc file push includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch ub/root/u-boot-$(echo $UB_VER)/0001-rockchip-rk3399.patch
+lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- git apply 0001-rockchip-rk3399.patch && echo "Patched SPI bug"
+lxc file push includes/rk3399-u-boot.dtsi ub/root/u-boot-$(echo $UB_VER)/arch/arm/dts/rk3399-u-boot.dtsi && echo "Patched Device Tree for TPM"
+lxc file push includes/efi.var ub/root/u-boot-$(echo $UB_VER)/efi.var && echo "Deployed efi.var"
+lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- rm tools/logos/denx.bmp && rm drivers/video/u_boot_logo.bmp
+lxc file push includes/logo.bmp ub/root/u-boot-$(echo $UB_VER)/tools/logos/denx.bmp
+lxc file push includes/logo.bmp ub/root/u-boot-$(echo $UB_VER)/drivers/video/u_boot_logo.bmp
+lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3399_defconfig
+lxc file push /tmp/rk3399_defconfig ub/root/u-boot-$(echo $UB_VER)/rk3399_defconfig
+lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- cat rk3399_defconfig >> configs/rockpro64-rk3399_defconfig
+lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- make rockpro64-rk3399_defconfig
+lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- cat configs/rockpro64-rk3399_defconfig
 read -p "menuconfig -->"
-make menuconfig
+lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- make menuconfig
 read -p "Build U-Boot -->"
-FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j$(nproc) all
+lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j$(nproc) all
+lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- make -j\$(nproc) BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" PLAT=rk3399 bl31
+lxc file pull ub/root/u-boot-$(echo $UB_VER) /tmp/u-boot
+
 dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
-dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
+dd if=/tmp/u-boot/u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 # WIP
 read -p "Insert another SD Card + yubikey, Then Press Enter to Continue"
 # openssl req -new -x509 -engine pkcs11 -keyform ENGINE -key 1 -out dev.crt
@@ -270,4 +280,5 @@ git push --set-upstream origin RP64-rk3399-Dev
 cd ..
 apt remove --purge bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libengine-pkcs11-openssl libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y && apt autoremove -y
 rm -f -r /tmp/u-boot* && rm -f /tmp/rk3399* && rm -f /tmp/4.* && rm -f /tmp/lts* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/optee_os-* && rm -f /tmp/plat* && rm -f /tmp/000* && rm -f /tmp/logo.bmp && rm -f /tmp/bl31_param.h && rm -f /tmp/tee.bin && rm -f /tmp/efi.var && rm -f /tmp/sbsign && rm -f -r U-Boot && cd ..
+snap remove lxd --purge
 exit
