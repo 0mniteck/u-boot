@@ -1,6 +1,6 @@
 # Signing Recipe
 
-### Prerequisites
+### Prerequisites (subject to change)
 1. **YubiKey**: Ensure you have a YubiKey that supports PIV (Personal Identity Verification).
 2. **OpenSSL**: Install OpenSSL on your system.
 3. **Ykman**: Install the YubiKey Manager to manage your YubiKey,
@@ -8,8 +8,9 @@
 5. **Ykcs11**: Install ykcs11 library on your system.
 6. **libengine-pkcs11-openssl**: Install ykcs11 libengine dynamic extention on your system.
 7. **OpenSC**: Install OpenSC on your system if you need to debug the module
-   - pkcs11-tools --module ` ` -t.
+   - `pkcs11-tools --module /usr/lib/aarch64-linux-gnu/libykcs11.so.2.2.0 -t`.
 8. **U-Boot**: Build "mutably" with `CONFIG_HEXDUMP=y` and `CONFIG_CMD_NVEDIT_EFI=y` to make efi vars editable.
+9. **sbsign**: Build with slight patch as described in (https://github.com/osresearch/sbsigntools/commit/5154c68bce6848b49222564675720d10a1caca2c)
 
 ### Steps to Create a Root CA on YubiKey
 
