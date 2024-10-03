@@ -29,6 +29,15 @@
 		reg = <0x0 0xff620000 0x0 0x100>;
 		bootph-all;
 	};
+
+	tpm0: tpm@0 {
+		compatible = "infineon,slb9670";
+		reg = <0>;
+		spi-max-frequency = <10000000>;
+		interrupts = <0>;
+		#address-cells = <1>;
+		#size-cells = <0>;
+	};
 };
 
 #if defined(CONFIG_ROCKCHIP_SPI_IMAGE) && defined(CONFIG_HAS_ROM)
