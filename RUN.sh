@@ -200,11 +200,10 @@ lxc exec ub -- bash -c "echo '0a3e614ba0fd14224f52a8ad3e68e22df08f6e02c43e9183a4
 if [[ $(lxc exec ub -- bash -c "sha512sum -c $(echo $UB_VER).zip.sum") == 'v'$(echo $UB_VER)'.zip: OK' ]]; then echo 'U-Boot Checksum Matched! Checksum Matched!'; else echo 'U-Boot Checksum Mismatched!' & exit 1; fi;
 lxc exec ub -- unzip v$(echo $UB_VER).zip
 echo "Entering U-Boot ------"
-lxc file push /tmp/bl31.elf ub/root/u-boot-$(echo $UB_VER)/bl31.elf && echo "Imported bl31.elf"
-lxc file push /tmp/tee.bin ub/root/u-boot-$(echo $UB_VER)/tee.bin && echo "Imported tee.bin"
-lxc config set ub environment.BL31=/root/u-boot-$(echo $UB_VER)/bl31.elf
-lxc config set ub environment.TEE=/root/u-boot-$(echo $UB_VER)/tee.bin
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- make clean
+lxc file push /tmp/bl31.elf ub/root/u-boot-$(echo $UB_VER)/bl31.elf && lxc config set ub environment.BL31=/root/u-boot-$(echo $UB_VER)/bl31.elf && echo "Imported bl31.elf"
+lxc file push /tmp/tee.bin ub/root/u-boot-$(echo $UB_VER)/tee.bin && lxc config set ub environment.TEE=/root/u-boot-$lxc config set ub environment.TEE=/root/u-boot-$(echo $UB_VER)/tee.bin
+(echo $UB_VER)/tee.bin && echo "Imported tee.bin"
 lxc file push includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch ub/root/u-boot-$(echo $UB_VER)/0001-rockchip-rk3399.patch
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- git apply 0001-rockchip-rk3399.patch && echo "Patched SPI bug"
 # lxc file push includes/rk3399-rockpro64.dtsi ub/root/u-boot-$(echo $UB_VER)/dts/upstream/src/arm64/rockchip/rk3399-rockpro64.dtsi && echo "Patched Device Tree for TPM"
