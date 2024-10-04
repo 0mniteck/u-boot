@@ -200,8 +200,8 @@ lxc exec ub -- bash -c "echo '0a3e614ba0fd14224f52a8ad3e68e22df08f6e02c43e9183a4
 if [[ $(lxc exec ub -- bash -c "sha512sum -c $(echo $UB_VER).zip.sum") == 'v'$(echo $UB_VER)'.zip: OK' ]]; then echo 'U-Boot Checksum Matched! Checksum Matched!'; else echo 'U-Boot Checksum Mismatched!' & exit 1; fi;
 lxc exec ub -- unzip v$(echo $UB_VER).zip
 echo "Entering U-Boot ------"
-lxc file push /tmp/bl31.elf ub/root/u-boot-$(echo $UB_VER)/bl31.elf
-lxc file push /tmp/tee.bin ub/root/u-boot-$(echo $UB_VER)/tee.bin
+lxc file push /tmp/bl31.elf ub/root/u-boot-$(echo $UB_VER)/bl31.elf && echo "Imported bl31.elf"
+lxc file push /tmp/tee.bin ub/root/u-boot-$(echo $UB_VER)/tee.bin && echo "Imported tee.bin"
 lxc config set ub environment.BL31=/root/u-boot-$(echo $UB_VER)/bl31.elf
 lxc config set ub environment.TEE=/root/u-boot-$(echo $UB_VER)/tee.bin
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- make clean
