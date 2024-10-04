@@ -163,8 +163,6 @@ else
   git push --set-upstream origin RP64-rk3399-Dev
 fi
 
-export TEE=/tmp/tee.bin
-
 if [ -f Builds/bl31.elf ]; then
   cp Builds/bl31.elf /tmp/bl31.elf
 else
@@ -194,8 +192,6 @@ else
   git push --set-upstream origin RP64-rk3399-Dev
 fi
 
-export BL31=/tmp/bl31.elf
-
 snap install lxd && lxd init --auto && lxc launch ubuntu:24.04 ub && sleep 30 && ufw reload && sleep 10
 lxc exec ub apt update && lxc exec ub -- apt upgrade -y
 lxc exec ub -- apt install -y bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libengine-pkcs11-openssl libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip
@@ -204,6 +200,10 @@ lxc exec ub -- bash -c "echo '0a3e614ba0fd14224f52a8ad3e68e22df08f6e02c43e9183a4
 if [[ $(lxc exec ub -- bash -c "sha512sum -c $(echo $UB_VER).zip.sum") == 'v'$(echo $UB_VER)'.zip: OK' ]]; then echo 'U-Boot Checksum Matched! Checksum Matched!'; else echo 'U-Boot Checksum Mismatched!' & exit 1; fi;
 lxc exec ub -- unzip v$(echo $UB_VER).zip
 echo "Entering U-Boot ------"
+lxc file push /tmp/bl31.elf ub/root/u-boot-$(echo $UB_VER)/bl31.elf
+lxc file push /tmp/tee.bin ub/root/u-boot-$(echo $UB_VER)/tee.bin
+config set environment.BL31=/root/u-boot-$(echo $UB_VER)/bl31.elf
+config set environment.TEE=/root/u-boot-$(echo $UB_VER)/tee.bin
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- make clean
 lxc file push includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch ub/root/u-boot-$(echo $UB_VER)/0001-rockchip-rk3399.patch
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- git apply 0001-rockchip-rk3399.patch && echo "Patched SPI bug"
