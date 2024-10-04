@@ -202,8 +202,8 @@ lxc exec ub -- unzip v$(echo $UB_VER).zip
 echo "Entering U-Boot ------"
 lxc file push /tmp/bl31.elf ub/root/u-boot-$(echo $UB_VER)/bl31.elf
 lxc file push /tmp/tee.bin ub/root/u-boot-$(echo $UB_VER)/tee.bin
-config set environment.BL31=/root/u-boot-$(echo $UB_VER)/bl31.elf
-config set environment.TEE=/root/u-boot-$(echo $UB_VER)/tee.bin
+lxc config set environment.BL31=/root/u-boot-$(echo $UB_VER)/bl31.elf
+lxc config set environment.TEE=/root/u-boot-$(echo $UB_VER)/tee.bin
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- make clean
 lxc file push includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch ub/root/u-boot-$(echo $UB_VER)/0001-rockchip-rk3399.patch
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- git apply 0001-rockchip-rk3399.patch && echo "Patched SPI bug"
