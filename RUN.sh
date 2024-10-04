@@ -220,14 +220,15 @@ read -p "menuconfig -->"
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- make menuconfig
 read -p "Build U-Boot -->"
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- make FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH -j$(nproc) all
-lxc file pull ub/root/u-boot-$(echo $UB_VER) /tmp/u-boot
-pushd /tmp/u-boot/
+lxc file pull ub/root/u-boot-$(echo $UB_VER)/u-boot-rockchip.bin /tmp/u-boot-rockchip.bin
 
 dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
-dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
+dd if=/tmp/u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 
 # WIP
+pushd /tmp/
 read -p "Insert another SD Card + yubikey, Then Press Enter to Continue"
+lxc file pull ub/root/u-boot-$(echo $UB_VER) /tmp/u-boot -r -p
 # openssl req -new -x509 -engine pkcs11 -keyform ENGINE -key 1 -out dev.crt
 tools/mkimage -n rk3399 -T rksd -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin sd_idbloader.img
 tools/mkimage -n rk3399 -T rkspi -d tpl/u-boot-tpl.bin:spl/u-boot-spl.bin spi_idbloader.img
