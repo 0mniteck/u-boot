@@ -830,7 +830,7 @@
 	};
 };
 
-&spi2 {
+&spi0 {
 	status = "okay";
 
 	tpm@0 {
