@@ -20,10 +20,10 @@ export SOURCE_DATE_EPOCH;
 export BUILD_MESSAGE_TIMESTAMP;
 
 pushd /tmp/
-# echo "CONFIG_LOG=y" >> rk3399_defconfig
-# echo "CONFIG_LOG_MAX_LEVEL=6" >> rk3399_defconfig
-# echo "CONFIG_LOG_CONSOLE=y" >> rk3399_defconfig
-# echo "CONFIG_LOGLEVEL=6" >> rk3399_defconfig
+echo "CONFIG_LOG=y" >> rk3399_defconfig
+echo "CONFIG_LOG_MAX_LEVEL=6" >> rk3399_defconfig
+echo "CONFIG_LOG_CONSOLE=y" >> rk3399_defconfig
+echo "CONFIG_LOGLEVEL=6" >> rk3399_defconfig
 # echo "CONFIG_ARMV8_SEC_FIRMWARE_SUPPORT=y" >> rk3399_defconfig
 # echo "CONFIG_ARM64=y" >> rk3399_defconfig
 # echo "CONFIG_FIT=y" >> rk3399_defconfig
