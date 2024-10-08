@@ -44,6 +44,7 @@
 &spi2 {
 	tpm@0 {
 		bootph-pre-ram;
+		bootph-some-ram;
 	};
 };
 
