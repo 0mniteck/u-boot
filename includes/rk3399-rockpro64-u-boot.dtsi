@@ -41,6 +41,12 @@
 	bootph-pre-ram;
 };
 
+&spi2 {
+	tpm@0 {
+		bootph-pre-ram;
+	};
+};
+
 &spi1 {
 	flash@0 {
 		bootph-pre-ram;
