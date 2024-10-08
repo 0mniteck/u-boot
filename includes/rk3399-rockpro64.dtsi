@@ -831,6 +831,8 @@
 };
 
 &spi2 {
+	#address-cells = <1>;
+        #size-cells = <0>;
 	status = "okay";
 	label = "TPM";
 	num-cs = <1>;
