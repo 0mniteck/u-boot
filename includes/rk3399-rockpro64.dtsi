@@ -835,13 +835,15 @@
         #size-cells = <0>;
 	status = "okay";
 
-	flash@0 {
+	spiflash: flash@0 {
+		#address-cells = <1>;
+		#size-cells = <1>;
 		compatible = "jedec,spi-nor";
 		reg = <0>;
 		spi-max-frequency = <10000000>;
 	};
 
-	tpm@1 {
+	tpm_tis: tpm@1 {
  		compatible = "infineon,slb9670", "tis,tpm2-spi", "tcg,tpm_tis-spi";
 		reg = <1>;
 		spi-max-frequency = <10000000>;
