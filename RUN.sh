@@ -98,7 +98,7 @@ echo "CONFIG_CMD_HASH=y" >> rk3399_defconfig
 ## echo "CONFIG_CMD_BOOTMENU=y" >> rk3399_defconfig
 ## echo "CONFIG_CMD_BOOTEFI_BOOTMGR=y" >> rk3399_defconfig
 ## echo "CONFIG_CMD_EFIDEBUG=y" >> rk3399_defconfig
-echo 'CONFIG_SYS_PROMPT="0MNITECK:~$"' >> rk3399_defconfig
+echo 'CONFIG_SYS_PROMPT="0MNITECK:~$ "' >> rk3399_defconfig
 echo 'CONFIG_LOCALVERSION=" 0MNITECK"' >> rk3399_defconfig
 popd
 
