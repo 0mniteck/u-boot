@@ -41,7 +41,7 @@
 	bootph-pre-ram;
 };
 
-&spi0 {
+&spi5 {
 	tpm@0 {
 		bootph-pre-ram;
 		bootph-some-ram;
