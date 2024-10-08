@@ -832,7 +832,8 @@
 
 &spi2 {
 	status = "okay";
-
+	label = "TPM";
+	num-cs = <1>;
 	tpm@0 {
  		compatible = "infineon,slb9670", "tis,tpm2-spi", "tcg,tpm_tis-spi";
 		reg = <0>;
