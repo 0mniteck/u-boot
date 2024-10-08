@@ -10,7 +10,7 @@
 		mmc1 = &sdmmc;
 		pci0 = &pcie0;
 		spi1 = &spi1;
-		spi0 = &spi0;
+		spi5 = &spi5;
 	};
 
 	chosen {
@@ -146,27 +146,27 @@
 	bootph-some-ram;
 };
 
-&spi0 {
+&spi5 {
 	bootph-pre-ram;
 	bootph-some-ram;
 };
 
-&spi0_clk {
+&spi5_clk {
 	bootph-pre-ram;
 	bootph-some-ram;
 };
 
-&spi0_cs0 {
+&spi5_cs0 {
 	bootph-pre-ram;
 	bootph-some-ram;
 };
 
-&spi0_rx {
+&spi5_rx {
 	bootph-pre-ram;
 	bootph-some-ram;
 };
 
-&spi0_tx {
+&spi5_tx {
 	bootph-pre-ram;
 	bootph-some-ram;
 };
