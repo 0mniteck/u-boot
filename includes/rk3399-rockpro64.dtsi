@@ -833,10 +833,10 @@
 };
 
 &spi1 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&spi1_clk &spi1_tx &spi1_rx &spi1_cs0>;
 	#address-cells = <1>;
         #size-cells = <0>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&spi1_clk &spi1_tx &spi1_rx &spi1_cs0>;
 	status = "okay";
 
 	spiflash: flash@0 {
@@ -846,11 +846,11 @@
 	};
 
 	tpm: tpm@1 {
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_tpm>;
  		compatible = "infineon,slb9670", "tis,tpm2-spi", "tcg,tpm_tis-spi";
 		reg = <1>;
 		spi-max-frequency = <38000000>;
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_tpm>;
 		interrupt-parent = <&gpio4>;
 		interrupts = <GIC_SPI 53 IRQ_TYPE_LEVEL_HIGH 0>;
 	};
