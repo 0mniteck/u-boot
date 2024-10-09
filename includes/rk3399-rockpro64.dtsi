@@ -240,6 +240,17 @@
 		regulator-min-microvolt = <800000>;
 		regulator-max-microvolt = <1700000>;
 	};
+
+	regulator-tpm1-rst {
+		compatible = "regulator-fixed";
+		regulator-name = "tpm1-rst";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		gpio = <&gpio4 31 GPIO_ACTIVE_HIGH>;
+		regulator-always-on;
+		enable-active-high;
+	};
+
 };
 
 &cpu_l0 {
@@ -690,6 +701,12 @@
 
 		bt_wake_l: bt-wake-l {
 			rockchip,pins = <2 RK_PD3 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};
+
+	tpm {
+		pinctrl_tpm1: tpm1grp {
+			rockchip,pins = <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 	};
 
