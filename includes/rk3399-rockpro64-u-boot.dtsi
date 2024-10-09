@@ -42,7 +42,11 @@
 };
 
 &spi1 {
-	tpm@0 {
+	flash@0 {
+		bootph-pre-ram;
+		bootph-some-ram;
+	};
+	tpm@1 {
 		bootph-pre-ram;
 		bootph-some-ram;
 	};
