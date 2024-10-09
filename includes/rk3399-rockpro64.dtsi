@@ -6,6 +6,8 @@
 
 #include <dt-bindings/input/linux-event-codes.h>
 #include <dt-bindings/pwm/pwm.h>
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/interrupt-controller/irq.h>
 #include "rk3399.dtsi"
 #include "rk3399-opp.dtsi"
 
@@ -834,18 +836,21 @@
 	#address-cells = <1>;
         #size-cells = <0>;
 	status = "okay";
+
 	spiflash: flash@0 {
 		compatible = "jedec,spi-nor";
 		reg = <0>;
 		spi-max-frequency = <10000000>;
 	};
+
 	tpm: tpm@1 {
  		compatible = "infineon,slb9670", "tis,tpm2-spi", "tcg,tpm_tis-spi";
 		reg = <1>;
 		spi-max-frequency = <38000000>;
-		interrupt-parent = <&gpio5>;
-		interrupts = <7 IRQ_TYPE_LEVEL_HIGH>;
-		lpcpd-gpios = <&gpio5 15 GPIO_ACTIVE_HIGH>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&spi1_clk &spi1_tx &spi1_rx &spi1_cs0>;
+		interrupt-parent = <&gpio4>;
+		interrupts = <GIC_SPI 53 IRQ_TYPE_LEVEL_HIGH 0>;
 	};
 };
 
