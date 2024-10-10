@@ -7,8 +7,8 @@
 ##
 
 OPT_VER=4.3.0;
-ATF_VER=2.10.4;
-UB_VER=2024.07;
+ATF_VER=2.10.7;
+UB_VER=2024.10;
 FORCE_SOURCE_DATE=1;
 SOURCE_DATE_EPOCH="$(date -d "$(date +%D)" +%s)";
 SOURCE_DATE="@$SOURCE_DATE_EPOCH";
@@ -18,9 +18,9 @@ export SOURCE_DATE;
 export SOURCE_DATE_EPOCH;
 export BUILD_MESSAGE_TIMESTAMP;
 
-cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
 cp includes/rk3399-pinebook-pro-u-boot.dtsi /tmp/rk3399-pinebook-pro-u-boot.dtsi
 cp includes/logo.bmp /tmp/logo.bmp
+
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 apt update && apt install bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y
 
@@ -102,10 +102,10 @@ wget https://github.com/OP-TEE/optee_os/archive/refs/tags/$(echo $OPT_VER).zip
 echo '04a2e85947283e49a79cb8d60fde383df28303a9be15080a7f5354268b01f16405178c0c570e253256c3be8e3084d812c8b46b6dc2cb5c8eb3bde8d2ba4c380e  '$(echo $OPT_VER)'.zip' > $(echo $OPT_VER).zip.sum
 if [[ $(sha512sum -c $(echo $OPT_VER).zip.sum) == $(echo $OPT_VER)'.zip: OK' ]]; then echo 'OP-TEE Checksum Matched!'; else echo 'OP-TEE Checksum Mismatched!' & exit 1; fi;
 wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/lts-v$(echo $ATF_VER).zip
-echo '5252dc59f1133d9c3fae5560954d9810e97a7e3b018522fddea584343d742a110c65678115cb0f554c201b5f7326353eec9a54031485156b6ca0788f53d33882  lts-v'$(echo $ATF_VER)'.zip' > v$(echo $ATF_VER).zip.sum
+echo '610ca50201d599753e9eee8c32a6586b6767963b5f8335fc3cc5b01644c5c88eca235dcf6fd4b64f1e0aed49113a9d2d694a8379bb074bf44d3594862af026a2  lts-v'$(echo $ATF_VER)'.zip' > v$(echo $ATF_VER).zip.sum
 if [[ $(sha512sum -c v$(echo $ATF_VER).zip.sum) == 'lts-v'$(echo $ATF_VER)'.zip: OK' ]]; then echo 'ATF Checksum Matched!'; else echo 'ATF Checksum Mismatched!' & exit 1; fi;
 wget https://github.com/u-boot/u-boot/archive/refs/tags/v$(echo $UB_VER).zip
-echo '0a3e614ba0fd14224f52a8ad3e68e22df08f6e02c43e9183a459d80b4f37b4f384a4bfef7627a3863388fcffb1472c38d178810bed401f63eb8b5d0a21456603  v'$(echo $UB_VER)'.zip' > v$(echo $UB_VER).zip.sum
+echo '6502c5773d0470ad380496c181b802b19d1d7ba151098b7644df2528be5311a52e4b0838746b1661a7b173ef79b1e4afa6c87091eda2bfd3bf36ccfae8a09c40  v'$(echo $UB_VER)'.zip' > v$(echo $UB_VER).zip.sum
 if [[ $(sha512sum -c v$(echo $UB_VER).zip.sum) == 'v'$(echo $UB_VER)'.zip: OK' ]]; then echo 'U-Boot Checksum Matched!'; else echo 'U-Boot Checksum Mismatched!' & exit 1; fi;
 unzip $(echo $OPT_VER).zip
 unzip lts-v$(echo $ATF_VER).zip
@@ -128,7 +128,6 @@ cd ..
 cd RP64/u-boot-$(echo $UB_VER)
 echo "Entering U-Boot ------"
 make clean
-git apply ../../0001-rockchip-rk3399.patch && echo "Patched SPI bug"
 rm tools/logos/denx.bmp && rm drivers/video/u_boot_logo.bmp
 cp /tmp/logo.bmp tools/logos/denx.bmp && cp /tmp/logo.bmp drivers/video/u_boot_logo.bmp
 sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3399_defconfig
@@ -161,7 +160,6 @@ cd .. && cd ..
 cd PBP/u-boot-$(echo $UB_VER)
 echo "Entering U-Boot ------"
 make clean
-git apply ../../0001-rockchip-rk3399.patch && echo "Patched SPI bug"
 cp /tmp/rk3399-pinebook-pro-u-boot.dtsi arch/arm/dts/rk3399-pinebook-pro-u-boot.dtsi && echo "Patched Device Tree bug"
 rm tools/logos/denx.bmp && rm drivers/video/u_boot_logo.bmp
 cp /tmp/logo.bmp tools/logos/denx.bmp && cp /tmp/logo.bmp drivers/video/u_boot_logo.bmp
@@ -213,5 +211,5 @@ git commit -a -S -m "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUIL
 git push --set-upstream origin rk3399-A
 cd ..
 apt remove --purge bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y && apt autoremove -y
-rm -f /tmp/4.* && rm -f /tmp/lts* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/optee_os-* && rm -f -r /tmp/RP64 && rm -f -r /tmp/PBP && rm -f /tmp/000* && rm -f /tmp/logo.bmp && rm -f /tmp/rk3399_defconfig && rm -f /tmp/rk3399-pinebook-pro-u-boot.dtsi && rm -f -r U-Boot && cd ..
+rm -f /tmp/4.* && rm -f /tmp/lts* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/optee_os-* && rm -f -r /tmp/RP64 && rm -f -r /tmp/PBP && rm -f /tmp/logo.bmp && rm -f /tmp/rk3399_defconfig && rm -f /tmp/rk3399-pinebook-pro-u-boot.dtsi && rm -f -r U-Boot && cd ..
 exit
