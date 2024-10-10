@@ -2,5 +2,5 @@
 Development Branch
 
 ### Project Goals
-*[x] Enable UEFI Secure Boot with Root CA only on a Yubikey
-*[ ] Enable TPM Support
+* [x] Enable UEFI Secure Boot with Root CA only on a Yubikey
+* [ ] Enable TPM Support
