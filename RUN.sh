@@ -128,7 +128,6 @@ cd ..
 cd RP64/u-boot-$(echo $UB_VER)
 echo "Entering U-Boot ------"
 make clean
-cp /tmp/efi.var efi.var && echo "Deployed efi.var"
 rm tools/logos/denx.bmp && rm drivers/video/u_boot_logo.bmp
 cp /tmp/logo.bmp tools/logos/denx.bmp && cp /tmp/logo.bmp drivers/video/u_boot_logo.bmp
 sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/rockpro64-rk3399_defconfig
@@ -162,7 +161,6 @@ cd PBP/u-boot-$(echo $UB_VER)
 echo "Entering U-Boot ------"
 make clean
 cp /tmp/rk3399-pinebook-pro-u-boot.dtsi arch/arm/dts/rk3399-pinebook-pro-u-boot.dtsi && echo "Patched Device Tree bug"
-cp /tmp/efi.var efi.var && echo "Deployed efi.var"
 rm tools/logos/denx.bmp && rm drivers/video/u_boot_logo.bmp
 cp /tmp/logo.bmp tools/logos/denx.bmp && cp /tmp/logo.bmp drivers/video/u_boot_logo.bmp
 sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/pinebook-pro-rk3399_defconfig
@@ -209,9 +207,9 @@ mv /tmp/PBP/u-boot-$(echo $UB_VER)/u-boot-rockchip-spi.bin.sum Builds/PBP-rk3399
 
 git status && git add -A && git status
 read -p "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For rk3399: Sign -->"
-git commit -a -S -m "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For rk3399 with UEFI Secure Boot"
-git push --set-upstream origin rk3399-UEFISecureBoot
+git commit -a -S -m "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUILD_MESSAGE_TIMESTAMP) W/ TF-A $(echo $ATF_VER) & OP-TEE $(echo $OPT_VER) For rk3399"
+git push --set-upstream origin rk3399-A
 cd ..
 apt remove --purge bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y && apt autoremove -y
-rm -f /tmp/4.* && rm -f /tmp/lts* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/optee_os-* && rm -f -r /tmp/RP64 && rm -f -r /tmp/PBP && rm -f /tmp/logo.bmp && rm -f /tmp/rk3399_defconfig && rm -f /tmp/rk3399-pinebook-pro-u-boot.dtsi && rm -f /tmp/efi.var && rm -f -r U-Boot && cd ..
+rm -f /tmp/4.* && rm -f /tmp/lts* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/optee_os-* && rm -f -r /tmp/RP64 && rm -f -r /tmp/PBP && rm -f /tmp/logo.bmp && rm -f /tmp/rk3399_defconfig && rm -f /tmp/rk3399-pinebook-pro-u-boot.dtsi && rm -f -r U-Boot && cd ..
 exit
