@@ -1,7 +1,7 @@
 # U-Boot - RockChip rk3399
 ## Rockchip rk3399 SPI U-Boot Assembler
 
- - ### With UEFI Secure Boot enabled & [`Deploy/shimaa64.efi.signed`](https://github.com/0mniteck/U-Boot/releases/tag/UEFI%2BSb%2Bv2024.10%2Bv2.10.7%2Bv4.3.0/Deploy/shimaa64.efi.signed) included
+ - ### With UEFI Secure Boot enabled & [`Deploy/shimaa64.efi.signed`](https://github.com/0mniteck/U-Boot/tree/UEFI%2BSb%2Bv2024.10%2Bv2.10.7%2Bv4.3.0/Deploy/shimaa64.efi.signed) included
 
 ### [UEFI v2024.10 W/ ATF lts-v2.10.7 & OP-TEE v4.3.0](https://github.com/0mniteck/U-Boot/releases/tag/UEFI%2BSb%2Bv2024.10%2Bv2.10.7%2Bv4.3.0)
 Prebuilt u-boot-rockchip.bin & u-boot-rockchip-spi.bin are included in a bootable `sdcard.img` for convenience
