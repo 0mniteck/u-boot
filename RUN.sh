@@ -214,5 +214,5 @@ git commit -a -S -m "Successful Build of U-Boot v$(echo $UB_VER) at $(echo $BUIL
 git push --set-upstream origin rk3399-UEFISecureBoot
 cd ..
 apt remove --purge bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip -y && apt autoremove -y
-rm -f /tmp/4.* && rm -f /tmp/lts* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/optee_os-* && rm -f -r /tmp/RP64 && rm -f -r /tmp/PBP && rm -f /tmp/000* && rm -f /tmp/logo.bmp && rm -f /tmp/rk3399_defconfig && rm -f /tmp/rk3399-pinebook-pro-u-boot.dtsi && rm -f /tmp/efi.var && rm -f -r U-Boot && cd ..
+rm -f /tmp/4.* && rm -f /tmp/lts* && rm -f /tmp/v2* && rm -f -r /tmp/arm-trusted-firmware-* && rm -f -r /tmp/optee_os-* && rm -f -r /tmp/RP64 && rm -f -r /tmp/PBP && rm -f /tmp/logo.bmp && rm -f /tmp/rk3399_defconfig && rm -f /tmp/rk3399-pinebook-pro-u-boot.dtsi && rm -f /tmp/efi.var && rm -f -r U-Boot && cd ..
 exit
