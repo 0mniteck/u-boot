@@ -7,9 +7,8 @@
 ##
 
 OPT_VER=4.3.0;
-ATF_VER=2.10.4;
-UB_VER=2024.07;
-padsize=$((0x60000 - 1));
+ATF_VER=2.10.7;
+UB_VER=2024.10;
 FORCE_SOURCE_DATE=1;
 SOURCE_DATE_EPOCH="$(date -d "$(date +%D)" +%s)";
 SOURCE_DATE="@$SOURCE_DATE_EPOCH";
@@ -18,6 +17,21 @@ export FORCE_SOURCE_DATE;
 export SOURCE_DATE;
 export SOURCE_DATE_EPOCH;
 export BUILD_MESSAGE_TIMESTAMP;
+
+## cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
+## cp includes/0001-pkcs11-leak-the-engine-to-avoid-segfault-when-using-.patch /tmp/0001-pkcs11-leak.patch
+# cp includes/rk3399-rockpro64-u-boot.dtsi /tmp/rk3399-rockpro64-u-boot.dtsi
+# dts/upstream/src/arm64/rockchip/rk3399-rockpro64.dtsi
+## cp includes/rk3399-u-boot.dtsi /tmp/rk3399-u-boot.dtsi
+# cp includes/platform_common.c /tmp/platform_common.c
+# cp includes/platform_def.h /tmp/platform_def.h
+# cp includes/plat_private.h /tmp/plat_private.h
+# cp includes/platform.mk /tmp/platform.mk
+# cp includes/rk3399_def.h /tmp/rk3399_def.h
+# cp includes/bl31_param.h /tmp/bl31_param.h
+## cp includes/logo.bmp /tmp/logo.bmp
+## cp includes/efi.var /tmp/efi.var
+## cp /tmp/rk3399_defconfig
 
 pushd /tmp/
 echo "CONFIG_LOG=y" >> rk3399_defconfig
@@ -102,21 +116,6 @@ echo 'CONFIG_SYS_PROMPT="0MNITECK:~$ "' >> rk3399_defconfig
 echo 'CONFIG_LOCALVERSION=" 0MNITECK"' >> rk3399_defconfig
 popd
 
-## cp includes/0001-rockchip-rk3399-fix-SPI-NOR-flash-not-found-in-U-Boo.patch /tmp/0001-rockchip-rk3399.patch
-## cp includes/0001-pkcs11-leak-the-engine-to-avoid-segfault-when-using-.patch /tmp/0001-pkcs11-leak.patch
-# cp includes/rk3399-rockpro64-u-boot.dtsi /tmp/rk3399-rockpro64-u-boot.dtsi
-# dts/upstream/src/arm64/rockchip/rk3399-rockpro64.dtsi
-## cp includes/rk3399-u-boot.dtsi /tmp/rk3399-u-boot.dtsi
-# cp includes/platform_common.c /tmp/platform_common.c
-# cp includes/platform_def.h /tmp/platform_def.h
-# cp includes/plat_private.h /tmp/plat_private.h
-# cp includes/platform.mk /tmp/platform.mk
-# cp includes/rk3399_def.h /tmp/rk3399_def.h
-# cp includes/bl31_param.h /tmp/bl31_param.h
-## cp includes/logo.bmp /tmp/logo.bmp
-## cp includes/efi.var /tmp/efi.var
-## cp /tmp/rk3399_defconfig
-
 if [ -f Builds/sbsign ]; then
   cp Builds/sbsign /tmp/sbsign
 else
@@ -177,7 +176,7 @@ else
   lxc exec tf-a apt update && lxc exec tf-a -- apt upgrade -y
   lxc exec tf-a -- apt install -y bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libengine-pkcs11-openssl libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip
   lxc exec tf-a -- wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/lts-v$(echo $ATF_VER).zip
-  lxc exec tf-a -- bash -c "echo '5252dc59f1133d9c3fae5560954d9810e97a7e3b018522fddea584343d742a110c65678115cb0f554c201b5f7326353eec9a54031485156b6ca0788f53d33882  lts-v'$(echo $ATF_VER)'.zip' > $(echo $ATF_VER).zip.sum"
+  lxc exec tf-a -- bash -c "echo '610ca50201d599753e9eee8c32a6586b6767963b5f8335fc3cc5b01644c5c88eca235dcf6fd4b64f1e0aed49113a9d2d694a8379bb074bf44d3594862af026a2  lts-v'$(echo $ATF_VER)'.zip' > $(echo $ATF_VER).zip.sum"
   if [[ $(lxc exec tf-a -- bash -c "sha512sum -c $(echo $ATF_VER).zip.sum") == 'lts-v'$(echo $ATF_VER)'.zip: OK' ]]; then echo 'TF-A Checksum Matched! Checksum Matched!'; else echo 'TF-A Checksum Mismatched!' & exit 1; fi;
   lxc exec tf-a -- unzip lts-v$(echo $ATF_VER).zip
   echo "Entering TF-A ------"
@@ -196,7 +195,7 @@ snap install lxd && lxd init --auto && lxc launch ubuntu:24.04 ub && sleep 30 &&
 lxc exec ub apt update && lxc exec ub -- apt upgrade -y
 lxc exec ub -- apt install -y bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libengine-pkcs11-openssl libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip
 lxc exec ub -- wget https://github.com/u-boot/u-boot/archive/refs/tags/v$(echo $UB_VER).zip
-lxc exec ub -- bash -c "echo '0a3e614ba0fd14224f52a8ad3e68e22df08f6e02c43e9183a459d80b4f37b4f384a4bfef7627a3863388fcffb1472c38d178810bed401f63eb8b5d0a21456603  v'$(echo $UB_VER)'.zip' > $(echo $UB_VER).zip.sum"
+lxc exec ub -- bash -c "echo '6502c5773d0470ad380496c181b802b19d1d7ba151098b7644df2528be5311a52e4b0838746b1661a7b173ef79b1e4afa6c87091eda2bfd3bf36ccfae8a09c40  v'$(echo $UB_VER)'.zip' > $(echo $UB_VER).zip.sum"
 if [[ $(lxc exec ub -- bash -c "sha512sum -c $(echo $UB_VER).zip.sum") == 'v'$(echo $UB_VER)'.zip: OK' ]]; then echo 'U-Boot Checksum Matched! Checksum Matched!'; else echo 'U-Boot Checksum Mismatched!' & exit 1; fi;
 lxc exec ub -- unzip v$(echo $UB_VER).zip
 echo "Entering U-Boot ------"
@@ -229,6 +228,7 @@ dd if=/tmp/u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progr
 
 # WIP
 pushd /tmp/
+padsize=$((0x60000 - 1));
 read -p "Insert another SD Card + yubikey, Then Press Enter to Continue"
 lxc file pull ub/root/u-boot-$(echo $UB_VER) /tmp/u-boot -r -p
 # openssl req -new -x509 -engine pkcs11 -keyform ENGINE -key 1 -out dev.crt
