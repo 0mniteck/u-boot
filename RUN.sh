@@ -202,9 +202,9 @@ echo "Entering U-Boot ------"
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- make clean
 lxc file push /tmp/bl31.elf ub/root/u-boot-$(echo $UB_VER)/bl31.elf && lxc config set ub environment.BL31=/root/u-boot-$(echo $UB_VER)/bl31.elf && echo "Imported bl31.elf"
 lxc file push /tmp/tee.bin ub/root/u-boot-$(echo $UB_VER)/tee.bin && lxc config set ub environment.TEE=/root/u-boot-$(echo $UB_VER)/tee.bin && echo "Imported tee.bin"
-lxc file push includes/rk3399-u-boot.dtsi ub/root/u-boot-$(echo $UB_VER)/arch/arm/dts/rk3399-u-boot.dtsi
-lxc file push includes/rk3399-rockpro64.dtsi ub/root/u-boot-$(echo $UB_VER)/dts/upstream/src/arm64/rockchip/rk3399-rockpro64.dtsi
-lxc file push includes/rk3399-rockpro64-u-boot.dtsi ub/root/u-boot-$(echo $UB_VER)/arch/arm/dts/rk3399-rockpro64-u-boot.dtsi && echo "Patched Device Tree for TPM"
+# lxc file push includes/rk3399-u-boot.dtsi ub/root/u-boot-$(echo $UB_VER)/arch/arm/dts/rk3399-u-boot.dtsi
+lxc file push includes/rk3399-rockpro64.dtsi ub/root/u-boot-$(echo $UB_VER)/dts/upstream/src/arm64/rockchip/rk3399-rockpro64.dtsi && echo "Patched Device Tree for TPM"
+# lxc file push includes/rk3399-rockpro64-u-boot.dtsi ub/root/u-boot-$(echo $UB_VER)/arch/arm/dts/rk3399-rockpro64-u-boot.dtsi
 lxc file push includes/efi.var ub/root/u-boot-$(echo $UB_VER)/efi.var && echo "Deployed efi.var"
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- rm -f tools/logos/denx.bmp
 lxc exec ub --cwd /root/u-boot-$(echo $UB_VER) -- rm -f drivers/video/u_boot_logo.bmp
