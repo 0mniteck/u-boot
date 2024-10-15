@@ -6,8 +6,8 @@ Debian based systems
 2. **OpenSSL**: Install OpenSSL on your system.
 3. **Ykman**: Install the apt version of YubiKey Manager to manage your YubiKey,
    - `apt install ykman`
-   - `snap install ykman` uses /tmp/snap-private-tmp/snap.ykman/tmp/ instead
-   - you may need to restart pcscd `sudo service pcscd start`.
+   - `snap install ykman` can only write to `/tmp/snap-private-tmp/snap.ykman/tmp/`
+      - you may need to restart pcscd `sudo service pcscd start`.
 5. **Ykcs11**: Install ykcs11 library on your system.
 6. **libengine-pkcs11-openssl**: Install ykcs11 libengine dynamic extention on your system.
 8. **U-Boot**: Build "mutably" with `CONFIG_HEXDUMP=y` and `CONFIG_CMD_NVEDIT_EFI=y` to make efi vars editable.
