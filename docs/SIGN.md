@@ -22,21 +22,21 @@ Debian based systems
 You can generate a key pair directly on the YubiKey using the YubiKey PIV application. Here’s how to do it:
 
 ```
-sudo su && ykman piv keys generate -a RSA2048 --touch-policy ALWAYS --pin-policy ALWAYS 9a /tmp/public_key.pem && mv /tmp/snap-private-tmp/snap.ykman/tmp/public_key.pem /etc/platform/keys/public_key.pem
+sudo su && pushd /etc/platform/keys/ && ykman piv keys generate -a RSA2048 --touch-policy ALWAYS --pin-policy ALWAYS 9a public_key.pem
 ```
 
 #### 2. Create a Self-Signed Certificate
 Next, you need to create a self-signed certificate using the private key stored on the YubiKey. You can do this with OpenSSL:
 
 ```
-pushd /etc/platform/keys/ && export PKCS11_MODULE_PATH=/usr/lib/aarch64-linux-gnu/libykcs11.so && openssl x509 -new -engine pkcs11 -keyform ENGINE -key 1 -out ca.pem -subj "/C=US/ST=CA/O=OMNITECK/CN=Root CA" -days 1826
+export PKCS11_MODULE_PATH=/usr/lib/aarch64-linux-gnu/libykcs11.so && openssl x509 -new -engine pkcs11 -keyform ENGINE -key 1 -out ca.pem -subj "/C=US/ST=CA/O=OMNITECK/CN=Root CA" -days 1826
 ```
 
 #### 3. Import the Certificate to YubiKey
 You can import the self-signed certificate back to the YubiKey:
 
 ```
-mv /etc/platform/keys/ca.pem /tmp/snap-private-tmp/snap.ykman/tmp/ca.pem && ykman piv certificates import -v 9a /tmp/ca.pem && mv /tmp/snap-private-tmp/snap.ykman/tmp/ca.pem /etc/platform/keys/ca.pem
+ykman piv certificates import -v 9a ca.pem
 ```
 
 #### 4. Verify the Certificate
