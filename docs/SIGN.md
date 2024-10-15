@@ -9,7 +9,7 @@ Debian based systems
    - `snap install ykman` can only write to `/tmp/snap-private-tmp/snap.ykman/tmp/`
       - you may need to restart pcscd `sudo service pcscd start`.
 5. **Ykcs11**: Install ykcs11 library on your system.
-6. **libengine-pkcs11-openssl**: Install ykcs11 libengine dynamic extention on your system.
+6. **libengine-pkcs11-openssl**: Install pkcs11 libengine dynamic extention on your system.
 8. **U-Boot**: Build "mutably" with `CONFIG_HEXDUMP=y` and `CONFIG_CMD_NVEDIT_EFI=y` to make efi vars editable.
 9. **sbsign**: Build with slight patch as described in [osresearch/sbsigntools@5154c68](https://github.com/osresearch/sbsigntools/commit/5154c68bce6848b49222564675720d10a1caca2c)
 7. **Debuggers**:
