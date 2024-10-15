@@ -1,6 +1,7 @@
 # Signing Recipe
 
 ### Prerequisites (subject to change)
+Debian based systems
 1. **YubiKey**: Ensure you have a YubiKey that supports PIV (Personal Identity Verification).
 2. **OpenSSL**: Install OpenSSL on your system.
 3. **Ykman**: Install the snap version YubiKey Manager to manage your YubiKey,
