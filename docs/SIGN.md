@@ -14,7 +14,7 @@ Debian based systems
 7. **Debuggers**:
    - Install gdb `apt install gdb`
    - Install OpenSC on your system if you need to debug the module further
-        - `pkcs11-tools --module /usr/lib/aarch64-linux-gnu/libykcs11.so.2.2.0 -t`.
+        - `pkcs11-tools --module /usr/lib/aarch64-linux-gnu/libykcs11.so -t`.
 
 ### Steps to Create a Root CA on YubiKey
 
@@ -29,7 +29,7 @@ sudo su && ykman piv keys generate -a RSA2048 --touch-policy ALWAYS --pin-policy
 Next, you need to create a self-signed certificate using the private key stored on the YubiKey. You can do this with OpenSSL:
 
 ```
-pushd /etc/platform/keys/ && export PKCS11_MODULE_PATH=/usr/lib/aarch64-linux-gnu/libykcs11.so.2.2.0 && openssl x509 -new -engine pkcs11 -keyform ENGINE -key 1 -out ca.pem -subj "/C=US/ST=CA/O=OMNITECK/CN=Root CA" -days 1826
+pushd /etc/platform/keys/ && export PKCS11_MODULE_PATH=/usr/lib/aarch64-linux-gnu/libykcs11.so && openssl x509 -new -engine pkcs11 -keyform ENGINE -key 1 -out ca.pem -subj "/C=US/ST=CA/O=OMNITECK/CN=Root CA" -days 1826
 ```
 
 #### 3. Import the Certificate to YubiKey
