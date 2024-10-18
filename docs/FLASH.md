@@ -1,4 +1,7 @@
 # Flashing Recipe
+
+[Asciinema Demo](https://asciinema.org/a/kSWswlC3jxwgrxGbu8Lc0redZ)
+
 ### Initial-Flash From Bypassed and Erased SPI (Recommended)
 ### or Update-Flash From Existing U-Boot
 
