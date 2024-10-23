@@ -11,3 +11,4 @@ Status:
   * [x] U-Boot Secure boot with signed FIT -> TF-A -> Optee_MM -> UEFI Secure Boot
 * [ ] Add support for ARM FFA MM
 * [ ] Add support for infineon TPM
+* [ ] Generate SBOM at buildtime
