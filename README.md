@@ -7,7 +7,7 @@ Status:
   * [x] Configure sm_mem_map regions
     * [ ] Unhandled Exception in EL3
 * [ ] Test Optee MM Communicate
-* [ ] Setup Secure Bootflow:
-  * [ ] U-Boot Secure boot with signed FIT -> TF-A -> Optee_MM -> UEFI Secure Boot
+* [x] Setup Secure Bootflow:
+  * [x] U-Boot Secure boot with signed FIT -> TF-A -> Optee_MM -> UEFI Secure Boot
 * [ ] Add support for ARM FFA MM
 * [ ] Add support for infineon TPM
