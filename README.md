@@ -5,4 +5,4 @@ Development Branch
 * [x] Enable UEFI Secure Boot with Root CA only on a Yubikey
 * [ ] Enable TPM Support
 * [ ] Generate SBOM at buildtime
-* [ ] Fine tune for reproducability
+* [ ] Fine tune for reproducibility
