@@ -1,8 +1,6 @@
 /dts-v1/;
 /plugin/;
-
 / {
-....	/* various properties for loader use; i.e. part id etc. */
 fragment@0 {
 	target = <&spi1>;
 	__overlay__ {
