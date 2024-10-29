@@ -677,12 +677,6 @@
 };
 
 &pinctrl {
-	tpm {
-		h1_int_od_l: h1-int-od-l {
-			rockchip,pins = <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_up>;
-		};
-	};
-
 	bt {
 		bt_enable_h: bt-enable-h {
 			rockchip,pins = <0 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none>;
@@ -843,20 +837,6 @@
 		compatible = "jedec,spi-nor";
 		reg = <0>;
 		spi-max-frequency = <10000000>;
-	};
-};
-
-&spi0 {
-	status = "okay";
-
-	tpm@0 {
- 		compatible = "infineon,slb9670", "tis,tpm2-spi", "tcg,tpm_tis-spi";
-		reg = <0>;
-		interrupt-parent = <&gpio0>;
-		interrupts = <5 IRQ_TYPE_EDGE_RISING>;
-		pinctrl-names = "default";
-		pinctrl-0 = <&h1_int_od_l>;
-		spi-max-frequency = <38000000>;
 	};
 };
 
