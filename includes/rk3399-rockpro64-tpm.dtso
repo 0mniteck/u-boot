@@ -1,3 +1,24 @@
-rk3399-rockpro64-tpm.dtso
+/dts-v1/;
+/plugin/;
 
+&pinctrl {
+  tpm {
+    h1_int_od_l: h1-int-od-l {
+      rockchip,pins = <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_up>;
+    };
+  };
+};
 
+&spi1 {
+	status = "okay";
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+  tpm: tpm@10 {
+   		compatible = "infineon,slb9670", "tis,tpm2-spi", "tcg,tpm_tis-spi";
+  		reg = <0x10>;
+  		pinctrl-names = "default";
+  		pinctrl-0 = <&h1_int_od_l>;
+  		spi-max-frequency = <38000000>;
+  	};
+};
