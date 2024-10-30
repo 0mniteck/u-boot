@@ -115,7 +115,7 @@ echo "CONFIG_CMD_HASH=y" >> rk3399_defconfig
 echo 'CONFIG_SYS_PROMPT="0MNITECK:~$ "' >> rk3399_defconfig
 echo 'CONFIG_LOCALVERSION=" 0MNITECK"' >> rk3399_defconfig
 #echo 'CONFIG_DEVICE_TREE_INCLUDES=""' >> rk3399_defconfig
-echo 'CONFIG_OF_OVERLAY_LIST="rockchip/rk3399-rockpro64-tpm.dtso"' >> rk3399_defconfig
+echo 'CONFIG_OF_OVERLAY_LIST="rockchip/rk3399-rockpro64-tpm"' >> rk3399_defconfig
 popd
 
 if [ -f Builds/sbsign ]; then
