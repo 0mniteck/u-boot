@@ -118,6 +118,7 @@ echo 'CONFIG_LOCALVERSION=" 0MNITECK"' >> rk3399_defconfig
 #echo "CONFIG_SPL_OF_CONTROL=y" >> rk3399_defconfig
 echo "CONFIG_OF_CONTROL=y" >> rk3399_defconfig
 echo "CONFIG_OF_OVERLAY=y" >> rk3399_defconfig
+echo "CONFIG_OF_LIBFDT_OVERLAY=y" >> rk3399_defconfig
 echo 'CONFIG_OF_OVERLAY_LIST="rockchip/rk3399-rockpro64-tpm"' >> rk3399_defconfig
 popd
 
