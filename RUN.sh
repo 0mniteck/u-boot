@@ -6,8 +6,8 @@
 ##		  By: Shant Tchatalbachian
 ##
 
-OPT_VER=4.3.0;
-ATF_VER=2.10.7;
+OPT_VER=4.4.0;
+ATF_VER=2.10.9;
 UB_VER=2024.10;
 FORCE_SOURCE_DATE=1;
 SOURCE_DATE_EPOCH="$(date -d "$(date +%D)" +%s)";
@@ -157,7 +157,7 @@ else
   gdisk git libattr1-dev libcap-ng-dev libfdt-dev libftdi-dev libglib2.0-dev libgmp3-dev libhidapi-dev libmpc-dev libncurses5-dev libpixman-1-dev libslirp-dev libssl-dev libtool libusb-1.0-0-dev make mtools netcat-openbsd ninja-build python3-cryptography \
   python3-pip python3-pyelftools python3-serial python-is-python3 rsync swig unzip uuid-dev wget xalan xdg-utils xterm xz-utils zlib1g-dev
   lxc exec tee -- wget https://github.com/OP-TEE/optee_os/archive/refs/tags/$(echo $OPT_VER).zip
-  lxc exec tee -- bash -c "echo '04a2e85947283e49a79cb8d60fde383df28303a9be15080a7f5354268b01f16405178c0c570e253256c3be8e3084d812c8b46b6dc2cb5c8eb3bde8d2ba4c380e  '$(echo $OPT_VER)'.zip' > $(echo $OPT_VER).zip.sum"
+  lxc exec tee -- bash -c "echo '2fae73356770a0eb6e519a8b9ef32e566dd900778e3b52ccb79a63d767cc9dfaa52b920ee94955ef32bbe30304636dc6c26d3f2615483bdd8d4d1d76cdfdaed9  '$(echo $OPT_VER)'.zip' > $(echo $OPT_VER).zip.sum"
   if [[ $(lxc exec tee -- bash -c "sha512sum -c $(echo $OPT_VER).zip.sum") == $(echo $OPT_VER)'.zip: OK' ]]; then echo 'OP-TEE Checksum Matched!'; else echo 'OP-TEE Checksum Mismatched!' & exit 1; fi;
   lxc exec tee -- unzip $(echo $OPT_VER).zip
   echo "Entering OP-TEE ------"
@@ -185,7 +185,7 @@ else
   lxc exec tf-a apt update && lxc exec tf-a -- apt upgrade -y
   lxc exec tf-a -- apt install -y bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libengine-pkcs11-openssl libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip
   lxc exec tf-a -- wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/lts-v$(echo $ATF_VER).zip
-  lxc exec tf-a -- bash -c "echo '610ca50201d599753e9eee8c32a6586b6767963b5f8335fc3cc5b01644c5c88eca235dcf6fd4b64f1e0aed49113a9d2d694a8379bb074bf44d3594862af026a2  lts-v'$(echo $ATF_VER)'.zip' > $(echo $ATF_VER).zip.sum"
+  lxc exec tf-a -- bash -c "echo '2bc9ca1bd00b852dc26819d34626a1d540ee7ed378dc804a85ba6e1ac8725cbf2d3a9ce4398a5bad3285debe5d0fdb8d31d343d6f97c1f4cd351aeecf98acd74  lts-v'$(echo $ATF_VER)'.zip' > $(echo $ATF_VER).zip.sum"
   if [[ $(lxc exec tf-a -- bash -c "sha512sum -c $(echo $ATF_VER).zip.sum") == 'lts-v'$(echo $ATF_VER)'.zip: OK' ]]; then echo 'TF-A Checksum Matched! Checksum Matched!'; else echo 'TF-A Checksum Mismatched!' & exit 1; fi;
   lxc exec tf-a -- unzip lts-v$(echo $ATF_VER).zip
   echo "Entering TF-A ------"
