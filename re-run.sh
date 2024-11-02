@@ -13,7 +13,7 @@ OPT_VER=4.4.0;
 ATF_VER=2.10.9;
 UB_VER=2024.10;
 
-source_date_epoch=1
+source_date_epoch=1;
 if [ "$1" != 0 ]; then
   echo "Using override timestamp for SOURCE_DATE_EPOCH: $(date -d @$(($1)) = $1";
   source_date_epoch=$(($1));
