@@ -24,7 +24,9 @@ RUN mkdir /.cache && chmod -R 777 /.cache
 RUN git clone https://github.com/ /TEMPLATE.git
 RUN cd /TEMPLATE/ && git checkout tags/v7.31.0
 
-# Copy Files
-COPY entry-buildscript.sh /
+ARG ENTRYPOINT
 
-ENTRYPOINT ["/entry-buildscript.sh"]
+# Copy Files
+COPY $ENTRYPOINT-buildscript.sh /
+
+ENTRYPOINT ["/$ENTRYPOINT-buildscript.sh"]
