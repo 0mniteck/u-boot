@@ -25,7 +25,7 @@ else
     echo 'Setting SOURCE_DATE_EPOCH from today\'s date: $(date +%D) = @$timestamp';
     source_date_epoch=$((timestamp));
   else
-    echo "Can\'t get timestamp. Defaulting to 1.";
+    echo 'Can\'t get timestamp. Defaulting to 1.';
     source_date_epoch=1;
   fi
 fi
