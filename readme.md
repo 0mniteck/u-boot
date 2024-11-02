@@ -17,4 +17,4 @@ Development Branch
 
 To build current release clone the repo and run:
 
-```sudo su && git clone git@github.com:0mniteck/Signal-Desktop-Mobian.git && cd Signal-Desktop-Mobian && ./buildscript.sh yes```
+```sudo su && git clone git@github.com:0mniteck/U-Boot.git && cd U-Boot && ./buildscript.sh yes```
