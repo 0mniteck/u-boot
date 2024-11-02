@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-pushd /tmp/
 # echo "CONFIG_LOG=y" >> rk3399_defconfig
 # echo "CONFIG_LOG_MAX_LEVEL=6" >> rk3399_defconfig
 # echo "CONFIG_LOG_CONSOLE=y" >> rk3399_defconfig
@@ -81,4 +80,3 @@ echo "CONFIG_CHIMP_OPTEE=n" >> rk3399_defconfig
 ## echo "CONFIG_CMD_EFIDEBUG=y" >> rk3399_defconfig
 echo 'CONFIG_SYS_PROMPT="0MNITECK:~$ "' >> rk3399_defconfig
 echo 'CONFIG_LOCALVERSION=" 0MNITECK"' >> rk3399_defconfig
-popd
