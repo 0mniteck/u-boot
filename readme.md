@@ -7,3 +7,4 @@ Development Branch
 * [ ] Generate SBOM at buildtime
 * [ ] Fine tune for reproducibility
   * [ ] Convert to docker build
+    * [ ] Build with/without UEFI in one branch
