@@ -81,3 +81,4 @@ echo "CONFIG_CHIMP_OPTEE=n" >> rk3399_defconfig
 ## echo "CONFIG_CMD_EFIDEBUG=y" >> rk3399_defconfig
 echo 'CONFIG_SYS_PROMPT="0MNITECK:~$ "' >> rk3399_defconfig
 echo 'CONFIG_LOCALVERSION=" 0MNITECK"' >> rk3399_defconfig
+popd
