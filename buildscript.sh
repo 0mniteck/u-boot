@@ -1,5 +1,5 @@
 #!/bin/bash
-sudo apt install bc git git-lfs screen snapd -y
+sudo apt install bc dosfstools git git-lfs parted screen snapd -y
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 git-lfs install
 echo "Starting Build "$(date -u '+on %D at %R UTC')
