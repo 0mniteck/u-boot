@@ -29,7 +29,7 @@ else
 fi
 
 if [ -f Builds/tee.bin ]; then
-  cp Builds/tee.bin /tmp/tee.bin
+  echo "Using Prebuilt OP-TEE"
 else
 docker build --target optee -t optee \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
@@ -48,7 +48,7 @@ read -p "Continue to Git Signing-->"
 fi
 
 if [ -f Builds/bl31.elf ]; then
-  cp Builds/bl31.elf /tmp/bl31.elf
+  echo "Using Prebuilt Arm Trusted Firmware"
 else
 docker build --target arm-trusted -t arm-trusted \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
@@ -75,36 +75,53 @@ docker run -it --cpus=$(nproc) \
   --user "$(id -u):$(id -g)" \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
   -e UB_VER=$UB_VER \
-  u-boot
-docker cp u-boot:/u-boot-$UB_VER/u-boot-rockchip.bin builds/u-boot-rockchip.bin && sha512sum builds/u-boot-rockchip.bin >> Builds/release.sha512sum
-docker cp u-boot:/u-boot-$UB_VER/u-boot-rockchip-spi.bin builds/u-boot-rockchip-spi.bin && sha512sum builds/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
-docker cp u-boot:/u-boot-$UB_VER/u-boot-rockchip.bin builds/u-boot-rockchip.bin && sha512sum builds/u-boot-rockchip.bin >> Builds/release.sha512sum
-docker cp u-boot:/u-boot-$UB_VER/u-boot-rockchip-spi.bin builds/u-boot-rockchip-spi.bin && sha512sum builds/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
+  u-boot "./config.sh"
+docker cp u-boot:/RP64/u-boot-$UB_VER/u-boot-rockchip.bin Builds/RP64-rk3399/u-boot-rockchip.bin && sha512sum Builds/RP64-rk3399/u-boot-rockchip.bin >> Builds/release.sha512sum
+docker cp u-boot:/RP64/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/RP64-rk3399/u-boot-rockchip-spi.bin && sha512sum Builds/RP64-rk3399/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
+docker cp u-boot:/PBP/u-boot-$UB_VER/u-boot-rockchip.bin Builds/PBP-rk3399/u-boot-rockchip.bin && sha512sum Builds/PBP-rk3399/u-boot-rockchip.bin >> Builds/release.sha512sum
+docker cp u-boot:/PBP/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/PBP-rk3399/u-boot-rockchip-spi.bin && sha512sum Builds/PBP-rk3399/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
 
 docker build --target u-boot -t u-boot-sb \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
-  --build-arg ENTRYPOINT=u-boot-sb .
+  --build-arg ENTRYPOINT=u-boot .
 docker run -it --cpus=$(nproc) \
   --name u-boot-sb \
   --user "$(id -u):$(id -g)" \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
   -e UB_VER=$UB_VER \
-  u-boot-sb
-docker cp u-boot-sb:/u-boot-$UB_VER/u-boot-rockchip.bin builds/u-boot-rockchip.bin && sha512sum builds/u-boot-rockchip.bin >> Builds/release.sha512sum
-docker cp u-boot-sb:/u-boot-$UB_VER/u-boot-rockchip-spi.bin builds/u-boot-rockchip-spi.bin && sha512sum builds/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
-docker cp u-boot-sb:/u-boot-$UB_VER/u-boot-rockchip.bin builds/u-boot-rockchip.bin && sha512sum builds/u-boot-rockchip.bin >> Builds/release.sha512sum
-docker cp u-boot-sb:/u-boot-$UB_VER/u-boot-rockchip-spi.bin builds/u-boot-rockchip-spi.bin && sha512sum builds/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
+  -e BL31=/bl31.elf \
+  -e TEE=/tee.bin \
+  u-boot-sb "./sb-config.sh"
+docker cp u-boot-sb:/RP64/u-boot-$UB_VER/u-boot-rockchip.bin Builds/RP64-rk3399-SB/u-boot-rockchip.bin && sha512sum Builds/RP64-rk3399-SB/u-boot-rockchip.bin >> Builds/release.sha512sum
+docker cp u-boot-sb:/RP64/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/RP64-rk3399-SB/u-boot-rockchip-spi.bin && sha512sum Builds/RP64-rk3399-SB/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
+docker cp u-boot-sb:/PBP/u-boot-$UB_VER/u-boot-rockchip.bin Builds/PBP-rk3399-SB/u-boot-rockchip.bin && sha512sum Builds/PBP-rk3399-SB/u-boot-rockchip.bin >> Builds/release.sha512sum
+docker cp u-boot-sb:/PBP/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/PBP-rk3399-SB/u-boot-rockchip-spi.bin && sha512sum Builds/PBP-rk3399-SB/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
 docker cp u-boot-sb:/sys.info /tmp/sys.info
 
+for loc in RP64-rk3399 PBP-rk3399 RP64-rk3399-SB PBP-rk3399-SB
+do
+pushd Builds/$loc/
+dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
+parted /dev/mmcblk1 mktable gpt mkpart P1 fat32 10MB 25MB -s && sleep 3
+mkfs.fat /dev/mmcblk1p1 && mount /dev/mmcblk1p1 /mnt
+cp u-boot-rockchip.bin /mnt/u-boot-rockchip.bin
+cp u-boot-rockchip-spi.bin /mnt/u-boot-rockchip-spi.bin
+sync && umount /mnt
+dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
+sync && dd if=/dev/mmcblk1 of=sdcard.img bs=1M count=30 status=progress
+sha512sum sdcard.img > sdcard.img.sum
+popd
+done
+
 echo "# 0mniteck's Current GPG Key ID: 287EE837E6ED2DD3" >> Builds/release.sha512sum
-echo "Source Date Epoch: ${SOURCE_DATE_EPOCH}" >> Builds/release.sha512sum
+echo "Source Date Epoch: $SOURCE_DATE_EPOCH" >> Builds/release.sha512sum
 echo "Build Complete: "$(date -u '+on %D at %R UTC') && echo "# Build Complete: "$(date -u '+on %D at %R UTC') >> Builds/release.sha512sum
 echo "# Base Build System: $(uname -o) $(uname -r) $(uname -p) $(lsb_release -ds) $(lsb_release -cs) $(uname -v)"  >> Builds/release.sha512sum
 echo $(cat /tmp/sys.info) >> Builds/release.sha512sum
 
-read -p "Continue to Git Signing-->"
-./git.sh "Successful Build of U-Boot v$UB_VER at $BUILD_MESSAGE_TIMESTAMP W/ TF-A v$ATF_VER & OP-TEE v$OPT_VER For The RockPro64"
+read -p "Successful Build of U-Boot v$UB_VER at $BUILD_MESSAGE_TIMESTAMP W/ TF-A v$ATF_VER & OP-TEE v$OPT_VER For rk3399: Sign -->"
+./git.sh "Successful Build of U-Boot v$UB_VER at $BUILD_MESSAGE_TIMESTAMP W/ TF-A v$ATF_VER & OP-TEE v$OPT_VER For rk3399"
 
 snap disable docker
 rm -f -r /var/snap/docker/*
