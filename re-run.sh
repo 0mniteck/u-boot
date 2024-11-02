@@ -35,6 +35,7 @@ docker build --target optee -t optee \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg OPT_VER=$OPT_VER \
   --build-arg ENTRYPOINT=optee .
+syft scan docker:optee -o spdx-json=Builds/optee-os.manifest.spdx.json
 docker run -it --cpus=$(nproc) \
   --name optee \
   --user "$(id -u):$(id -g)" \
@@ -54,6 +55,7 @@ docker build --target arm-trusted -t arm-trusted \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg ATF_VER=$ATF_VER \
   --build-arg ENTRYPOINT=arm-trusted .
+syft scan docker:arm-trusted -o spdx-json=Builds/arm-trusted-firmware.manifest.spdx.json
 docker run -it --cpus=$(nproc) \
   --name arm-trusted \
   --user "$(id -u):$(id -g)" \
@@ -70,6 +72,7 @@ docker build --target u-boot -t u-boot \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
   --build-arg ENTRYPOINT=u-boot .
+syft scan docker:u-boot -o spdx-json=Builds/u-boot.manifest.spdx.json
 docker run -it --cpus=$(nproc) \
   --name u-boot \
   --user "$(id -u):$(id -g)" \
@@ -85,6 +88,7 @@ docker build --target u-boot -t u-boot-sb \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
   --build-arg ENTRYPOINT=u-boot .
+syft scan docker:u-boot -o spdx-json=Builds/u-boot-sb.manifest.spdx.json
 docker run -it --cpus=$(nproc) \
   --name u-boot-sb \
   --user "$(id -u):$(id -g)" \
