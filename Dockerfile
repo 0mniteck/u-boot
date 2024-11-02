@@ -49,7 +49,7 @@ RUN mkdir /.cache && chmod -R 777 /.cache
 ARG ATF_VER
 ENV ATF_VER=$ATF_VER
 RUN wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/lts-v$ATF_VER.zip && echo "2bc9ca1bd00b852dc26819d34626a1d540ee7ed378dc804a85ba6e1ac8725cbf2d3a9ce4398a5bad3285debe5d0fdb8d31d343d6f97c1f4cd351aeecf98acd74  lts-v"$ATF_VER".zip" > $ATF_VER.zip.sum && if [[ $(sha512sum -c $ATF_VER.zip.sum) == 'lts-v'$ATF_VER'.zip: OK' ]]; then echo 'TF-A Checksum Matched!'; else echo 'TF-A Checksum Mismatched!' & exit 1; fi;
-RUN unzip lts-v$(echo $ATF_VER).zip
+RUN unzip lts-v$ATF_VER.zip
 ARG ENTRYPOINT
 COPY Buildscripts/$ENTRYPOINT-buildscript.sh /
 ENTRYPOINT ["/$ENTRYPOINT-buildscript.sh"]
@@ -76,8 +76,19 @@ RUN mkdir /.cache && chmod -R 777 /.cache
 ARG UB_VER
 ENV UB_VER=$UB_VER
 RUN wget https://github.com/u-boot/u-boot/archive/refs/tags/v$UB_VER.zip && echo "6502c5773d0470ad380496c181b802b19d1d7ba151098b7644df2528be5311a52e4b0838746b1661a7b173ef79b1e4afa6c87091eda2bfd3bf36ccfae8a09c40  v"$UB_VER".zip" > $UB_VER.zip.sum && if [[ $(sha512sum -c $UB_VER.zip.sum) == 'v'$UB_VER'.zip: OK' ]]; then echo 'U-Boot Checksum Matched!'; else echo 'U-Boot Checksum Mismatched!' & exit 1; fi;
-RUN unzip v$(echo $UB_VER).zip -d /RP64
-RUN unzip v$(echo $UB_VER).zip -d /PBP
+RUN unzip v$UB_VER.zip -d /RP64
+RUN unzip v$UB_VER.zip -d /PBP
+COPY Configs/config.sh /
+COPY Configs/sb-config.sh /
+COPY Includes/efi.var /RP64/u-boot-$UB_VER/
+COPY Includes/efi.var /PBP/u-boot-$UB_VER/
+COPY Includes/logo.bmp /RP64/u-boot-$UB_VER/tools/logos/denx.bmp
+COPY Includes/logo.bmp /RP64/u-boot-$UB_VER/drivers/video/u_boot_logo.bmp
+COPY Includes/logo.bmp /PBP/u-boot-$UB_VER/tools/logos/denx.bmp
+COPY Includes/logo.bmp /PBP/u-boot-$UB_VER/drivers/video/u_boot_logo.bmp
+COPY Includes/rk3399-pinebook-pro-u-boot.dtsi /PBP/u-boot-$UB_VER/arch/arm/dts/rk3399-pinebook-pro-u-boot.dtsi
+RUN sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' /RP64/u-boot-$UB_VER/configs/rockpro64-rk3399_defconfig
+RUN sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' /PBP/u-boot-$UB_VER/configs/pinebook-pro-rk3399_defconfig
 ARG ENTRYPOINT
 COPY Buildscripts/$ENTRYPOINT-buildscript.sh /
 ENTRYPOINT ["/$ENTRYPOINT-buildscript.sh"]
