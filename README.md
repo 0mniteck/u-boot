@@ -6,3 +6,4 @@ Development Branch
 * [ ] Enable TPM Support
 * [ ] Generate SBOM at buildtime
 * [ ] Fine tune for reproducibility
+  * [x] Convert to lxc build
