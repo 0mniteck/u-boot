@@ -44,4 +44,5 @@ sleep 10
 snap remove docker --purge
 snap remove docker --purge
 ufw -f enable
-read -p "Close Screen Session: Continue to Signing-->"
+read -p "Continue to Git Signing-->"
+./git.sh "Optee OS v4.4.0"
