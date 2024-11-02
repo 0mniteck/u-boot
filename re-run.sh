@@ -14,13 +14,15 @@ ATF_VER=2.10.9;
 UB_VER=2024.10;
 
 source_date_epoch=1;
-if [ "$1" != 0 ]; then
-  echo "Using override timestamp for SOURCE_DATE_EPOCH: $(date -d @$(($1)) \= $1";
+if [ "$1" != 0 ];
+then
+  echo 'Using override timestamp for SOURCE_DATE_EPOCH: $(date -d @$(($1)) = $1';
   source_date_epoch=$(($1));
 else
   timestamp=$(date -d $(date +%D) +%s);
-  if [ "${timestamp}" != "" ]; then
-    echo "Setting SOURCE_DATE_EPOCH from today\'s date: $(date +%D) \= \@$timestamp";
+  if [ "${timestamp}" != "" ];
+  then
+    echo 'Setting SOURCE_DATE_EPOCH from today\'s date: $(date +%D) = @$timestamp';
     source_date_epoch=$((timestamp));
   else
     echo "Can\'t get timestamp. Defaulting to 1.";
