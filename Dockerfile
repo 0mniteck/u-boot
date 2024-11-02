@@ -80,15 +80,10 @@ RUN unzip v$UB_VER.zip -d /RP64
 RUN unzip v$UB_VER.zip -d /PBP
 COPY Configs/config.sh /
 COPY Configs/sb-config.sh /
-COPY Includes/efi.var /RP64/u-boot-$UB_VER/
-COPY Includes/efi.var /PBP/u-boot-$UB_VER/
-COPY Includes/logo.bmp /RP64/u-boot-$UB_VER/tools/logos/denx.bmp
-COPY Includes/logo.bmp /RP64/u-boot-$UB_VER/drivers/video/u_boot_logo.bmp
-COPY Includes/logo.bmp /PBP/u-boot-$UB_VER/tools/logos/denx.bmp
-COPY Includes/logo.bmp /PBP/u-boot-$UB_VER/drivers/video/u_boot_logo.bmp
-COPY Includes/rk3399-pinebook-pro-u-boot.dtsi /PBP/u-boot-$UB_VER/arch/arm/dts/rk3399-pinebook-pro-u-boot.dtsi
-RUN sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' /RP64/u-boot-$UB_VER/configs/rockpro64-rk3399_defconfig
-RUN sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' /PBP/u-boot-$UB_VER/configs/pinebook-pro-rk3399_defconfig
+COPY Includes/efi.var /
+COPY Includes/logo.bmp /
+COPY Includes/rk3399-pinebook-pro-u-boot.dtsi /
 ARG ENTRYPOINT
 COPY Buildscripts/$ENTRYPOINT-buildscript.sh /
 ENTRYPOINT ["/$ENTRYPOINT-buildscript.sh"]
+CMD ["./config.sh"]
