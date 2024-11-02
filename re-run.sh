@@ -113,13 +113,14 @@ sync && dd if=/dev/mmcblk1 of=sdcard.img bs=1M count=30 status=progress
 sha512sum sdcard.img > sdcard.img.sum
 popd
 done
+dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
+dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 
 echo "# 0mniteck's Current GPG Key ID: 287EE837E6ED2DD3" >> Builds/release.sha512sum
 echo "Source Date Epoch: $SOURCE_DATE_EPOCH" >> Builds/release.sha512sum
 echo "Build Complete: "$(date -u '+on %D at %R UTC') && echo "# Build Complete: "$(date -u '+on %D at %R UTC') >> Builds/release.sha512sum
 echo "# Base Build System: $(uname -o) $(uname -r) $(uname -p) $(lsb_release -ds) $(lsb_release -cs) $(uname -v)"  >> Builds/release.sha512sum
 echo $(cat /tmp/sys.info) >> Builds/release.sha512sum
-
 read -p "Successful Build of U-Boot v$UB_VER at $BUILD_MESSAGE_TIMESTAMP W/ TF-A v$ATF_VER & OP-TEE v$OPT_VER For rk3399: Sign -->"
 ./git.sh "Successful Build of U-Boot v$UB_VER at $BUILD_MESSAGE_TIMESTAMP W/ TF-A v$ATF_VER & OP-TEE v$OPT_VER For rk3399"
 
