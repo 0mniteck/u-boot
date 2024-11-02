@@ -42,8 +42,9 @@ docker run -it --cpus=$(nproc) \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
   -e OPT_VER=$OPT_VER \
   optee
-docker cp optee:/optee_os-$OPT_VER/out/arm-plat-rockchip/core/tee.bin builds/
-sha512sum builds/tee.bin && sha512sum builds/tee.bin > Builds/release.sha512sum
+docker cp optee:/optee_os-$OPT_VER/out/arm-plat-rockchip/core/tee.bin Builds/
+docker image prune --filter label=stage=optee
+sha512sum Builds/tee.bin && sha512sum Builds/tee.bin > Builds/release.sha512sum
 read -p "Continue to Git Signing-->"
 ./git.sh "Successful Build of OP-TEE v"$OPT_VER
 fi
@@ -62,8 +63,9 @@ docker run -it --cpus=$(nproc) \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
   -e ATF_VER=$ATF_VER \
   arm-trusted
-docker cp arm-trusted:/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/release/bl31/bl31.elf builds/
-sha512sum builds/bl31.elf && sha512sum builds/bl31.elf >> Builds/release.sha512sum
+docker cp arm-trusted:/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/release/bl31/bl31.elf Builds/
+docker image prune --filter label=stage=arm-trusted
+sha512sum Builds/bl31.elf && sha512sum Builds/bl31.elf >> Builds/release.sha512sum
 read -p "Continue to Git Signing-->"
 ./git.sh "Successful Build of TF-A v"$ATF_VER
 fi
@@ -83,6 +85,7 @@ docker cp u-boot:/RP64/u-boot-$UB_VER/u-boot-rockchip.bin Builds/RP64-rk3399/u-b
 docker cp u-boot:/RP64/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/RP64-rk3399/u-boot-rockchip-spi.bin && sha512sum Builds/RP64-rk3399/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
 docker cp u-boot:/PBP/u-boot-$UB_VER/u-boot-rockchip.bin Builds/PBP-rk3399/u-boot-rockchip.bin && sha512sum Builds/PBP-rk3399/u-boot-rockchip.bin >> Builds/release.sha512sum
 docker cp u-boot:/PBP/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/PBP-rk3399/u-boot-rockchip-spi.bin && sha512sum Builds/PBP-rk3399/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
+docker image prune --filter label=stage=u-boot
 
 docker build --target u-boot -t u-boot-sb \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
@@ -102,6 +105,7 @@ docker cp u-boot-sb:/RP64/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/RP64-rk3
 docker cp u-boot-sb:/PBP/u-boot-$UB_VER/u-boot-rockchip.bin Builds/PBP-rk3399-SB/u-boot-rockchip.bin && sha512sum Builds/PBP-rk3399-SB/u-boot-rockchip.bin >> Builds/release.sha512sum
 docker cp u-boot-sb:/PBP/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/PBP-rk3399-SB/u-boot-rockchip-spi.bin && sha512sum Builds/PBP-rk3399-SB/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
 docker cp u-boot-sb:/sys.info /tmp/sys.info
+docker image prune --filter label=stage=u-boot
 
 for loc in RP64-rk3399 PBP-rk3399 RP64-rk3399-SB PBP-rk3399-SB
 do
