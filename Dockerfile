@@ -27,6 +27,6 @@ RUN cd /TEMPLATE/ && git checkout tags/v7.31.0
 ARG ENTRYPOINT
 
 # Copy Files
-COPY $ENTRYPOINT-buildscript.sh /
+COPY Buildscripts/$ENTRYPOINT-buildscript.sh /
 
 ENTRYPOINT ["/$ENTRYPOINT-buildscript.sh"]
