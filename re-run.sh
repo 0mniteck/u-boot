@@ -24,7 +24,9 @@ else
   fi
 fi
 
-docker build -t TEMPLATE --build-arg SOURCE_DATE_EPOCH=$source_date_epoch .
+docker build -t TEMPLATE \
+  --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
+  --build-arg ENTRYPOINT=rk3399-efi .
 
 docker run -it --cpus=$(nproc) \
   --name TEMPLATE \
