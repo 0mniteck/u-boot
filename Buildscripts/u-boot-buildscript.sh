@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 trap '[[ $pid ]] && kill $pid; exit' EXIT
 echo "SOURCE_DATE_EPOCH: ${SOURCE_DATE_EPOCH}"
-./config.sh
+$1
 echo "Entering /RP64/u-boot-$(echo $UB_VER)"
 pushd /RP64/u-boot-$(echo $UB_VER)
 make clean
