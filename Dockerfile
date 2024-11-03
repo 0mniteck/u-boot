@@ -16,17 +16,15 @@ gdisk git libattr1-dev libcap-ng-dev libfdt-dev libftdi-dev libglib2.0-dev libgm
 python3-pip python3-pyelftools python3-serial python-is-python3 rsync swig unzip uuid-dev wget xalan xdg-utils xterm xz-utils zlib1g-dev
 ARG SOURCE_DATE_EPOCH
 ENV SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH
-ENV SOURCE_DATE="@$SOURCE_DATE_EPOCH";
-ENV FORCE_SOURCE_DATE=1;
-ENV BUILD_MESSAGE_TIMESTAMP="$(date +'%b %d %Y - 00:00:00 +0000' -d @$SOURCE_DATE_EPOCH)";
 RUN mkdir /.cache && chmod -R 777 /.cache
 ARG OPT_VER
 ENV OPT_VER=$OPT_VER
 RUN /bin/bash -c 'wget https://github.com/OP-TEE/optee_os/archive/refs/tags/$OPT_VER.zip && echo "2fae73356770a0eb6e519a8b9ef32e566dd900778e3b52ccb79a63d767cc9dfaa52b920ee94955ef32bbe30304636dc6c26d3f2615483bdd8d4d1d76cdfdaed9  $OPT_VER.zip" > $OPT_VER.zip.sum && if [[ $(sha512sum -c $OPT_VER.zip.sum) == "$OPT_VER.zip: OK" ]]; then echo "OP-TEE Checksum Matched!"; else echo "OP-TEE Checksum Mismatched!" & exit 1; fi;'
 RUN unzip $OPT_VER.zip
 ARG ENTRYPOINT
+ENV ENTRYPOINT=$ENTRYPOINT
 COPY Buildscripts/$ENTRYPOINT-buildscript.sh /
-ENTRYPOINT ["/$ENTRYPOINT-buildscript.sh"]
+ENTRYPOINT "/$ENTRYPOINT-buildscript.sh"
 
 FROM debian:bookworm-20241016-slim@sha256:936ea04e67a02e5e83056bfa8c7331e1c9ae89d4a324bbc1654d9497b815ae56 AS arm-trusted
 LABEL stage=arm-trusted
@@ -44,17 +42,17 @@ RUN apt update && apt upgrade -y
 RUN apt install -y bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip
 ARG SOURCE_DATE_EPOCH
 ENV SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH
-ENV SOURCE_DATE="@$SOURCE_DATE_EPOCH";
-ENV FORCE_SOURCE_DATE=1;
-ENV BUILD_MESSAGE_TIMESTAMP="$(date +'%b %d %Y - 00:00:00 +0000' -d @$SOURCE_DATE_EPOCH)";
+ARG BUILD_MESSAGE_TIMESTAMP
+ENV BUILD_MESSAGE_TIMESTAMP=$BUILD_MESSAGE_TIMESTAMP;
 RUN mkdir /.cache && chmod -R 777 /.cache
 ARG ATF_VER
 ENV ATF_VER=$ATF_VER
 RUN /bin/bash -c 'wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/lts-v$ATF_VER.zip && echo "2bc9ca1bd00b852dc26819d34626a1d540ee7ed378dc804a85ba6e1ac8725cbf2d3a9ce4398a5bad3285debe5d0fdb8d31d343d6f97c1f4cd351aeecf98acd74  lts-v$ATF_VER.zip" > $ATF_VER.zip.sum && if [[ $(sha512sum -c $ATF_VER.zip.sum) == "lts-v$ATF_VER.zip: OK" ]]; then echo "TF-A Checksum Matched!"; else echo "TF-A Checksum Mismatched!" & exit 1; fi;'
 RUN unzip lts-v$ATF_VER.zip
 ARG ENTRYPOINT
+ENV ENTRYPOINT=$ENTRYPOINT
 COPY Buildscripts/$ENTRYPOINT-buildscript.sh /
-ENTRYPOINT ["/$ENTRYPOINT-buildscript.sh"]
+ENTRYPOINT "/$ENTRYPOINT-buildscript.sh"
 
 FROM debian:bookworm-20241016-slim@sha256:936ea04e67a02e5e83056bfa8c7331e1c9ae89d4a324bbc1654d9497b815ae56 AS u-boot
 LABEL stage=u-boot
@@ -74,7 +72,6 @@ ARG SOURCE_DATE_EPOCH
 ENV SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH
 ENV SOURCE_DATE="@$SOURCE_DATE_EPOCH";
 ENV FORCE_SOURCE_DATE=1;
-ENV BUILD_MESSAGE_TIMESTAMP="$(date +'%b %d %Y - 00:00:00 +0000' -d @$SOURCE_DATE_EPOCH)";
 RUN mkdir /.cache && chmod -R 777 /.cache
 ARG UB_VER
 ENV UB_VER=$UB_VER
@@ -89,6 +86,7 @@ COPY Includes/efi.var /
 COPY Includes/logo.bmp /
 COPY Includes/rk3399-pinebook-pro-u-boot.dtsi /
 ARG ENTRYPOINT
+ENV ENTRYPOINT=$ENTRYPOINT
 COPY Buildscripts/$ENTRYPOINT-buildscript.sh /
-ENTRYPOINT ["/$ENTRYPOINT-buildscript.sh"]
+ENTRYPOINT "/$ENTRYPOINT-buildscript.sh"
 CMD ["./config.sh"]
