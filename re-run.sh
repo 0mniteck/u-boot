@@ -81,7 +81,6 @@ docker run -it --cpus=$(nproc) \
   --name u-boot \
   --user "$(id -u):$(id -g)" \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
-  -e BUILD_MESSAGE_TIMESTAMP="$(date +'%b %d %Y - 00:00:00 +0000' -d @$source_date_epoch)" \
   -e UB_VER=$UB_VER \
   u-boot "./config.sh"
 docker cp u-boot:/RP64/u-boot-$UB_VER/u-boot-rockchip.bin Builds/RP64-rk3399/u-boot-rockchip.bin && sha512sum Builds/RP64-rk3399/u-boot-rockchip.bin >> Builds/release.sha512sum
@@ -99,7 +98,6 @@ docker run -it --cpus=$(nproc) \
   --name u-boot-sb \
   --user "$(id -u):$(id -g)" \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
-  -e BUILD_MESSAGE_TIMESTAMP="$(date +'%b %d %Y - 00:00:00 +0000' -d @$source_date_epoch)" \
   -e UB_VER=$UB_VER \
   -e BL31=/bl31.elf \
   -e TEE=/tee.bin \
