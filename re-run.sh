@@ -27,7 +27,11 @@ else
     source_date_epoch=1;
   fi
 fi
-build_message_timestamp="$(date +'%b %d %Y - 00:00:00 +0000' -d @$source_date_epoch)";
+source_date="@$source_date_epoch"
+build_message_timestamp="$(date +'%b %d %Y - 00:00:00 +0000' -d $source_date)";
+echo "SOURCE_DATE: $source_date"
+echo "SOURCE_DATE_EPOCH: $source_date_epoch"
+echo "BUILD_MESSAGE_TIMESTAMP: $build_message_timestamp"
 
 if [ -f Builds/tee.bin ]; then
   echo "Using Prebuilt OP-TEE"
@@ -55,6 +59,7 @@ if [ -f Builds/bl31.elf ]; then
 else
 docker build --target arm-trusted -t arm-trusted \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
+  --build-arg BUILD_MESSAGE_TIMESTAMP=$build_message_timestamp \
   --build-arg ATF_VER=$ATF_VER \
   --build-arg ENTRYPOINT=arm-trusted .
 mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:arm-trusted -o spdx-json=Builds/arm-trusted-firmware.manifest.spdx.json && rm -f -r "$HOME/syft" 
@@ -81,6 +86,7 @@ docker run -it --cpus=$(nproc) \
   --name u-boot \
   --user "$(id -u):$(id -g)" \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
+  -e SOURCE_DATE=$source_date \
   -e UB_VER=$UB_VER \
   u-boot "./config.sh"
 docker cp u-boot:/RP64/u-boot-$UB_VER/u-boot-rockchip.bin Builds/RP64-rk3399/u-boot-rockchip.bin && sha512sum Builds/RP64-rk3399/u-boot-rockchip.bin >> Builds/release.sha512sum
@@ -98,6 +104,7 @@ docker run -it --cpus=$(nproc) \
   --name u-boot-sb \
   --user "$(id -u):$(id -g)" \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
+  -e SOURCE_DATE=$source_date \
   -e UB_VER=$UB_VER \
   -e BL31=/bl31.elf \
   -e TEE=/tee.bin \
