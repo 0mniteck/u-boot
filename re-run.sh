@@ -115,6 +115,7 @@ docker cp u-boot-sb:/PBP/u-boot-$UB_VER/u-boot-rockchip.bin Builds/PBP-rk3399-SB
 docker cp u-boot-sb:/PBP/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/PBP-rk3399-SB/u-boot-rockchip-spi.bin && sha512sum Builds/PBP-rk3399-SB/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
 docker cp u-boot-sb:/sys.info /tmp/sys.info
 docker image prune -f --filter label=stage=u-boot
+cat Builds/builder.log | grep -n Checksum
 
 for loc in RP64-rk3399 PBP-rk3399 RP64-rk3399-SB PBP-rk3399-SB
 do
