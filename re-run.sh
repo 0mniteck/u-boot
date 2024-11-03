@@ -11,7 +11,6 @@ sleep 10
 OPT_VER=4.4.0;
 ATF_VER=2.10.9;
 UB_VER=2024.10;
-
 source_date_epoch=1;
 if [ "$1" != 0 ];
 then
@@ -28,6 +27,7 @@ else
     source_date_epoch=1;
   fi
 fi
+build_message_timestamp="$(date +'%b %d %Y - 00:00:00 +0000' -d @$source_date_epoch)";
 
 if [ -f Builds/tee.bin ]; then
   echo "Using Prebuilt OP-TEE"
@@ -36,7 +36,7 @@ docker build --target optee -t optee \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg OPT_VER=$OPT_VER \
   --build-arg ENTRYPOINT=optee .
-mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:docker:optee -o spdx-json=Builds/optee-os.manifest.spdx.json && rm -f -r "$HOME/syft" 
+mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:optee -o spdx-json=Builds/optee-os.manifest.spdx.json && rm -f -r "$HOME/syft" 
 docker run -it --cpus=$(nproc) \
   --name optee \
   --user "$(id -u):$(id -g)" \
@@ -57,12 +57,12 @@ docker build --target arm-trusted -t arm-trusted \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg ATF_VER=$ATF_VER \
   --build-arg ENTRYPOINT=arm-trusted .
-mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:docker:arm-trusted -o spdx-json=Builds/arm-trusted-firmware.manifest.spdx.json && rm -f -r "$HOME/syft" 
+mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:arm-trusted -o spdx-json=Builds/arm-trusted-firmware.manifest.spdx.json && rm -f -r "$HOME/syft" 
 docker run -it --cpus=$(nproc) \
   --name arm-trusted \
   --user "$(id -u):$(id -g)" \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
-  -e BUILD_MESSAGE_TIMESTAMP="$(date +'%b %d %Y - 00:00:00 +0000' -d @$source_date_epoch)" \
+  -e BUILD_MESSAGE_TIMESTAMP=$build_message_timestamp \
   -e ATF_VER=$ATF_VER \
   arm-trusted
 docker cp arm-trusted:/arm-trusted-firmware-lts-v$ATF_VER/build/rk3399/release/bl31/bl31.elf Builds/
@@ -76,7 +76,7 @@ docker build --target u-boot -t u-boot \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
   --build-arg ENTRYPOINT=u-boot .
-mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:docker:u-boot -o spdx-json=Builds/u-boot.manifest.spdx.json && rm -f -r "$HOME/syft" 
+mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:u-boot -o spdx-json=Builds/u-boot.manifest.spdx.json && rm -f -r "$HOME/syft" 
 docker run -it --cpus=$(nproc) \
   --name u-boot \
   --user "$(id -u):$(id -g)" \
@@ -93,7 +93,7 @@ docker build --target u-boot -t u-boot-sb \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
   --build-arg ENTRYPOINT=u-boot .
-mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:docker:u-boot-sb -o spdx-json=Builds/u-boot-sb.manifest.spdx.json && rm -f -r "$HOME/syft" 
+mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:u-boot-sb -o spdx-json=Builds/u-boot-sb.manifest.spdx.json && rm -f -r "$HOME/syft" 
 docker run -it --cpus=$(nproc) \
   --name u-boot-sb \
   --user "$(id -u):$(id -g)" \
