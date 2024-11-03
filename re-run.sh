@@ -51,7 +51,7 @@ docker cp optee:/optee_os-$OPT_VER/out/arm-plat-rockchip/core/tee.bin Builds/
 docker image prune -f --filter label=stage=optee
 sha512sum Builds/tee.bin && sha512sum Builds/tee.bin > Builds/release.sha512sum
 read -p "Continue to Git Signing-->"
-./git.sh "Successful Build of OP-TEE v"$OPT_VER
+./git.sh "Successful Build of OP-TEE v$OPT_VER"
 fi
 
 if [ -f Builds/bl31.elf ]; then
@@ -74,7 +74,7 @@ docker cp arm-trusted:/arm-trusted-firmware-lts-v$ATF_VER/build/rk3399/release/b
 docker image prune -f --filter label=stage=arm-trusted
 sha512sum Builds/bl31.elf && sha512sum Builds/bl31.elf >> Builds/release.sha512sum
 read -p "Continue to Git Signing-->"
-./git.sh "Successful Build of TF-A v"$ATF_VER
+./git.sh "Successful Build of TF-A v$ATF_VER"
 fi
 
 docker build --target u-boot -t u-boot \
