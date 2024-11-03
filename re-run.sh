@@ -36,7 +36,7 @@ docker build --target optee -t optee \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg OPT_VER=$OPT_VER \
   --build-arg ENTRYPOINT=optee .
-syft scan docker:optee -o spdx-json=Builds/optee-os.manifest.spdx.json
+mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:docker:optee -o spdx-json=Builds/optee-os.manifest.spdx.json && rm -f -r "$HOME/syft" 
 docker run -it --cpus=$(nproc) \
   --name optee \
   --user "$(id -u):$(id -g)" \
@@ -57,14 +57,15 @@ docker build --target arm-trusted -t arm-trusted \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg ATF_VER=$ATF_VER \
   --build-arg ENTRYPOINT=arm-trusted .
-syft scan docker:arm-trusted -o spdx-json=Builds/arm-trusted-firmware.manifest.spdx.json
+mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:docker:arm-trusted -o spdx-json=Builds/arm-trusted-firmware.manifest.spdx.json && rm -f -r "$HOME/syft" 
 docker run -it --cpus=$(nproc) \
   --name arm-trusted \
   --user "$(id -u):$(id -g)" \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
+  -e BUILD_MESSAGE_TIMESTAMP="$(date +'%b %d %Y - 00:00:00 +0000' -d @$source_date_epoch)" \
   -e ATF_VER=$ATF_VER \
   arm-trusted
-docker cp arm-trusted:/arm-trusted-firmware-lts-v$(echo $ATF_VER)/build/rk3399/release/bl31/bl31.elf Builds/
+docker cp arm-trusted:/arm-trusted-firmware-lts-v$ATF_VER/build/rk3399/release/bl31/bl31.elf Builds/
 docker image prune -f --filter label=stage=arm-trusted
 sha512sum Builds/bl31.elf && sha512sum Builds/bl31.elf >> Builds/release.sha512sum
 read -p "Continue to Git Signing-->"
@@ -75,11 +76,12 @@ docker build --target u-boot -t u-boot \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
   --build-arg ENTRYPOINT=u-boot .
-syft scan docker:u-boot -o spdx-json=Builds/u-boot.manifest.spdx.json
+mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:docker:u-boot -o spdx-json=Builds/u-boot.manifest.spdx.json && rm -f -r "$HOME/syft" 
 docker run -it --cpus=$(nproc) \
   --name u-boot \
   --user "$(id -u):$(id -g)" \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
+  -e BUILD_MESSAGE_TIMESTAMP="$(date +'%b %d %Y - 00:00:00 +0000' -d @$source_date_epoch)" \
   -e UB_VER=$UB_VER \
   u-boot "./config.sh"
 docker cp u-boot:/RP64/u-boot-$UB_VER/u-boot-rockchip.bin Builds/RP64-rk3399/u-boot-rockchip.bin && sha512sum Builds/RP64-rk3399/u-boot-rockchip.bin >> Builds/release.sha512sum
@@ -92,11 +94,12 @@ docker build --target u-boot -t u-boot-sb \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
   --build-arg ENTRYPOINT=u-boot .
-syft scan docker:u-boot -o spdx-json=Builds/u-boot-sb.manifest.spdx.json
+mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:docker:u-boot-sb -o spdx-json=Builds/u-boot-sb.manifest.spdx.json && rm -f -r "$HOME/syft" 
 docker run -it --cpus=$(nproc) \
   --name u-boot-sb \
   --user "$(id -u):$(id -g)" \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
+  -e BUILD_MESSAGE_TIMESTAMP="$(date +'%b %d %Y - 00:00:00 +0000' -d @$source_date_epoch)" \
   -e UB_VER=$UB_VER \
   -e BL31=/bl31.elf \
   -e TEE=/tee.bin \
