@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 trap '[[ $pid ]] && kill $pid; exit' EXIT
-echo "SOURCE_DATE_EPOCH: ${SOURCE_DATE_EPOCH}"
-echo "SOURCE_DATE: ${SOURCE_DATE}"
+echo "SOURCE_DATE_EPOCH: $SOURCE_DATE_EPOCH"
+echo "SOURCE_DATE: $SOURCE_DATE"
 $1
-echo "Entering /RP64/u-boot-$(echo $UB_VER)"
-pushd /RP64/u-boot-$(echo $UB_VER)
+echo "Entering /RP64/u-boot-$UB_VER"
+pushd /RP64/u-boot-$UB_VER
 make clean
 cp /efi.var efi.var && echo "Deployed efi.var"
 cp /logo.bmp tools/logos/denx.bmp && cp /logo.bmp drivers/video/u_boot_logo.bmp
@@ -14,8 +14,8 @@ make rockpro64-rk3399_defconfig
 FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j $(nproc) all
 ls -la
 popd
-echo "Entering /PBP/u-boot-$(echo $UB_VER)"
-pushd /PBP/u-boot-$(echo $UB_VER)
+echo "Entering /PBP/u-boot-$UB_VER"
+pushd /PBP/u-boot-$UB_VER
 make clean
 cp /rk3399-pinebook-pro-u-boot.dtsi arch/arm/dts/rk3399-pinebook-pro-u-boot.dtsi && echo "Patched Device Tree bug"
 cp /efi.var efi.var && echo "Deployed efi.var"
