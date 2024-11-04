@@ -36,14 +36,16 @@ echo "BUILD_MESSAGE_TIMESTAMP: $build_message_timestamp"
 if [ -f Builds/tee.bin ]; then
   echo "Using Prebuilt OP-TEE"
 else
-docker build --target optee -t optee \
+docker buildx build --target optee --tag optee \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg OPT_VER=$OPT_VER \
-  --build-arg ENTRYPOINT=optee .
+  --build-arg ENTRYPOINT=optee \
+  -f Dockerfile .
 mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:optee -o spdx-json=Builds/optee-os.manifest.spdx.json && rm -f -r "$HOME/syft" 
 docker run -it --cpus=$(nproc) \
   --name optee \
   --user "$(id -u):$(id -g)" \
+  --entrypoint /optee-buildscript.sh \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
   -e OPT_VER=$OPT_VER \
   optee
@@ -57,15 +59,17 @@ fi
 if [ -f Builds/bl31.elf ]; then
   echo "Using Prebuilt Arm Trusted Firmware"
 else
-docker build --target arm-trusted -t arm-trusted \
+docker buildx build --target arm-trusted --tag arm-trusted \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg BUILD_MESSAGE_TIMESTAMP=$build_message_timestamp \
   --build-arg ATF_VER=$ATF_VER \
-  --build-arg ENTRYPOINT=arm-trusted .
+  --build-arg ENTRYPOINT=arm-trusted \
+  -f Dockerfile .
 mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:arm-trusted -o spdx-json=Builds/arm-trusted-firmware.manifest.spdx.json && rm -f -r "$HOME/syft" 
 docker run -it --cpus=$(nproc) \
   --name arm-trusted \
   --user "$(id -u):$(id -g)" \
+  --entrypoint /arm-trusted-buildscript.sh \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
   -e BUILD_MESSAGE_TIMESTAMP=$build_message_timestamp \
   -e ATF_VER=$ATF_VER \
@@ -77,14 +81,16 @@ read -p "Continue to Git Signing-->"
 ./git.sh "Successful Build of TF-A v$ATF_VER"
 fi
 
-docker build --target u-boot -t u-boot \
+docker buildx build --target u-boot -t u-boot \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
-  --build-arg ENTRYPOINT=u-boot .
+  --build-arg ENTRYPOINT=u-boot \
+  -f Dockerfile .
 mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:u-boot -o spdx-json=Builds/u-boot.manifest.spdx.json && rm -f -r "$HOME/syft" 
 docker run -it --cpus=$(nproc) \
   --name u-boot \
   --user "$(id -u):$(id -g)" \
+  --entrypoint /u-boot-buildscript.sh \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
   -e SOURCE_DATE=$source_date \
   -e UB_VER=$UB_VER \
@@ -95,14 +101,16 @@ docker cp u-boot:/PBP/u-boot-$UB_VER/u-boot-rockchip.bin Builds/PBP-rk3399/u-boo
 docker cp u-boot:/PBP/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/PBP-rk3399/u-boot-rockchip-spi.bin && sha512sum Builds/PBP-rk3399/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
 docker image prune -f --filter label=stage=u-boot
 
-docker build --target u-boot -t u-boot-sb \
+docker buildx build --target u-boot -t u-boot-sb \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
-  --build-arg ENTRYPOINT=u-boot .
+  --build-arg ENTRYPOINT=u-boot \
+  -f Dockerfile .
 mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:u-boot-sb -o spdx-json=Builds/u-boot-sb.manifest.spdx.json && rm -f -r "$HOME/syft" 
 docker run -it --cpus=$(nproc) \
   --name u-boot-sb \
   --user "$(id -u):$(id -g)" \
+  --entrypoint /u-boot-buildscript.sh \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
   -e SOURCE_DATE=$source_date \
   -e UB_VER=$UB_VER \
