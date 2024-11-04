@@ -22,9 +22,7 @@ ENV OPT_VER=$OPT_VER
 RUN /bin/bash -c 'wget https://github.com/OP-TEE/optee_os/archive/refs/tags/$OPT_VER.zip && echo "2fae73356770a0eb6e519a8b9ef32e566dd900778e3b52ccb79a63d767cc9dfaa52b920ee94955ef32bbe30304636dc6c26d3f2615483bdd8d4d1d76cdfdaed9  $OPT_VER.zip" > $OPT_VER.zip.sum && if [[ $(sha512sum -c $OPT_VER.zip.sum) == "$OPT_VER.zip: OK" ]]; then echo "OP-TEE Checksum Matched!"; else echo "OP-TEE Checksum Mismatched!" & exit 1; fi;'
 RUN unzip $OPT_VER.zip
 ARG ENTRYPOINT
-ENV ENTRYPOINT=$ENTRYPOINT
 COPY Buildscripts/$ENTRYPOINT-buildscript.sh /
-ENTRYPOINT "/$ENTRYPOINT-buildscript.sh"
 
 FROM debian:bookworm-20241016-slim@sha256:936ea04e67a02e5e83056bfa8c7331e1c9ae89d4a324bbc1654d9497b815ae56 AS arm-trusted
 LABEL stage=arm-trusted
@@ -50,9 +48,7 @@ ENV ATF_VER=$ATF_VER
 RUN /bin/bash -c 'wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/lts-v$ATF_VER.zip && echo "2bc9ca1bd00b852dc26819d34626a1d540ee7ed378dc804a85ba6e1ac8725cbf2d3a9ce4398a5bad3285debe5d0fdb8d31d343d6f97c1f4cd351aeecf98acd74  lts-v$ATF_VER.zip" > $ATF_VER.zip.sum && if [[ $(sha512sum -c $ATF_VER.zip.sum) == "lts-v$ATF_VER.zip: OK" ]]; then echo "TF-A Checksum Matched!"; else echo "TF-A Checksum Mismatched!" & exit 1; fi;'
 RUN unzip lts-v$ATF_VER.zip
 ARG ENTRYPOINT
-ENV ENTRYPOINT=$ENTRYPOINT
 COPY Buildscripts/$ENTRYPOINT-buildscript.sh /
-ENTRYPOINT "/$ENTRYPOINT-buildscript.sh"
 
 FROM debian:bookworm-20241016-slim@sha256:936ea04e67a02e5e83056bfa8c7331e1c9ae89d4a324bbc1654d9497b815ae56 AS u-boot
 LABEL stage=u-boot
@@ -86,7 +82,4 @@ COPY Includes/efi.var /
 COPY Includes/logo.bmp /
 COPY Includes/rk3399-pinebook-pro-u-boot.dtsi /
 ARG ENTRYPOINT
-ENV ENTRYPOINT=$ENTRYPOINT
 COPY Buildscripts/$ENTRYPOINT-buildscript.sh /
-ENTRYPOINT "/$ENTRYPOINT-buildscript.sh"
-CMD ["./config.sh"]
