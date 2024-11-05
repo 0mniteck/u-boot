@@ -8,7 +8,6 @@ mkdir /var/snap/docker
 chown root:root /var/snap/docker
 snap install docker --revision=2936 && ufw disable
 sleep 10
-docker buildx create --name builder --node base --bootstrap --use
 
 OPT_VER=4.4.0;
 ATF_VER=2.10.9;
@@ -34,11 +33,11 @@ build_message_timestamp="$(date +'%b %d %Y - 00:00:00 +0000' -d $source_date)";
 echo "SOURCE_DATE: $source_date"
 echo "SOURCE_DATE_EPOCH: $source_date_epoch"
 echo "BUILD_MESSAGE_TIMESTAMP: $build_message_timestamp"
+docker buildx create --name builder --bootstrap --use
 
 if [ -f Builds/tee.bin ]; then
   echo "Using Prebuilt OP-TEE"
 else
-docker buildx create --name builder --append optee-n1 --use
 docker buildx build --load --target optee --tag optee \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg OPT_VER=$OPT_VER \
@@ -54,7 +53,6 @@ docker run -it --cpus=$(nproc) \
   optee
 docker cp optee:/optee_os-$OPT_VER/out/arm-plat-rockchip/core/tee.bin Builds/
 sha512sum Builds/tee.bin && sha512sum Builds/tee.bin > Builds/release.sha512sum
-# docker buildx rm -f optee-1
 # read -p "Continue to Git Signing-->"
 # ./git.sh "Successful Build of OP-TEE v$OPT_VER"
 fi
@@ -62,7 +60,6 @@ fi
 if [ -f Builds/bl31.elf ]; then
   echo "Using Prebuilt Arm Trusted Firmware"
 else
-docker buildx create --name builder --append arm-trusted-n2 --use
 docker buildx build --load --target arm-trusted --tag arm-trusted \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg BUILD_MESSAGE_TIMESTAMP="$build_message_timestamp" \
@@ -80,12 +77,10 @@ docker run -it --cpus=$(nproc) \
   arm-trusted
 docker cp arm-trusted:/arm-trusted-firmware-lts-v$ATF_VER/build/rk3399/release/bl31/bl31.elf Builds/
 sha512sum Builds/bl31.elf && sha512sum Builds/bl31.elf >> Builds/release.sha512sum
-# docker buildx rm -f arm-trusted-2
 # read -p "Continue to Git Signing-->"
 # ./git.sh "Successful Build of TF-A v$ATF_VER"
 fi
 
-docker buildx create --name builder --append u-boot-n3 --use
 docker buildx build --load --target u-boot-1 -t u-boot \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
@@ -108,9 +103,7 @@ docker cp u-boot:/RP64/u-boot-$UB_VER/u-boot-rockchip.bin Builds/RP64-rk3399/u-b
 docker cp u-boot:/RP64/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/RP64-rk3399/u-boot-rockchip-spi.bin && sha512sum Builds/RP64-rk3399/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
 docker cp u-boot:/PBP/u-boot-$UB_VER/u-boot-rockchip.bin Builds/PBP-rk3399/u-boot-rockchip.bin && sha512sum Builds/PBP-rk3399/u-boot-rockchip.bin >> Builds/release.sha512sum
 docker cp u-boot:/PBP/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/PBP-rk3399/u-boot-rockchip-spi.bin && sha512sum Builds/PBP-rk3399/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
-# docker buildx rm -f u-boot-3
 
-docker buildx create --name builder --append u-boot-n4 --use
 docker buildx build --load --target u-boot-2 -t u-boot-sb \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
@@ -134,9 +127,6 @@ docker cp u-boot-sb:/RP64/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/RP64-rk3
 docker cp u-boot-sb:/PBP/u-boot-$UB_VER/u-boot-rockchip.bin Builds/PBP-rk3399-SB/u-boot-rockchip.bin && sha512sum Builds/PBP-rk3399-SB/u-boot-rockchip.bin >> Builds/release.sha512sum
 docker cp u-boot-sb:/PBP/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/PBP-rk3399-SB/u-boot-rockchip-spi.bin && sha512sum Builds/PBP-rk3399-SB/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
 docker cp u-boot-sb:/sys.info /tmp/sys.info
-# docker buildx rm -f u-boot-4
-
-docker buildx rm -f builder
 
 for loc in RP64-rk3399 PBP-rk3399 RP64-rk3399-SB PBP-rk3399-SB
 do
