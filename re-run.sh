@@ -85,7 +85,7 @@ sha512sum Builds/bl31.elf && sha512sum Builds/bl31.elf >> Builds/release.sha512s
 fi
 
 docker buildx create --name u-boot-3 --node u-boot-n3 --bootstrap --use
-docker buildx build --load --target u-boot -t u-boot \
+docker buildx build --load --target u-boot-1 -t u-boot \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
   --build-arg CONFIG=config
@@ -110,7 +110,7 @@ docker cp u-boot:/PBP/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/PBP-rk3399/u
 # docker buildx rm -f u-boot-3
 
 docker buildx create --name u-boot-4 --node u-boot-n4 --bootstrap --use
-docker buildx build --load --target u-boot -t u-boot-sb \
+docker buildx build --load --target u-boot-2 -t u-boot-sb \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
   --build-arg CONFIG=sb-config \
