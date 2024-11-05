@@ -29,6 +29,8 @@ FROM base AS arm-trusted
 RUN apt install -y bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip
 ARG SOURCE_DATE_EPOCH
 ENV SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH
+ARG BUILD_MESSAGE_TIMESTAMP
+ENV BUILD_MESSAGE_TIMESTAMP="$BUILD_MESSAGE_TIMESTAMP"
 RUN mkdir /.cache && chmod -R 777 /.cache
 ARG ATF_VER
 ENV ATF_VER=$ATF_VER
