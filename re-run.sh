@@ -84,7 +84,7 @@ fi
 docker buildx build --load --target u-boot-1 -t u-boot \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
-  --build-arg CONFIG=config
+  --build-arg CONFIG=config \
   --build-arg ENTRYPOINT=u-boot \
   -f Dockerfile .
 mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:u-boot -o spdx-json=Builds/u-boot.manifest.spdx.json && rm -f -r "$HOME/syft" 
