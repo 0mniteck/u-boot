@@ -118,8 +118,8 @@ docker run -it --cpus=$(nproc) \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
   -e SOURCE_DATE=$source_date \
   -e UB_VER=$UB_VER \
-  -e TEE=/tee.bin \
-  -e BL31=/bl31.elf \
+  -e TEE="/tee.bin" \
+  -e BL31="/bl31.elf" \
   u-boot-sb "./sb-config.sh"
 docker cp u-boot-sb:/RP64/u-boot-$UB_VER/u-boot-rockchip.bin Builds/RP64-rk3399-SB/u-boot-rockchip.bin && sha512sum Builds/RP64-rk3399-SB/u-boot-rockchip.bin >> Builds/release.sha512sum
 docker cp u-boot-sb:/RP64/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/RP64-rk3399-SB/u-boot-rockchip-spi.bin && sha512sum Builds/RP64-rk3399-SB/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
