@@ -52,8 +52,8 @@ docker run -it --cpus=$(nproc) \
   -e OPT_VER=$OPT_VER \
   optee
 docker cp optee:/optee_os-$OPT_VER/out/arm-plat-rockchip/core/tee.bin Builds/
-docker buildx rm -f optee-1
 sha512sum Builds/tee.bin && sha512sum Builds/tee.bin > Builds/release.sha512sum
+# docker buildx rm -f optee-1
 # read -p "Continue to Git Signing-->"
 # ./git.sh "Successful Build of OP-TEE v$OPT_VER"
 fi
@@ -77,8 +77,8 @@ docker run -it --cpus=$(nproc) \
   -e ATF_VER=$ATF_VER \
   arm-trusted
 docker cp arm-trusted:/arm-trusted-firmware-lts-v$ATF_VER/build/rk3399/release/bl31/bl31.elf Builds/
-docker buildx rm -f arm-trusted-2
 sha512sum Builds/bl31.elf && sha512sum Builds/bl31.elf >> Builds/release.sha512sum
+# docker buildx rm -f arm-trusted-2
 # read -p "Continue to Git Signing-->"
 # ./git.sh "Successful Build of TF-A v$ATF_VER"
 fi
@@ -102,7 +102,7 @@ docker cp u-boot:/RP64/u-boot-$UB_VER/u-boot-rockchip.bin Builds/RP64-rk3399/u-b
 docker cp u-boot:/RP64/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/RP64-rk3399/u-boot-rockchip-spi.bin && sha512sum Builds/RP64-rk3399/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
 docker cp u-boot:/PBP/u-boot-$UB_VER/u-boot-rockchip.bin Builds/PBP-rk3399/u-boot-rockchip.bin && sha512sum Builds/PBP-rk3399/u-boot-rockchip.bin >> Builds/release.sha512sum
 docker cp u-boot:/PBP/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/PBP-rk3399/u-boot-rockchip-spi.bin && sha512sum Builds/PBP-rk3399/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
-docker buildx rm -f u-boot-3
+# docker buildx rm -f u-boot-3
 
 docker buildx create --name u-boot-4 --node u-boot-n4 --bootstrap --use
 docker buildx build --load --target u-boot -t u-boot-sb \
@@ -126,6 +126,11 @@ docker cp u-boot-sb:/RP64/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/RP64-rk3
 docker cp u-boot-sb:/PBP/u-boot-$UB_VER/u-boot-rockchip.bin Builds/PBP-rk3399-SB/u-boot-rockchip.bin && sha512sum Builds/PBP-rk3399-SB/u-boot-rockchip.bin >> Builds/release.sha512sum
 docker cp u-boot-sb:/PBP/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/PBP-rk3399-SB/u-boot-rockchip-spi.bin && sha512sum Builds/PBP-rk3399-SB/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
 docker cp u-boot-sb:/sys.info /tmp/sys.info
+# docker buildx rm -f u-boot-4
+
+docker buildx rm -f optee-1
+docker buildx rm -f arm-trusted-2
+docker buildx rm -f u-boot-3
 docker buildx rm -f u-boot-4
 
 for loc in RP64-rk3399 PBP-rk3399 RP64-rk3399-SB PBP-rk3399-SB
