@@ -1,5 +1,5 @@
 #!/bin/bash
-
+. ~/.bashrc
 echo "Starting Build $(date -u '+on %D at %R UTC')"
 rm -f -r /var/snap/docker/*
 rm -f -r /var/snap/docker
