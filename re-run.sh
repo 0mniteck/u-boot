@@ -7,6 +7,7 @@ mkdir /var/snap/docker
 chown root:root /var/snap/docker
 snap install docker --revision=2936 && ufw disable
 sleep 10
+docker buildx rm -f default
 
 OPT_VER=4.4.0;
 ATF_VER=2.10.9;
