@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "Starting Build $(date -u '+on %D at %R UTC')"
 rm -f -r /var/snap/docker/*
 rm -f -r /var/snap/docker
 snap remove docker --purge
