@@ -64,6 +64,7 @@ else
 docker buildx create --name arm-trusted-2 --node arm-trusted-n2 --bootstrap --use
 docker buildx build --load --target arm-trusted --tag arm-trusted \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
+  --build-arg BUILD_MESSAGE_TIMESTAMP="$build_message_timestamp" \
   --build-arg ATF_VER=$ATF_VER \
   --build-arg ENTRYPOINT=arm-trusted \
   -f Dockerfile .
