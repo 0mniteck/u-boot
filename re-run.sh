@@ -72,7 +72,7 @@ docker run -it --cpus=$(nproc) \
   --user "$(id -u):$(id -g)" \
   --entrypoint /arm-trusted-buildscript.sh \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
-  -e BUILD_MESSAGE_TIMESTAMP=$build_message_timestamp \
+  -e BUILD_MESSAGE_TIMESTAMP="$build_message_timestamp" \
   -e ATF_VER=$ATF_VER \
   arm-trusted
 docker cp arm-trusted:/arm-trusted-firmware-lts-v$ATF_VER/build/rk3399/release/bl31/bl31.elf Builds/
