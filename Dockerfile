@@ -53,8 +53,9 @@ ENV TEE=/tee.bin
 ENV BL31=/bl31.elf
 COPY Builds/tee.bin /
 COPY Builds/bl31.elf /
-COPY Configs/config.sh /
-COPY Configs/sb-config.sh /
+ARG CONFIG
+ENV CONFIG=$CONFIG
+COPY Configs/$CONFIG.sh /
 COPY Includes/efi.var /
 COPY Includes/logo.bmp /
 COPY Includes/rk3399-pinebook-pro-u-boot.dtsi /
