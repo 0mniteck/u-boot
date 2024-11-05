@@ -1,7 +1,4 @@
 #!/bin/bash
-# chmod +x *.sh
-# chmod +x Buildscripts/*.sh
-# chmod +x Configs/*.sh
 for loc in RP64-rk3399 PBP-rk3399 RP64-rk3399-SB PBP-rk3399-SB
 do
 mkdir Builds/$loc
