@@ -10,11 +10,11 @@ RUN apt update && apt install -y apt-transport-https ca-certificates
 RUN sed -i 's,http://snapshot.debian.org/archive/debian-security/20241024T023334Z,https://snapshot.debian.org/archive/debian-security/20241024T023334Z,g' /etc/apt/sources.list.d/debian.sources
 RUN sed -i 's,http://snapshot.debian.org/archive/debian/20241024T023111Z,https://snapshot.debian.org/archive/debian/20241024T023111Z,g' /etc/apt/sources.list.d/debian.sources
 RUN apt update && apt upgrade -y
+RUN apt install -y bc bison build-essential device-tree-compiler flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip uuid-dev wget zip
 
 FROM base AS optee
-RUN apt install -y adb acpica-tools autoconf automake bc bison build-essential ccache cpio cscope curl device-tree-compiler e2tools expect fastboot flex ftp-upload gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi \
-gdisk git libattr1-dev libcap-ng-dev libfdt-dev libftdi-dev libglib2.0-dev libgmp3-dev libhidapi-dev libmpc-dev libncurses5-dev libpixman-1-dev libslirp-dev libssl-dev libtool libusb-1.0-0-dev lsb-release make mtools netcat-openbsd ninja-build python3-cryptography \
-python3-pip python3-pyelftools python3-serial python-is-python3 rsync swig unzip uuid-dev wget xalan xdg-utils xterm xz-utils zlib1g-dev
+RUN apt install -y adb acpica-tools autoconf automake ccache cpio cscope curl e2tools expect fastboot ftp-upload gdisk git libattr1-dev libcap-ng-dev libfdt-dev libftdi-dev libglib2.0-dev libgmp3-dev libhidapi-dev libmpc-dev libpixman-1-dev \
+libslirp-dev libtool libusb-1.0-0-dev make mtools netcat-openbsd ninja-build python3-cryptography python3-pip python3-serial python-is-python3 rsync xalan xdg-utils xterm xz-utils zlib1g-dev
 ARG SOURCE_DATE_EPOCH
 ENV SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH
 RUN mkdir /.cache && chmod -R 777 /.cache
@@ -26,7 +26,6 @@ ARG ENTRYPOINT
 COPY Buildscripts/$ENTRYPOINT-buildscript.sh /
 
 FROM base AS arm-trusted
-RUN apt install -y bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libncurses-dev libssl-dev parted python3-dev python3-pyelftools python3-setuptools swig unzip wget zip
 ARG SOURCE_DATE_EPOCH
 ENV SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH
 ARG BUILD_MESSAGE_TIMESTAMP
@@ -40,7 +39,7 @@ ARG ENTRYPOINT
 COPY Buildscripts/$ENTRYPOINT-buildscript.sh /
 
 FROM base AS u-boot
-RUN apt install -y bc bison build-essential device-tree-compiler dosfstools flex gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-arm-none-eabi libgnutls28-dev libncurses-dev libssl-dev lzop parted python3-dev python3-pyelftools python3-setuptools swig unzip uuid-dev wget zip
+RUN apt install -y libgnutls28-dev lsb-release lzop
 ARG SOURCE_DATE_EPOCH
 ENV SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH
 ENV SOURCE_DATE="@$SOURCE_DATE_EPOCH";
