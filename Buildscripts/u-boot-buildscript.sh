@@ -2,7 +2,7 @@
 trap '[[ $pid ]] && kill $pid; exit' EXIT
 echo "SOURCE_DATE_EPOCH: $SOURCE_DATE_EPOCH"
 echo "SOURCE_DATE: $SOURCE_DATE"
-$1
+./$CONFIG.sh
 echo "Entering /RP64/u-boot-$UB_VER"
 pushd /RP64/u-boot-$UB_VER
 make clean
