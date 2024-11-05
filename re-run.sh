@@ -36,6 +36,7 @@ echo "BUILD_MESSAGE_TIMESTAMP: $build_message_timestamp"
 if [ -f Builds/tee.bin ]; then
   echo "Using Prebuilt OP-TEE"
 else
+docker buildx create --name builder-1 --node builder-n1 --bootstrap	--use
 docker buildx build --target optee --tag optee \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg OPT_VER=$OPT_VER \
@@ -50,7 +51,7 @@ docker run -it --cpus=$(nproc) \
   -e OPT_VER=$OPT_VER \
   optee
 docker cp optee:/optee_os-$OPT_VER/out/arm-plat-rockchip/core/tee.bin Builds/
-docker image prune -f --filter label=stage=optee
+docker buildx rm -f builder-1
 sha512sum Builds/tee.bin && sha512sum Builds/tee.bin > Builds/release.sha512sum
 read -p "Continue to Git Signing-->"
 ./git.sh "Successful Build of OP-TEE v$OPT_VER"
@@ -59,6 +60,7 @@ fi
 if [ -f Builds/bl31.elf ]; then
   echo "Using Prebuilt Arm Trusted Firmware"
 else
+docker buildx create --name builder-2 --node builder-n2 --bootstrap	--use
 docker buildx build --target arm-trusted --tag arm-trusted \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg BUILD_MESSAGE_TIMESTAMP=$build_message_timestamp \
@@ -75,12 +77,13 @@ docker run -it --cpus=$(nproc) \
   -e ATF_VER=$ATF_VER \
   arm-trusted
 docker cp arm-trusted:/arm-trusted-firmware-lts-v$ATF_VER/build/rk3399/release/bl31/bl31.elf Builds/
-docker image prune -f --filter label=stage=arm-trusted
+docker buildx rm -f builder-2
 sha512sum Builds/bl31.elf && sha512sum Builds/bl31.elf >> Builds/release.sha512sum
 read -p "Continue to Git Signing-->"
 ./git.sh "Successful Build of TF-A v$ATF_VER"
 fi
 
+docker buildx create --name builder-3 --node builder-n3 --bootstrap	--use
 docker buildx build --target u-boot -t u-boot \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
@@ -99,8 +102,9 @@ docker cp u-boot:/RP64/u-boot-$UB_VER/u-boot-rockchip.bin Builds/RP64-rk3399/u-b
 docker cp u-boot:/RP64/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/RP64-rk3399/u-boot-rockchip-spi.bin && sha512sum Builds/RP64-rk3399/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
 docker cp u-boot:/PBP/u-boot-$UB_VER/u-boot-rockchip.bin Builds/PBP-rk3399/u-boot-rockchip.bin && sha512sum Builds/PBP-rk3399/u-boot-rockchip.bin >> Builds/release.sha512sum
 docker cp u-boot:/PBP/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/PBP-rk3399/u-boot-rockchip-spi.bin && sha512sum Builds/PBP-rk3399/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
-docker image prune -f --filter label=stage=u-boot
+docker buildx rm -f builder-3
 
+docker buildx create --name builder-4 --node builder-n4 --bootstrap	--use
 docker buildx build --target u-boot -t u-boot-sb \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
@@ -122,7 +126,7 @@ docker cp u-boot-sb:/RP64/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/RP64-rk3
 docker cp u-boot-sb:/PBP/u-boot-$UB_VER/u-boot-rockchip.bin Builds/PBP-rk3399-SB/u-boot-rockchip.bin && sha512sum Builds/PBP-rk3399-SB/u-boot-rockchip.bin >> Builds/release.sha512sum
 docker cp u-boot-sb:/PBP/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/PBP-rk3399-SB/u-boot-rockchip-spi.bin && sha512sum Builds/PBP-rk3399-SB/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
 docker cp u-boot-sb:/sys.info /tmp/sys.info
-docker image prune -f --filter label=stage=u-boot
+docker buildx rm -f builder-4
 cat /tmp/builder.log | grep -n Checksum
 
 for loc in RP64-rk3399 PBP-rk3399 RP64-rk3399-SB PBP-rk3399-SB
