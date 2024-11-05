@@ -1,8 +1,4 @@
 #!/bin/bash
-for loc in RP64-rk3399 PBP-rk3399 RP64-rk3399-SB PBP-rk3399-SB
-do
-mkdir Builds/$loc
-done
 sudo apt install bc dosfstools git git-lfs parted screen snapd -y
 snap install syft --classic
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
