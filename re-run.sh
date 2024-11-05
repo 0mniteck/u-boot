@@ -33,7 +33,7 @@ build_message_timestamp="$(date +'%b %d %Y - 00:00:00 +0000' -d $source_date)";
 echo "SOURCE_DATE: $source_date"
 echo "SOURCE_DATE_EPOCH: $source_date_epoch"
 echo "BUILD_MESSAGE_TIMESTAMP: $build_message_timestamp"
-docker buildx create --name builder --bootstrap --use
+docker buildx create --name U-Boot-Builder --bootstrap --use
 
 if [ -f Builds/tee.bin ]; then
   echo "Using Prebuilt OP-TEE"
