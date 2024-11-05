@@ -70,7 +70,7 @@ RUN /bin/bash -c 'wget https://github.com/u-boot/u-boot/archive/refs/tags/v$UB_V
 RUN unzip v$UB_VER.zip -d /RP64
 RUN unzip v$UB_VER.zip -d /PBP
 ENV TEE=/tee.bin
-ENV BL31=/bl31.bin
+ENV BL31=/bl31.elf
 COPY Builds/tee.bin /
 COPY Builds/bl31.elf /
 COPY Configs/config.sh /
