@@ -110,7 +110,7 @@ docker cp u-boot:/PBP/u-boot-$UB_VER/u-boot-rockchip.bin Builds/PBP-rk3399/u-boo
 docker cp u-boot:/PBP/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/PBP-rk3399/u-boot-rockchip-spi.bin && sha512sum Builds/PBP-rk3399/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
 # docker buildx rm -f u-boot-3
 
-docker buildx create --name builder --append u-boot-n4 --bootstrap --use
+docker buildx create --name builder --append u-boot-n4 --use
 docker buildx build --load --target u-boot-2 -t u-boot-sb \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
