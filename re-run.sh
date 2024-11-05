@@ -54,8 +54,8 @@ docker run -it --cpus=$(nproc) \
 docker cp optee:/optee_os-$OPT_VER/out/arm-plat-rockchip/core/tee.bin Builds/
 docker buildx rm -f optee-1
 sha512sum Builds/tee.bin && sha512sum Builds/tee.bin > Builds/release.sha512sum
-read -p "Continue to Git Signing-->"
-./git.sh "Successful Build of OP-TEE v$OPT_VER"
+# read -p "Continue to Git Signing-->"
+# ./git.sh "Successful Build of OP-TEE v$OPT_VER"
 fi
 
 if [ -f Builds/bl31.elf ]; then
@@ -79,8 +79,8 @@ docker run -it --cpus=$(nproc) \
 docker cp arm-trusted:/arm-trusted-firmware-lts-v$ATF_VER/build/rk3399/release/bl31/bl31.elf Builds/
 docker buildx rm -f arm-trusted-2
 sha512sum Builds/bl31.elf && sha512sum Builds/bl31.elf >> Builds/release.sha512sum
-read -p "Continue to Git Signing-->"
-./git.sh "Successful Build of TF-A v$ATF_VER"
+# read -p "Continue to Git Signing-->"
+# ./git.sh "Successful Build of TF-A v$ATF_VER"
 fi
 
 docker buildx create --name u-boot-3 --node u-boot-n3 --bootstrap --use
@@ -127,7 +127,6 @@ docker cp u-boot-sb:/PBP/u-boot-$UB_VER/u-boot-rockchip.bin Builds/PBP-rk3399-SB
 docker cp u-boot-sb:/PBP/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/PBP-rk3399-SB/u-boot-rockchip-spi.bin && sha512sum Builds/PBP-rk3399-SB/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
 docker cp u-boot-sb:/sys.info /tmp/sys.info
 docker buildx rm -f u-boot-4
-cat /tmp/builder.log | grep -n Checksum
 
 for loc in RP64-rk3399 PBP-rk3399 RP64-rk3399-SB PBP-rk3399-SB
 do
@@ -144,7 +143,9 @@ popd
 sha512sum Builds/$loc/sdcard.img > Builds/release.sha512sum
 done
 dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
-dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
+dd if=Builds/RP64-rk3399-SB/u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
+
+cat /tmp/builder.log | grep -n Checksum
 
 echo "" >> Builds/release.sha512sum
 echo "# 0mniteck's Current GPG Key ID: 287EE837E6ED2DD3" >> Builds/release.sha512sum
