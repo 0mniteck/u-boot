@@ -36,7 +36,7 @@ echo "BUILD_MESSAGE_TIMESTAMP: $build_message_timestamp"
 if [ -f Builds/tee.bin ]; then
   echo "Using Prebuilt OP-TEE"
 else
-docker buildx create --name builder-1 --node builder-n1 --bootstrap	--use
+docker buildx create --name builder-1 --node builder-n1 --bootstrap --use
 docker buildx build --load --target optee --tag optee \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg OPT_VER=$OPT_VER \
@@ -60,7 +60,7 @@ fi
 if [ -f Builds/bl31.elf ]; then
   echo "Using Prebuilt Arm Trusted Firmware"
 else
-docker buildx create --name builder-2 --node builder-n2 --bootstrap	--use
+docker buildx create --name builder-2 --node builder-n2 --bootstrap --use
 docker buildx build --load --target arm-trusted --tag arm-trusted \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg ATF_VER=$ATF_VER \
@@ -82,7 +82,7 @@ read -p "Continue to Git Signing-->"
 ./git.sh "Successful Build of TF-A v$ATF_VER"
 fi
 
-docker buildx create --name builder-3 --node builder-n3 --bootstrap	--use
+docker buildx create --name builder-3 --node builder-n3 --bootstrap --use
 docker buildx build --load --target u-boot -t u-boot \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
@@ -103,7 +103,7 @@ docker cp u-boot:/PBP/u-boot-$UB_VER/u-boot-rockchip.bin Builds/PBP-rk3399/u-boo
 docker cp u-boot:/PBP/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/PBP-rk3399/u-boot-rockchip-spi.bin && sha512sum Builds/PBP-rk3399/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
 docker buildx rm -f builder-3
 
-docker buildx create --name builder-4 --node builder-n4 --bootstrap	--use
+docker buildx create --name builder-4 --node builder-n4 --bootstrap --use
 docker buildx build --load --target u-boot -t u-boot-sb \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
