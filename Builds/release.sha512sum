@@ -1,2 +1,7 @@
-21f2400e4e427c058463d3aadfb390a525e8003a7cc83da5f817f4321c332f31901e7889d1aca72e1507c4ea95ef7c9ef48d81ae3ae6ba8d9361bc5062e177cb  Builds/tee.bin
-18d8ad2b0ad4d0cc1efe058c1fa3909ff181f10789319ad8e86b7104f261374aa31dfba08b6bb68842939d0fdc6c3e0d450f9a553b1b31a18ab3a80c54294db7  Builds/bl31.elf
+b9051a72103921e1c2d2bea06d0b7701f713e1d08eb8182fe0a05b5ea81c006367e1000699985ab088e751268312888411ecaa06b4538cc437c4c70c11840c2f  Builds/PBP-rk3399-SB/sdcard.img
+
+# 0mniteck's Current GPG Key ID: 287EE837E6ED2DD3
+Source Date Epoch: 
+# Build Complete: on 11/05/24 at 13:39 UTC
+# Base Build System: GNU/Linux 6.11.0-9-generic aarch64 Ubuntu 24.10 oracular #9-Ubuntu SMP PREEMPT_DYNAMIC Mon Oct 14 13:46:10 UTC 2024
+
