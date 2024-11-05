@@ -87,6 +87,7 @@ docker buildx create --name u-boot-3 --node u-boot-n3 --bootstrap --use
 docker buildx build --load --target u-boot -t u-boot \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
+  --build-arg CONFIG=config
   --build-arg ENTRYPOINT=u-boot \
   -f Dockerfile .
 mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:u-boot -o spdx-json=Builds/u-boot.manifest.spdx.json && rm -f -r "$HOME/syft" 
@@ -96,8 +97,11 @@ docker run -it --cpus=$(nproc) \
   --entrypoint /u-boot-buildscript.sh \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
   -e SOURCE_DATE=$source_date \
+  -e CONFIG="config" \
   -e UB_VER=$UB_VER \
-  u-boot "./config.sh"
+  -e TEE="/tee.bin" \
+  -e BL31="/bl31.elf" \
+  u-boot
 docker cp u-boot:/RP64/u-boot-$UB_VER/u-boot-rockchip.bin Builds/RP64-rk3399/u-boot-rockchip.bin && sha512sum Builds/RP64-rk3399/u-boot-rockchip.bin >> Builds/release.sha512sum
 docker cp u-boot:/RP64/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/RP64-rk3399/u-boot-rockchip-spi.bin && sha512sum Builds/RP64-rk3399/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
 docker cp u-boot:/PBP/u-boot-$UB_VER/u-boot-rockchip.bin Builds/PBP-rk3399/u-boot-rockchip.bin && sha512sum Builds/PBP-rk3399/u-boot-rockchip.bin >> Builds/release.sha512sum
@@ -108,6 +112,7 @@ docker buildx create --name u-boot-4 --node u-boot-n4 --bootstrap --use
 docker buildx build --load --target u-boot -t u-boot-sb \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
+  --build-arg CONFIG=sb-config \
   --build-arg ENTRYPOINT=u-boot \
   -f Dockerfile .
 mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:u-boot-sb -o spdx-json=Builds/u-boot-sb.manifest.spdx.json && rm -f -r "$HOME/syft" 
@@ -117,10 +122,11 @@ docker run -it --cpus=$(nproc) \
   --entrypoint /u-boot-buildscript.sh \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
   -e SOURCE_DATE=$source_date \
+  -e CONFIG="sb-config" \
   -e UB_VER=$UB_VER \
   -e TEE="/tee.bin" \
   -e BL31="/bl31.elf" \
-  u-boot-sb "./sb-config.sh"
+  u-boot-sb
 docker cp u-boot-sb:/RP64/u-boot-$UB_VER/u-boot-rockchip.bin Builds/RP64-rk3399-SB/u-boot-rockchip.bin && sha512sum Builds/RP64-rk3399-SB/u-boot-rockchip.bin >> Builds/release.sha512sum
 docker cp u-boot-sb:/RP64/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/RP64-rk3399-SB/u-boot-rockchip-spi.bin && sha512sum Builds/RP64-rk3399-SB/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
 docker cp u-boot-sb:/PBP/u-boot-$UB_VER/u-boot-rockchip.bin Builds/PBP-rk3399-SB/u-boot-rockchip.bin && sha512sum Builds/PBP-rk3399-SB/u-boot-rockchip.bin >> Builds/release.sha512sum
