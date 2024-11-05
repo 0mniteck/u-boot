@@ -37,7 +37,7 @@ if [ -f Builds/tee.bin ]; then
   echo "Using Prebuilt OP-TEE"
 else
 docker buildx create --name builder-1 --node builder-n1 --bootstrap	--use
-docker buildx build --target optee --tag optee \
+docker buildx build --load --target optee --tag optee \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg OPT_VER=$OPT_VER \
   --build-arg ENTRYPOINT=optee \
@@ -61,7 +61,7 @@ if [ -f Builds/bl31.elf ]; then
   echo "Using Prebuilt Arm Trusted Firmware"
 else
 docker buildx create --name builder-2 --node builder-n2 --bootstrap	--use
-docker buildx build --target arm-trusted --tag arm-trusted \
+docker buildx build --load --target arm-trusted --tag arm-trusted \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg ATF_VER=$ATF_VER \
   --build-arg ENTRYPOINT=arm-trusted \
@@ -83,7 +83,7 @@ read -p "Continue to Git Signing-->"
 fi
 
 docker buildx create --name builder-3 --node builder-n3 --bootstrap	--use
-docker buildx build --target u-boot -t u-boot \
+docker buildx build --load --target u-boot -t u-boot \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
   --build-arg ENTRYPOINT=u-boot \
@@ -104,7 +104,7 @@ docker cp u-boot:/PBP/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/PBP-rk3399/u
 docker buildx rm -f builder-3
 
 docker buildx create --name builder-4 --node builder-n4 --bootstrap	--use
-docker buildx build --target u-boot -t u-boot-sb \
+docker buildx build --load --target u-boot -t u-boot-sb \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
   --build-arg ENTRYPOINT=u-boot \
