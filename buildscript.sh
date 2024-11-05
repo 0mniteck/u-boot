@@ -1,6 +1,6 @@
 #!/bin/bash
 sudo apt install bc dosfstools git git-lfs parted screen snapd -y
-snap install syft --classic
+sudo snap install syft --classic
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 git-lfs install
 ./clean.sh $1
