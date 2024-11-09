@@ -8,6 +8,7 @@ Development Branch
 * [x] Fine tune for reproducibility
   * [x] Convert to docker build
     * [x] Build variants in one branch
+    * [x] Make reproducable debian docker images
 
 ## Build Instructions/Usage:
 
