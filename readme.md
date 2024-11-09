@@ -13,8 +13,8 @@ Development Branch
 
 ### Build:
 
-`buildscript.sh {yes/no: make clean} {time: source_date_epoch}`:
+`buildscript.sh {yes/no: make clean} {time: source_date_epoch} {tag: release tag}`:
 
 To build current release clone the repo and run:
 
-```sudo su && git clone git@github.com:0mniteck/U-Boot.git && cd U-Boot && ./buildscript.sh yes```
+```sudo su && git clone git@github.com:0mniteck/U-Boot.git && cd U-Boot && ./buildscript.sh yes "v2024.10+v2.10.9+v4.4.0"```
