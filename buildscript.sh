@@ -1,5 +1,5 @@
 #!/bin/bash
-sudo apt install bc dosfstools git parted screen snapd -y
+sudo apt install bc dosfstools parted screen snapd -y
 sudo snap install syft --classic
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 ./clean.sh $1
