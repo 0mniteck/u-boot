@@ -34,8 +34,7 @@ RUN mkdir /.cache && chmod -R 777 /.cache
 ARG UB_VER
 ENV UB_VER=$UB_VER
 RUN /bin/bash -c 'wget https://github.com/u-boot/u-boot/archive/refs/tags/v$UB_VER.zip && echo "6502c5773d0470ad380496c181b802b19d1d7ba151098b7644df2528be5311a52e4b0838746b1661a7b173ef79b1e4afa6c87091eda2bfd3bf36ccfae8a09c40  v$UB_VER.zip" > $UB_VER.zip.sum && if [[ $(sha512sum -c $UB_VER.zip.sum) == "v$UB_VER.zip: OK" ]]; then echo "U-Boot Checksum Matched!"; else echo "U-Boot Checksum Mismatched!" & exit 1; fi;'
-RUN unzip v$UB_VER.zip -d /RP64
-RUN unzip v$UB_VER.zip -d /PBP
+RUN for dev in RP64-rk3399 PBP-rk3399 PT2-rk3566; do for loc in $dev $dev-SB $dev-MU-SB; do unzip v$UB_VER.zip -d /$loc; done; done;
 ENV TEE=/tee.bin
 ENV BL31=/bl31.elf
 COPY Builds/tee.bin /
@@ -43,17 +42,6 @@ COPY Builds/bl31.elf /
 COPY Includes/efi.var /
 COPY Includes/logo.bmp /
 COPY Includes/rk3399-pinebook-pro-u-boot.dtsi /
-
-FROM u-boot AS u-boot-1
-ARG CONFIG
-ENV CONFIG=$CONFIG
-COPY Configs/$CONFIG.sh /
-ARG ENTRYPOINT
-COPY Buildscripts/$ENTRYPOINT-buildscript.sh /
-
-FROM u-boot AS u-boot-2
-ARG CONFIG
-ENV CONFIG=$CONFIG
-COPY Configs/$CONFIG.sh /
+COPY Configs/* /
 ARG ENTRYPOINT
 COPY Buildscripts/$ENTRYPOINT-buildscript.sh /
