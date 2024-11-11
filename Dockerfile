@@ -19,8 +19,8 @@ ENV BUILD_MESSAGE_TIMESTAMP="$BUILD_MESSAGE_TIMESTAMP"
 RUN mkdir /.cache && chmod -R 777 /.cache
 ARG ATF_VER
 ENV ATF_VER=$ATF_VER
-RUN /bin/bash -c 'wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/lts-v$ATF_VER.zip && echo "2bc9ca1bd00b852dc26819d34626a1d540ee7ed378dc804a85ba6e1ac8725cbf2d3a9ce4398a5bad3285debe5d0fdb8d31d343d6f97c1f4cd351aeecf98acd74  lts-v$ATF_VER.zip" > $ATF_VER.zip.sum && if [[ $(sha512sum -c $ATF_VER.zip.sum) == "lts-v$ATF_VER.zip: OK" ]]; then echo "TF-A Checksum Matched!"; else echo "TF-A Checksum Mismatched!" & exit 1; fi;'
-RUN for atf_plat in rk3399 rk3568; do unzip -q lts-v$ATF_VER.zip -d /$atf_plat; done;
+RUN /bin/bash -c 'wget https://github.com/ARM-software/arm-trusted-firmware/archive/$ATF_VER.zip && echo "bc15ed0ed03c83fb426f85a000076eb812872a8337f79f943a4b1cacea6e8ac78d39804df48849134fcd447ea675dd3df15a83df009d1b4dce907c01c7fe5d58  $ATF_VER.zip" > $ATF_VER.zip.sum && if [[ $(sha512sum -c $ATF_VER.zip.sum) == "$ATF_VER.zip: OK" ]]; then echo "TF-A Checksum Matched!"; else echo "TF-A Checksum Mismatched!" & exit 1; fi;'
+RUN for atf_plat in rk3399 rk3568 rk3588; do unzip -q $ATF_VER.zip -d /$atf_plat; done;
 ARG ENTRYPOINT
 COPY Buildscripts/$ENTRYPOINT-buildscript.sh /
 
@@ -34,12 +34,13 @@ RUN mkdir /.cache && chmod -R 777 /.cache
 ARG UB_VER
 ENV UB_VER=$UB_VER
 RUN /bin/bash -c 'wget https://github.com/u-boot/u-boot/archive/refs/tags/v$UB_VER.zip && echo "6502c5773d0470ad380496c181b802b19d1d7ba151098b7644df2528be5311a52e4b0838746b1661a7b173ef79b1e4afa6c87091eda2bfd3bf36ccfae8a09c40  v$UB_VER.zip" > $UB_VER.zip.sum && if [[ $(sha512sum -c $UB_VER.zip.sum) == "v$UB_VER.zip: OK" ]]; then echo "U-Boot Checksum Matched!"; else echo "U-Boot Checksum Mismatched!" & exit 1; fi;'
-RUN for dev in RP64-rk3399 PBP-rk3399 PT2-rk3566; do for loc in $dev $dev-SB $dev-MU-SB; do unzip -q v$UB_VER.zip -d /$loc; done; done;
+RUN for dev in RP64-rk3399 PBP-rk3399 PT2-rk3566 R5B-rk3588; do for loc in $dev $dev-SB $dev-MU-SB; do unzip -q v$UB_VER.zip -d /$loc; done; done;
 ENV TEE=/tee.bin
 COPY Builds/tee.bin /
 ENV BL31=/rk3399-bl31.elf
 COPY Builds/rk3399/bl31.elf /rk3399-bl31.elf
 COPY Builds/rk3568/bl31.elf /rk3566-bl31.elf
+COPY Builds/rk3588/bl31.elf /rk3588-bl31.elf
 COPY Includes/efi.var /
 COPY Includes/logo.bmp /
 COPY Includes/rk3399-pinebook-pro-u-boot.dtsi /
