@@ -1,4 +1,4 @@
-# U-Boot RockChip rk3399
+# U-Boot RockChip rk3399 & rk3566
 Development Branch
 
 ### Project Goals
