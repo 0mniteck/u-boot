@@ -15,7 +15,7 @@ pushd Builds/
     do
       touch $arch/tmp
     done
-  elseif [ "$1" = "cleanup" ];
+  elif [ "$1" = "cleanup" ];
     for dev in RP64-rk3399 PBP-rk3399 PT2-rk3566
     do
       for loc in $dev $dev-SB $dev-MU-SB
