@@ -1,4 +1,4 @@
-# U-Boot - RockChip rk3399
+# U-Boot - RockChip rk3399 & rk3566
 ## Rockchip rk3399 SPI U-Boot Assembler
 
  - ### With UEFI Secure Boot enabled & [`Deploy/shimaa64.efi.signed`](https://github.com/0mniteck/U-Boot/tree/UEFI%2BSb%2Bv2024.10%2Bv2.10.7%2Bv4.3.0/Deploy/shimaa64.efi.signed) included
