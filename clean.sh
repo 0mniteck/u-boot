@@ -29,5 +29,5 @@ pushd Builds/
     done
   fi
 popd
-rm -f /tmp/builder.log
+rm -f /tmp/builder.log && rm -f /tmp/status.build
 exit
