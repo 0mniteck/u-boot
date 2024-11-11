@@ -11,7 +11,7 @@ pushd Builds/
         touch $loc/tmp
       done
     done
-    for arch in rk3399 rk3566
+    for arch in rk3399 rk3568
     do
       touch $arch/tmp
     done
@@ -23,7 +23,7 @@ pushd Builds/
         rm -f $loc/tmp
       done
     done
-    for arch in rk3399 rk3566
+    for arch in rk3399 rk3568
     do
       rm -f $arch/tmp
     done
