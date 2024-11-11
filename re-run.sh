@@ -84,7 +84,7 @@ done
 # ./git.sh "Successful Build of TF-A v$ATF_VER"
 fi
 
-docker buildx build --load --target u-boot -t u-boot \
+docker buildx build --load --target u-boot --tag u-boot \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
   --build-arg ENTRYPOINT=u-boot \
