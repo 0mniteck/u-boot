@@ -130,6 +130,8 @@ echo "# Build Complete: $(date -u '+on %D at %R UTC')" >> Builds/release.sha512s
 echo "# Base Build System: $(uname -o) $(uname -r) $(uname -p) $(lsb_release -ds) $(lsb_release -cs) $(uname -v)"  >> Builds/release.sha512sum
 echo $(cat /tmp/snap-private-tmp/snap.docker/tmp/sys.info) >> Builds/release.sha512sum && rm -f /tmp/snap-private-tmp/snap.docker/tmp/sys.info
 
+echo "Successful Build of U-Boot v$UB_VER at $BUILD_MESSAGE_TIMESTAMP W/ TF-A v$ATF_VER & OP-TEE v$OPT_VER For rk3399" > /tmp/status.build
+
 snap disable docker
 rm -f -r /var/snap/docker/*
 rm -f -r /var/snap/docker
