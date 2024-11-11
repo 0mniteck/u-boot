@@ -10,6 +10,10 @@ pushd Builds/
         touch $loc/tmp
       done
     done
+    for arch in rk3399 rk3566
+    do
+      touch $arch/tmp
+    done
   elseif [ "$1" = "cleanup" ];
     for dev in RP64-rk3399 PBP-rk3399 PT2-rk3566
     do
@@ -17,6 +21,10 @@ pushd Builds/
       do
         rm -f $loc/tmp
       done
+    done
+    for arch in rk3399 rk3566
+    do
+      rm -f $arch/tmp
     done
   fi
 popd
