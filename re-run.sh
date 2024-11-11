@@ -51,8 +51,8 @@ docker run -it --cpus=$(nproc) \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
   -e OPT_VER=$OPT_VER \
   optee
-docker cp optee:/optee_os-$OPT_VER/out/arm-plat-rockchip/core/tee.bin Builds/
-sha512sum Builds/tee.bin && sha512sum Builds/tee.bin > Builds/release.sha512sum
+docker cp optee:/optee_os-$OPT_VER/out/arm-plat-rockchip/core/tee.bin Builds/rk3399/
+sha512sum Builds/rk3399/tee.bin && sha512sum Builds/rk3399/tee.bin > Builds/release.sha512sum
 # read -p "Continue to Git Signing-->"
 # ./git.sh "Successful Build of OP-TEE v$OPT_VER"
 fi
@@ -89,7 +89,7 @@ docker buildx build --load --target u-boot -t u-boot \
   --build-arg UB_VER=$UB_VER \
   --build-arg ENTRYPOINT=u-boot \
   -f Dockerfile .
-mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:u-boot-sb -o spdx-json=Builds/u-boot.manifest.spdx.json && rm -f -r "$HOME/syft" 
+mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:u-boot -o spdx-json=Builds/u-boot.manifest.spdx.json && rm -f -r "$HOME/syft" 
 docker run -it --cpus=$(nproc) \
   --name u-boot \
   --user "$(id -u):$(id -g)" \
@@ -98,7 +98,7 @@ docker run -it --cpus=$(nproc) \
   -e SOURCE_DATE=$source_date \
   -e UB_VER=$UB_VER \
   -e TEE="/tee.bin" \
-  -e BL31="/bl31.elf" \
+  -e BL31="/rk3399-bl31.elf" \
   u-boot
 for dev in RP64-rk3399 PBP-rk3399 PT2-rk3566
 do
