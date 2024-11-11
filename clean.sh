@@ -15,7 +15,8 @@ pushd Builds/
     do
       touch $arch/tmp
     done
-  elif [ "$1" = "cleanup" ]; then
+  fi
+  if [ "$1" = "cleanup" ]; then
     for dev in RP64-rk3399 PBP-rk3399 PT2-rk3566
     do
       for loc in $dev $dev-SB $dev-MU-SB
@@ -27,7 +28,6 @@ pushd Builds/
     do
       rm -f $arch/tmp
     done
-  else
   fi
 popd
 rm -f /tmp/builder.log && rm -f /tmp/status.build
