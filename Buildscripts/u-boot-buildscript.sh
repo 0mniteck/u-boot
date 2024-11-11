@@ -20,7 +20,8 @@ for dev in RP64-rk3399:rockpro64-rk3399_defconfig PBP-rk3399:pinebook-pro-rk3399
       cat defconfig >> configs/$(echo $dev | cut -d':' -f2)
       cat configs/$(echo $dev | cut -d':' -f2)
       make $(echo $dev | cut -d':' -f2)
-      BL31=/"$(echo $(echo $dev | cut -d':' -f1) | $(cut -d'-' -f2))"-bl31.elf FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j $(nproc) all
+      platt=$(echo $(echo $dev | cut -d':' -f1) | cut -d'-' -f2)
+      BL31=/$platt-bl31.elf FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j $(nproc) all
       ls -la
     popd
   done
