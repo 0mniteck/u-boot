@@ -27,6 +27,7 @@ pushd Builds/
     do
       rm -f $arch/tmp
     done
+  else
   fi
 popd
 rm -f /tmp/builder.log && rm -f /tmp/status.build
