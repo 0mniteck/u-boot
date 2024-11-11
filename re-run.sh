@@ -75,8 +75,11 @@ docker run -it --cpus=$(nproc) \
   -e BUILD_MESSAGE_TIMESTAMP="$build_message_timestamp" \
   -e ATF_VER=$ATF_VER \
   arm-trusted
-docker cp arm-trusted:/arm-trusted-firmware-lts-v$ATF_VER/build/rk3399/release/bl31/bl31.elf Builds/
-sha512sum Builds/bl31.elf && sha512sum Builds/bl31.elf >> Builds/release.sha512sum
+for arch in rk3399 rk3566
+do
+  docker cp arm-trusted:/$arch/arm-trusted-firmware-lts-v$ATF_VER/build/$arch/release/bl31/bl31.elf Builds/$arch/
+  sha512sum Builds/$arch/bl31.elf && sha512sum Builds/$arch/bl31.elf >> Builds/release.sha512sum
+done
 # read -p "Continue to Git Signing-->"
 # ./git.sh "Successful Build of TF-A v$ATF_VER"
 fi
