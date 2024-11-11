@@ -10,7 +10,7 @@ snap install docker --revision=2936 && ufw disable
 sleep 10
 
 OPT_VER=4.4.0;
-ATF_VER=2.10.9;
+ATF_VER=dc5d485206e168c7e86ede646e512c761bf1752e;
 UB_VER=2024.10;
 source_date_epoch=1;
 if [ "$1" != 0 ];
@@ -75,7 +75,7 @@ docker run -it --cpus=$(nproc) \
   -e BUILD_MESSAGE_TIMESTAMP="$build_message_timestamp" \
   -e ATF_VER=$ATF_VER \
   arm-trusted
-for arch in rk3399 rk3568
+for arch in rk3399 rk3568 rk3588
 do
   docker cp arm-trusted:/$arch/arm-trusted-firmware-lts-v$ATF_VER/build/$arch/release/bl31/bl31.elf Builds/$arch/
   sha512sum Builds/$arch/bl31.elf && sha512sum Builds/$arch/bl31.elf >> Builds/release.sha512sum
@@ -100,7 +100,7 @@ docker run -it --cpus=$(nproc) \
   -e TEE="/tee.bin" \
   -e BL31="/rk3399-bl31.elf" \
   u-boot
-for dev in RP64-rk3399 PBP-rk3399 PT2-rk3566
+for dev in RP64-rk3399 PBP-rk3399 PT2-rk3566 R5B-rk3588
 do
   for loc in $dev $dev-SB $dev-MU-SB
   do
