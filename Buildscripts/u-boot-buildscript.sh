@@ -2,6 +2,7 @@
 trap '[[ $pid ]] && kill $pid; exit' EXIT
 echo "SOURCE_DATE_EPOCH: $SOURCE_DATE_EPOCH"
 echo "SOURCE_DATE: $SOURCE_DATE"
+for dev in RP64-rk3399 PBP-rk3399 PT2-rk3566 R5B-rk3588; do for loc in $dev $dev-SB $dev-MU-SB; do unzip -q /v$UB_VER.zip -d /$loc; done; done;
 for dev in RP64-rk3399:rockpro64-rk3399_defconfig PBP-rk3399:pinebook-pro-rk3399_defconfig PT2-rk3566:pinetab2-rk3566_defconfig R5B-rk3588:rock5b-rk3588_defconfig
   do
   for loc in $(echo $dev | cut -d':' -f1): $(echo $dev | cut -d':' -f1)-SB:sb- $(echo $dev | cut -d':' -f1)-MU-SB:mutable-sb-
