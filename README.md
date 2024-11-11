@@ -1,4 +1,4 @@
-# U-Boot - RockChip rk3399
+# U-Boot - RockChip rk3399 & rk3566
 ## Rockchip rk3399 SPI U-Boot Assembler
 
 ### U-Boot Prebuilt Release
