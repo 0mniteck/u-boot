@@ -1,5 +1,5 @@
 # U-Boot RockChip rk3399 & rk3566
-Development Branch
+Staging Branch
 
 ### Project Goals
 * [ ] Enable TPM Support
