@@ -1,5 +1,6 @@
 #!/bin/bash
 
+chmod +x Configs/dev-config.sh
 pushd Builds/
   if [ "$1" = "yes" ]; then
     find . ! -type d -delete
