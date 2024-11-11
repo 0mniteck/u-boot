@@ -1,4 +1,4 @@
-# U-Boot RockChip rk3399 & rk3566
+# U-Boot RockChip <sup><sub>- rk3399, rk3566, & rk3588</sub></sup>
 Staging Branch
 
 ### Project Goals
