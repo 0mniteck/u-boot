@@ -39,7 +39,7 @@ ENV TEE=/tee.bin
 COPY Builds/tee.bin /
 ENV BL31=/rk3399-bl31.elf
 COPY Builds/rk3399/bl31.elf /rk3399-bl31.elf
-COPY Builds/rk3566/bl31.elf /rk3566-bl31.elf
+COPY Builds/rk3568/bl31.elf /rk3566-bl31.elf
 COPY Includes/efi.var /
 COPY Includes/logo.bmp /
 COPY Includes/rk3399-pinebook-pro-u-boot.dtsi /
