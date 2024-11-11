@@ -75,7 +75,7 @@ docker run -it --cpus=$(nproc) \
   -e BUILD_MESSAGE_TIMESTAMP="$build_message_timestamp" \
   -e ATF_VER=$ATF_VER \
   arm-trusted
-for arch in rk3399 rk3566
+for arch in rk3399 rk3568
 do
   docker cp arm-trusted:/$arch/arm-trusted-firmware-lts-v$ATF_VER/build/$arch/release/bl31/bl31.elf Builds/$arch/
   sha512sum Builds/$arch/bl31.elf && sha512sum Builds/$arch/bl31.elf >> Builds/release.sha512sum
