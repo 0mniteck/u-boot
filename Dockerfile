@@ -20,7 +20,7 @@ RUN mkdir /.cache && chmod -R 777 /.cache
 ARG ATF_VER
 ENV ATF_VER=$ATF_VER
 RUN /bin/bash -c 'wget https://github.com/ARM-software/arm-trusted-firmware/archive/refs/tags/lts-v$ATF_VER.zip && echo "2bc9ca1bd00b852dc26819d34626a1d540ee7ed378dc804a85ba6e1ac8725cbf2d3a9ce4398a5bad3285debe5d0fdb8d31d343d6f97c1f4cd351aeecf98acd74  lts-v$ATF_VER.zip" > $ATF_VER.zip.sum && if [[ $(sha512sum -c $ATF_VER.zip.sum) == "lts-v$ATF_VER.zip: OK" ]]; then echo "TF-A Checksum Matched!"; else echo "TF-A Checksum Mismatched!" & exit 1; fi;'
-RUN for atf_plat in rk3399 rk3568; do unzip -q lts-v$ATF_VER.zip /$atf_plat; done;
+RUN for atf_plat in rk3399 rk3568; do unzip -q lts-v$ATF_VER.zip -d /$atf_plat; done;
 ARG ENTRYPOINT
 COPY Buildscripts/$ENTRYPOINT-buildscript.sh /
 
