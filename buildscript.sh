@@ -6,6 +6,6 @@ git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 sudo screen -L -Logfile /tmp/builder.log bash -c './re-run.sh '$(($2))
 cp /tmp/builder.log Builds/builder.log
 ./clean.sh cleanup
-./git.sh "Build Artifact Added" $3
-ls -la Builds/*
-cd ..
+read -p "$(cat /tmp/status.build): --> sign and commit"
+./git.sh "$(cat /tmp/status.build)" "$3"
+rm -f /tmp/status.build && ls -la Builds/* && cd ..
