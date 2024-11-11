@@ -81,68 +81,44 @@ sha512sum Builds/bl31.elf && sha512sum Builds/bl31.elf >> Builds/release.sha512s
 # ./git.sh "Successful Build of TF-A v$ATF_VER"
 fi
 
-docker buildx build --load --target u-boot-1 -t u-boot \
+docker buildx build --load --target u-boot -t u-boot \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
-  --build-arg CONFIG=config \
   --build-arg ENTRYPOINT=u-boot \
   -f Dockerfile .
-mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:u-boot -o spdx-json=Builds/u-boot.manifest.spdx.json && rm -f -r "$HOME/syft" 
+mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:u-boot-sb -o spdx-json=Builds/u-boot.manifest.spdx.json && rm -f -r "$HOME/syft" 
 docker run -it --cpus=$(nproc) \
   --name u-boot \
   --user "$(id -u):$(id -g)" \
   --entrypoint /u-boot-buildscript.sh \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
   -e SOURCE_DATE=$source_date \
-  -e CONFIG="config" \
   -e UB_VER=$UB_VER \
   -e TEE="/tee.bin" \
   -e BL31="/bl31.elf" \
   u-boot
-docker cp u-boot:/RP64/u-boot-$UB_VER/u-boot-rockchip.bin Builds/RP64-rk3399/u-boot-rockchip.bin && sha512sum Builds/RP64-rk3399/u-boot-rockchip.bin >> Builds/release.sha512sum
-docker cp u-boot:/RP64/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/RP64-rk3399/u-boot-rockchip-spi.bin && sha512sum Builds/RP64-rk3399/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
-docker cp u-boot:/PBP/u-boot-$UB_VER/u-boot-rockchip.bin Builds/PBP-rk3399/u-boot-rockchip.bin && sha512sum Builds/PBP-rk3399/u-boot-rockchip.bin >> Builds/release.sha512sum
-docker cp u-boot:/PBP/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/PBP-rk3399/u-boot-rockchip-spi.bin && sha512sum Builds/PBP-rk3399/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
-
-docker buildx build --load --target u-boot-2 -t u-boot-sb \
-  --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
-  --build-arg UB_VER=$UB_VER \
-  --build-arg CONFIG=sb-config \
-  --build-arg ENTRYPOINT=u-boot \
-  -f Dockerfile .
-mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:u-boot-sb -o spdx-json=Builds/u-boot-sb.manifest.spdx.json && rm -f -r "$HOME/syft" 
-docker run -it --cpus=$(nproc) \
-  --name u-boot-sb \
-  --user "$(id -u):$(id -g)" \
-  --entrypoint /u-boot-buildscript.sh \
-  -e SOURCE_DATE_EPOCH=$source_date_epoch \
-  -e SOURCE_DATE=$source_date \
-  -e CONFIG="sb-config" \
-  -e UB_VER=$UB_VER \
-  -e TEE="/tee.bin" \
-  -e BL31="/bl31.elf" \
-  u-boot-sb
-docker cp u-boot-sb:/RP64/u-boot-$UB_VER/u-boot-rockchip.bin Builds/RP64-rk3399-SB/u-boot-rockchip.bin && sha512sum Builds/RP64-rk3399-SB/u-boot-rockchip.bin >> Builds/release.sha512sum
-docker cp u-boot-sb:/RP64/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/RP64-rk3399-SB/u-boot-rockchip-spi.bin && sha512sum Builds/RP64-rk3399-SB/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
-docker cp u-boot-sb:/PBP/u-boot-$UB_VER/u-boot-rockchip.bin Builds/PBP-rk3399-SB/u-boot-rockchip.bin && sha512sum Builds/PBP-rk3399-SB/u-boot-rockchip.bin >> Builds/release.sha512sum
-docker cp u-boot-sb:/PBP/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/PBP-rk3399-SB/u-boot-rockchip-spi.bin && sha512sum Builds/PBP-rk3399-SB/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
-docker cp u-boot-sb:/sys.info /tmp/sys.info
-
-for loc in RP64-rk3399 PBP-rk3399 RP64-rk3399-SB PBP-rk3399-SB
+for dev in RP64-rk3399 PBP-rk3399 PT2-rk3566
 do
-pushd Builds/$loc/
-dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
-parted /dev/mmcblk1 mktable gpt mkpart P1 fat32 10MB 25MB -s && sleep 3
-mkfs.fat /dev/mmcblk1p1 && mount /dev/mmcblk1p1 /mnt
-cp u-boot-rockchip.bin /mnt/u-boot-rockchip.bin
-cp u-boot-rockchip-spi.bin /mnt/u-boot-rockchip-spi.bin
-sync && umount /mnt
-dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
-sync && dd if=/dev/mmcblk1 of=sdcard.img bs=1M count=30 status=progress
-touch -d "$(date -R -d $source_date)" sdcard.img
-popd
-sha512sum Builds/$loc/sdcard.img >> Builds/release.sha512sum
+  for loc in $dev $dev-SB $dev-MU-SB
+  do
+    docker cp u-boot:/$loc/u-boot-$UB_VER/u-boot-rockchip.bin Builds/$loc/u-boot-rockchip.bin && sha512sum Builds/$loc/u-boot-rockchip.bin >> Builds/release.sha512sum
+    docker cp u-boot:/$loc/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/$loc/u-boot-rockchip-spi.bin && sha512sum Builds/$loc/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
+    pushd Builds/$loc/
+    dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
+    parted /dev/mmcblk1 mktable gpt mkpart P1 fat32 10MB 25MB -s && sleep 3
+    mkfs.fat /dev/mmcblk1p1 && mount /dev/mmcblk1p1 /mnt
+    cp u-boot-rockchip.bin /mnt/u-boot-rockchip.bin
+    cp u-boot-rockchip-spi.bin /mnt/u-boot-rockchip-spi.bin
+    sync && umount /mnt
+    dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
+    sync && dd if=/dev/mmcblk1 of=sdcard.img bs=1M count=30 status=progress
+    touch -d "$(date -R -d $source_date)" sdcard.img
+    popd
+    sha512sum Builds/$loc/sdcard.img >> Builds/release.sha512sum
+  done
 done
+docker cp u-boot:/sys.info /tmp/sys.info
+
 dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
 dd if=Builds/RP64-rk3399-SB/u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 
@@ -153,8 +129,6 @@ echo "# Source Date Epoch: $source_date_epoch" >> Builds/release.sha512sum
 echo "# Build Complete: $(date -u '+on %D at %R UTC')" >> Builds/release.sha512sum && echo "Build Complete: $(date -u '+on %D at %R UTC')"
 echo "# Base Build System: $(uname -o) $(uname -r) $(uname -p) $(lsb_release -ds) $(lsb_release -cs) $(uname -v)"  >> Builds/release.sha512sum
 echo $(cat /tmp/snap-private-tmp/snap.docker/tmp/sys.info) >> Builds/release.sha512sum && rm -f /tmp/snap-private-tmp/snap.docker/tmp/sys.info
-read -p "Successful Build of U-Boot v$UB_VER at $BUILD_MESSAGE_TIMESTAMP W/ TF-A v$ATF_VER & OP-TEE v$OPT_VER For rk3399: Sign -->"
-./git.sh "Successful Build of U-Boot v$UB_VER at $BUILD_MESSAGE_TIMESTAMP W/ TF-A v$ATF_VER & OP-TEE v$OPT_VER For rk3399"
 
 snap disable docker
 rm -f -r /var/snap/docker/*
@@ -163,4 +137,3 @@ sleep 10
 snap remove docker --purge
 snap remove docker --purge
 ufw -f enable
-read -p "Continue: -->"
