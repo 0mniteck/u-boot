@@ -1,6 +1,6 @@
-FROM 0mniteck/debian:11-9-2024 AS base
+FROM 0mniteck/debian:11-9-2024@sha256:626b200e5b82d0319d0177831f74bd67996e9ddc38968cc72a317e7ac38057cc AS base
 
-FROM 0mniteck/debian-extra:11-9-2024 AS optee
+FROM 0mniteck/debian-extra:11-9-2024@sha256:a31cee6cb1c0eab71ac3f881da954f517af562db8657642664afe8bc1b118c11 AS optee
 ARG SOURCE_DATE_EPOCH
 ENV SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH
 RUN mkdir /.cache && chmod -R 777 /.cache
