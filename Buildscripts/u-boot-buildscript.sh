@@ -2,7 +2,7 @@
 trap '[[ $pid ]] && kill $pid; exit' EXIT
 echo "SOURCE_DATE_EPOCH: $SOURCE_DATE_EPOCH"
 echo "SOURCE_DATE: $SOURCE_DATE"
-for dev in RP64-rk3399:rockpro64-rk3399_defconfig PBP-rk3399:pinebook-pro-rk3399_defconfig PT2-rk3566:pinetab2-rk3566_defconfig
+for dev in RP64-rk3399:rockpro64-rk3399_defconfig PBP-rk3399:pinebook-pro-rk3399_defconfig PT2-rk3566:pinetab2-rk3566_defconfig R5B-rk3588:rock5b-rk3588_defconfig
   do
   for loc in $(echo $dev | cut -d':' -f1): $(echo $dev | cut -d':' -f1)-SB:sb- $(echo $dev | cut -d':' -f1)-MU-SB:mutable-sb-
     do
@@ -12,7 +12,9 @@ for dev in RP64-rk3399:rockpro64-rk3399_defconfig PBP-rk3399:pinebook-pro-rk3399
       ./$(echo $loc | cut -d':' -f2)config.sh
       cp /efi.var efi.var && echo "Deployed efi.var"
       cp /logo.bmp tools/logos/denx.bmp && cp /logo.bmp drivers/video/u_boot_logo.bmp
-      cp /rk3399-pinebook-pro-u-boot.dtsi arch/arm/dts/rk3399-pinebook-pro-u-boot.dtsi && echo "Patched Device Tree bug"
+      if ["$(echo $dev | cut -d':' -f2)" = "pinebook-pro-rk3399_defconfig"]; then
+        cp /rk3399-pinebook-pro-u-boot.dtsi arch/arm/dts/rk3399-pinebook-pro-u-boot.dtsi && echo "Patched Device Tree bug"
+      fi
       sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/$(echo $dev | cut -d':' -f2)
       cat defconfig >> configs/$(echo $dev | cut -d':' -f2)
       cat configs/$(echo $dev | cut -d':' -f2)
