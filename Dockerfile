@@ -31,7 +31,7 @@ ENV FORCE_SOURCE_DATE=1;
 RUN mkdir /.cache && chmod -R 777 /.cache
 ARG UB_VER
 ENV UB_VER=$UB_VER
-RUN /bin/bash -c 'wget https://github.com/u-boot/u-boot/archive/refs/tags/v$UB_VER.zip && echo "6502c5773d0470ad380496c181b802b19d1d7ba151098b7644df2528be5311a52e4b0838746b1661a7b173ef79b1e4afa6c87091eda2bfd3bf36ccfae8a09c40  v$UB_VER.zip" > $UB_VER.zip.sum && if [[ $(sha512sum -c $UB_VER.zip.sum) == "v$UB_VER.zip: OK" ]]; then echo "U-Boot Checksum Matched!"; else echo "U-Boot Checksum Mismatched!" & exit 1; fi;'
+RUN /bin/bash -c 'wget https://github.com/u-boot/u-boot/archive/refs/tags/v$UB_VER.zip && echo "0ba126110942f1d5bb3dec3f0f17fab0fa13fce9f4e532e4387167e8e1325ee4b63a17accdbeb102dd2a6fbe70a48dd488953169919da8a4c5d052b250df464d  v$UB_VER.zip" > $UB_VER.zip.sum && if [[ $(sha512sum -c $UB_VER.zip.sum) == "v$UB_VER.zip: OK" ]]; then echo "U-Boot Checksum Matched!"; else echo "U-Boot Checksum Mismatched!" & exit 1; fi;'
 ENV TEE=/tee.bin
 COPY Builds/rk3399/tee.bin /
 ENV BL31=/rk3399-bl31.elf
