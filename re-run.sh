@@ -128,13 +128,13 @@ do
   do
     pushd Builds/$loc/
     dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
-    parted /dev/mmcblk1 mktable gpt mkpart P1 fat32 10MB 25MB -s && sleep 3
+    parted /dev/mmcblk1 mktable gpt mkpart P1 fat32 15MB 34MB -s && sleep 3
     mkfs.fat /dev/mmcblk1p1 && mount /dev/mmcblk1p1 /mnt
     cp u-boot-rockchip.bin /mnt/u-boot-rockchip.bin
     cp u-boot-rockchip-spi.bin /mnt/u-boot-rockchip-spi.bin
     sync && umount /mnt
     dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
-    sync && dd if=/dev/mmcblk1 of=sdcard.img bs=1M count=30 status=progress
+    sync && dd if=/dev/mmcblk1 of=sdcard.img bs=1M count=35 status=progress
     touch -d "$(date -R -d $source_date)" sdcard.img
     popd
     sha512sum Builds/$loc/sdcard.img >> Builds/release.sha512sum
