@@ -102,6 +102,7 @@ docker run -it --cpus=$(nproc) \
   -e TEE="/tee.bin" \
   -e BL31="/rk3399-bl31.elf" \
   u-boot
+
 for dev in RP64-rk3399 PBP-rk3399 PT2-rk3566 R5B-rk3588
 do
   for loc in $dev $dev-SB $dev-MU-SB
@@ -110,7 +111,17 @@ do
     docker cp u-boot:/$loc/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/$loc/u-boot-rockchip-spi.bin && sha512sum Builds/$loc/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
   done
 done
+docker cp u-boot:/sys.info sys.info
+
 docker stop u-boot && docker rm --volumes u-boot
+snap disable docker
+rm -f -r /var/snap/docker/*
+rm -f -r /var/snap/docker
+sleep 10
+snap remove docker --purge
+snap remove docker --purge
+ufw -f enable
+
 for dev in RP64-rk3399 PBP-rk3399 PT2-rk3566 R5B-rk3588
 do
   for loc in $dev $dev-SB $dev-MU-SB
@@ -129,25 +140,16 @@ do
     sha512sum Builds/$loc/sdcard.img >> Builds/release.sha512sum
   done
 done
-docker cp u-boot:/sys.info /tmp/sys.info
 
 dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
 dd if=Builds/RP64-rk3399-SB/u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 
-cat /tmp/builder.log | grep -n Checksum
+cat builder.log | grep -n Checksum
 
 echo "" >> Builds/release.sha512sum && echo "# 0mniteck's Current GPG Key ID: 287EE837E6ED2DD3" >> Builds/release.sha512sum && echo "" >> Builds/release.sha512sum
 echo "# Source Date Epoch: $source_date_epoch" >> Builds/release.sha512sum
 echo "# Build Complete: $(date -u '+on %D at %R UTC')" >> Builds/release.sha512sum && echo "Build Complete: $(date -u '+on %D at %R UTC')"
 echo "# Base Build System: $(uname -o) $(uname -r) $(uname -p) $(lsb_release -ds) $(lsb_release -cs) $(uname -v)"  >> Builds/release.sha512sum
-echo $(cat /tmp/snap-private-tmp/snap.docker/tmp/sys.info) >> Builds/release.sha512sum && rm -f /tmp/snap-private-tmp/snap.docker/tmp/sys.info
+echo $(cat sys.info) >> Builds/release.sha512sum && rm -f sys.info
 
-echo "Successful Build of U-Boot v$UB_VER at $BUILD_MESSAGE_TIMESTAMP W/ TF-A v$ATF_VER & OP-TEE v$OPT_VER For rk3399" > /tmp/status.build
-
-snap disable docker
-rm -f -r /var/snap/docker/*
-rm -f -r /var/snap/docker
-sleep 10
-snap remove docker --purge
-snap remove docker --purge
-ufw -f enable
+echo "Successful Build of U-Boot v$UB_VER at $BUILD_MESSAGE_TIMESTAMP W/ TF-A commit $ATF_VER & OP-TEE v$OPT_VER For rk3399" > status.build
