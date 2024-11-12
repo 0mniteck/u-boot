@@ -1,6 +1,5 @@
 #!/bin/bash
 
-chmod +x Configs/dev-config.sh
 pushd Builds/
   if [ "$1" = "yes" ]; then
     find . ! -type d -delete
@@ -30,5 +29,5 @@ pushd Builds/
     done
   fi
 popd
-rm -f /tmp/builder.log && rm -f /tmp/status.build
+rm -f builder.log && rm -f status.build
 exit
