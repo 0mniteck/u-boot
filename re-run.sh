@@ -53,6 +53,7 @@ docker run -it --cpus=$(nproc) \
   optee
 docker cp optee:/optee_os-$OPT_VER/out/arm-plat-rockchip/core/tee.bin Builds/rk3399/
 sha512sum Builds/rk3399/tee.bin && sha512sum Builds/rk3399/tee.bin > Builds/release.sha512sum
+docker stop optee && docker rm --volumes optee
 # read -p "Continue to Git Signing-->"
 # ./git.sh "Successful Build of OP-TEE v$OPT_VER"
 fi
@@ -80,6 +81,7 @@ do
   docker cp arm-trusted:/$arch/arm-trusted-firmware-$ATF_VER/build/$arch/release/bl31/bl31.elf Builds/$arch/
   sha512sum Builds/$arch/bl31.elf && sha512sum Builds/$arch/bl31.elf >> Builds/release.sha512sum
 done
+docker stop arm-trusted && docker rm --volumes arm-trusted
 # read -p "Continue to Git Signing-->"
 # ./git.sh "Successful Build of TF-A v$ATF_VER"
 fi
@@ -106,6 +108,13 @@ do
   do
     docker cp u-boot:/$loc/u-boot-$UB_VER/u-boot-rockchip.bin Builds/$loc/u-boot-rockchip.bin && sha512sum Builds/$loc/u-boot-rockchip.bin >> Builds/release.sha512sum
     docker cp u-boot:/$loc/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/$loc/u-boot-rockchip-spi.bin && sha512sum Builds/$loc/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
+  done
+done
+docker stop u-boot && docker rm --volumes u-boot
+for dev in RP64-rk3399 PBP-rk3399 PT2-rk3566 R5B-rk3588
+do
+  for loc in $dev $dev-SB $dev-MU-SB
+  do
     pushd Builds/$loc/
     dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
     parted /dev/mmcblk1 mktable gpt mkpart P1 fat32 10MB 25MB -s && sleep 3
