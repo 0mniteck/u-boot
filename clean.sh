@@ -29,5 +29,5 @@ pushd Builds/
     done
   fi
 popd
-rm -f builder.log && rm -f status.build
+rm -f builder.log && rm -f status.build && rm -f sys.info
 exit
