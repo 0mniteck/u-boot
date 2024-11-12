@@ -4,6 +4,7 @@ echo "SOURCE_DATE_EPOCH: $SOURCE_DATE_EPOCH"
 echo "BUILD_MESSAGE_TIMESTAMP: $BUILD_MESSAGE_TIMESTAMP"
 for plat in rk3399 rk3568 rk3588
 do
+  unzip -q $ATF_VER.zip -d /$plat
   echo "Entering /$plat/arm-trusted-firmware-$ATF_VER"
   pushd /$plat/arm-trusted-firmware-$ATF_VER
     make realclean && make BUILD_MESSAGE_TIMESTAMP="$(echo '"'$BUILD_MESSAGE_TIMESTAMP'"')" PLAT=$plat bl31
