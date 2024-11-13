@@ -50,9 +50,10 @@ if [ "$2" = "" ]; then
     -e SOURCE_DATE_EPOCH=$source_date_epoch \
     -e OPT_VER=$OPT_VER \
     optee
+  
   docker cp optee:/optee_os-$OPT_VER/out/arm-plat-rockchip/core/tee.bin Builds/rk3399/
   sha512sum Builds/rk3399/tee.bin && sha512sum Builds/rk3399/tee.bin > Builds/release.sha512sum
-  docker stop optee && printf " stopped" && docker rm --volumes optee && printf " removed"
+  docker stop optee && printf " stopped" && echo "" && docker rm --volumes optee && printf " removed" && echo ""
 
   docker buildx build --load --target arm-trusted --tag arm-trusted \
     --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
@@ -72,7 +73,7 @@ if [ "$2" = "" ]; then
     -e SOURCE_DATE_EPOCH=$source_date_epoch \
     -e BUILD_MESSAGE_TIMESTAMP="$build_message_timestamp" \
     -e ATF_VER=$ATF_VER \
-    -e ARCHS=$ARCHS \
+    -e ARCHS="$ARCHS" \
     arm-trusted
   
   for arch in $ARCHS
@@ -80,7 +81,7 @@ if [ "$2" = "" ]; then
     docker cp arm-trusted:/$arch/arm-trusted-firmware-$ATF_VER/build/$arch/release/bl31/bl31.elf Builds/$arch/
     sha512sum Builds/$arch/bl31.elf && sha512sum Builds/$arch/bl31.elf >> Builds/release.sha512sum
   done
-  docker stop arm-trusted && printf " stopped" && docker rm --volumes arm-trusted && printf " removed"
+  docker stop arm-trusted && printf " stopped" && echo "" && docker rm --volumes arm-trusted && printf " removed" && echo ""
 fi
 
 docker buildx build --load --target u-boot --tag u-boot \
@@ -115,7 +116,7 @@ do
 done
 docker cp u-boot:/sys.info sys.info
 
-docker stop u-boot && printf " stopped" && docker rm --volumes u-boot && printf " removed"
+docker stop u-boot && printf " stopped" && echo "" && docker rm --volumes u-boot && printf " removed" && echo ""
 snap disable docker
 rm -f -r /var/snap/docker/*
 rm -f -r /var/snap/docker
@@ -149,9 +150,8 @@ fi
 dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
 dd if=Builds/RP64-rk3399-SB/u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 
-cat builder.log | grep -n Checksum
-
-echo "" >> Builds/release.sha512sum && echo "# 0mniteck's Current GPG Key ID: 287EE837E6ED2DD3" >> Builds/release.sha512sum && echo "" >> Builds/release.sha512sum
+cat builder.log | grep -n Checksum && echo "" && echo "" >> Builds/release.sha512sum
+echo "# 0mniteck's Current GPG Key ID: 287EE837E6ED2DD3" >> Builds/release.sha512sum && echo "" >> Builds/release.sha512sum
 echo "# Source Date Epoch: $source_date_epoch" >> Builds/release.sha512sum
 echo "# Build Complete: $(date -u '+on %D at %R UTC')" >> Builds/release.sha512sum && echo "Build Complete: $(date -u '+on %D at %R UTC')"
 echo "# Base Build System: $(uname -o) $(uname -r) $(uname -p) $(lsb_release -ds) $(lsb_release -cs) $(uname -v)"  >> Builds/release.sha512sum
