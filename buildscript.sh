@@ -14,7 +14,6 @@ export UB_SUM="6502c5773d0470ad380496c181b802b19d1d7ba151098b7644df2528be5311a52
 export BUILD_LIST="RP64-rk3399:rockpro64-rk3399_defconfig PBP-rk3399:pinebook-pro-rk3399_defconfig PT2-rk3566:pinetab2-rk3566_defconfig R5B-rk3588:rock5b-rk3588_defconfig"
 export LIST="RP64-rk3399 PBP-rk3399 PT2-rk3566 R5B-rk3588"
 export ARCHS="rk3399 rk3568 rk3588"
-
 if [ "$4" = "yes" ]; then
   export BUILD_LIST="RP64-rk3399:rockpro64-rk3399_defconfig"
   export LIST="RP64-rk3399"
@@ -22,10 +21,34 @@ if [ "$4" = "yes" ]; then
 fi
 
 > vars.env
-for var in HUB BASE BASE_EXTRA OPT_VER OPT_SUM ATF_VER ATF_SUM UB_VER UB_SUM BUILD_LIST LIST ARCHS
+for env in HUB^$HUB BASE^$BASE BASE_EXTRA^$BASE_EXTRA OPT_VER^$OPT_VER OPT_SUM^$OPT_SUM ATF_VER^$ATF_VER ATF_SUM^$ATF_SUM UB_VER^$UB_VER UB_SUM^$UB_SUM
 do
-  echo "setenv $var \"\${$var}\"" >> vars.env
+  hd=$(echo $env | cut -d'^' -f1)
+  dp=$(echo $env | cut -d'^' -f2)
+  pd=$(echo "setenv $hd \"$dp\"")
+  echo $pd
 done
+
+cat "setenv BUILD_LIST \"" >> vars.env
+for env in $BUILD_LIST
+do
+  cat "$env" >> vars.env
+done
+echo "\"" >> vars.env
+
+cat "setenv LIST \"" >> vars.env
+for env in $LIST
+do
+  cat "$env" >> vars.env
+done
+echo "\"" >> vars.env
+
+cat "setenv ARCHS \"" >> vars.env
+for env in $ARCHS
+do
+  cat "$env" >> vars.env
+done
+echo "\"" >> vars.env
 
 sudo apt install -y bc dosfstools parted screen snapd && sudo snap install syft --classic
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
