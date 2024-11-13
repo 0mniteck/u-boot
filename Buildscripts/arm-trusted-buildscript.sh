@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 trap '[[ $pid ]] && kill $pid; exit' EXIT
 echo "SOURCE_DATE_EPOCH: $SOURCE_DATE_EPOCH" && echo "BUILD_MESSAGE_TIMESTAMP: $BUILD_MESSAGE_TIMESTAMP"
-ARCHS="rk3399 rk3568 rk3588"
 for plat in $ARCHS
 do
   unzip -q $ATF_VER.zip -d /$plat
