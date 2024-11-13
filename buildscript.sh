@@ -25,7 +25,7 @@ for env in HUB^$HUB BASE^$BASE BASE_EXTRA^$BASE_EXTRA OPT_VER^$OPT_VER OPT_SUM^$
 do
   env1=$(echo $env | cut -d'^' -f1)
   env2=$(echo $env | cut -d'^' -f2)
-  env3=$(echo "setenv $hd \"$dp\"")
+  env3=$(echo "setenv $env1 \"$env2\"")
   echo $env3 >> vars.env
 done
 
