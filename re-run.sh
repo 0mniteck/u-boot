@@ -153,4 +153,4 @@ echo "# Build Complete: $(date -u '+on %D at %R UTC')" >> Builds/release.sha512s
 echo "# Base Build System: $(uname -o) $(uname -r) $(uname -p) $(lsb_release -ds) $(lsb_release -cs) $(uname -v)"  >> Builds/release.sha512sum
 echo $(cat sys.info) >> Builds/release.sha512sum
 
-echo "Successful Build of U-Boot v$UB_VER at $BUILD_MESSAGE_TIMESTAMP W/ TF-A commit $ATF_VER & OP-TEE v$OPT_VER For rk3399" > status.build
+echo "Successful Build of U-Boot v$UB_VER at $BUILD_MESSAGE_TIMESTAMP W/ TF-A commit $ATF_VER & OP-TEE v$OPT_VER" > status.build
