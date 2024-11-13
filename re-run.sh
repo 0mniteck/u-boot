@@ -9,20 +9,6 @@ chown root:root /var/snap/docker
 snap install docker --revision=2936 && ufw disable
 sleep 10
 
-OPT_VER=4.4.0;
-ATF_VER=dc5d485206e168c7e86ede646e512c761bf1752e;
-UB_VER=2024.10;
-
-BUILD_LIST="RP64-rk3399:rockpro64-rk3399_defconfig PBP-rk3399:pinebook-pro-rk3399_defconfig PT2-rk3566:pinetab2-rk3566_defconfig R5B-rk3588:rock5b-rk3588_defconfig"
-LIST="RP64-rk3399 PBP-rk3399 PT2-rk3566 R5B-rk3588"
-ARCHS="rk3399 rk3568 rk3588"
-
-if [ "$2" = "yes" ]; then
-  BUILD_LIST="RP64-rk3399:rockpro64-rk3399_defconfig"
-  LIST="RP64-rk3399"
-  ARCHS="rk3399"
-fi
-
 source_date_epoch=1;
 if [ "$1" != 0 ]; then
   echo 'Using override timestamp for SOURCE_DATE_EPOCH: $(date -d @$(($1)) = $1';
