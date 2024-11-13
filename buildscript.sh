@@ -29,24 +29,24 @@ do
   echo $pd
 done
 
-cat "setenv BUILD_LIST \"" >> vars.env
+printf "setenv BUILD_LIST \"" >> vars.env
 for env in $BUILD_LIST
 do
-  cat "$env" >> vars.env
+  printf "$env" >> vars.env
 done
 echo "\"" >> vars.env
 
-cat "setenv LIST \"" >> vars.env
+printf "setenv LIST \"" >> vars.env
 for env in $LIST
 do
-  cat "$env" >> vars.env
+  printf "$env" >> vars.env
 done
 echo "\"" >> vars.env
 
-cat "setenv ARCHS \"" >> vars.env
+printf "setenv ARCHS \"" >> vars.env
 for env in $ARCHS
 do
-  cat "$env" >> vars.env
+  printf "$env" >> vars.env
 done
 echo "\"" >> vars.env
 
