@@ -8,7 +8,7 @@ if [ "$DEV_BUILD" = "yes" ]; then
 else
   $BUILD_LIST="RP64-rk3399:rockpro64-rk3399_defconfig PBP-rk3399:pinebook-pro-rk3399_defconfig PT2-rk3566:pinetab2-rk3566_defconfig R5B-rk3588:rock5b-rk3588_defconfig"
 fi
-for dev in $($BUILD_LIST)
+for dev in $BUILD_LIST
   do
   for loc in $(echo $dev | cut -d':' -f1): $(echo $dev | cut -d':' -f1)-SB:sb- $(echo $dev | cut -d':' -f1)-MU-SB:mutable-sb-
     do
