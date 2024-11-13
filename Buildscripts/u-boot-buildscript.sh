@@ -2,7 +2,13 @@
 trap '[[ $pid ]] && kill $pid; exit' EXIT
 echo "SOURCE_DATE_EPOCH: $SOURCE_DATE_EPOCH"
 echo "SOURCE_DATE: $SOURCE_DATE"
-for dev in RP64-rk3399:rockpro64-rk3399_defconfig PBP-rk3399:pinebook-pro-rk3399_defconfig PT2-rk3566:pinetab2-rk3566_defconfig R5B-rk3588:rock5b-rk3588_defconfig
+if [ "$DEV_BUILD" = "yes" ]; then
+  echo "DEV_BUILD: $DEV_BUILD"
+  $BUILD_LIST="RP64-rk3399:rockpro64-rk3399_defconfig"
+else
+  $BUILD_LIST="RP64-rk3399:rockpro64-rk3399_defconfig PBP-rk3399:pinebook-pro-rk3399_defconfig PT2-rk3566:pinetab2-rk3566_defconfig R5B-rk3588:rock5b-rk3588_defconfig"
+fi
+for dev in $($BUILD_LIST)
   do
   for loc in $(echo $dev | cut -d':' -f1): $(echo $dev | cut -d':' -f1)-SB:sb- $(echo $dev | cut -d':' -f1)-MU-SB:mutable-sb-
     do
@@ -10,10 +16,14 @@ for dev in RP64-rk3399:rockpro64-rk3399_defconfig PBP-rk3399:pinebook-pro-rk3399
     echo "Entering /$(echo $loc | cut -d':' -f1)/u-boot-$UB_VER"
     pushd /$(echo $loc | cut -d':' -f1)/u-boot-$UB_VER
       make clean
-      ./../../common-config.sh
-      if [ "$(echo $dev | cut -d':' -f2)" != "" ]; then
-        ./../../efi-config.sh
-        ./../../$(echo $loc | cut -d':' -f2)config.sh
+      if [ "$DEV_BUILD" = "yes" ]; then
+        ./../../dev-config.sh
+      else
+        ./../../common-config.sh
+        if [ "$(echo $dev | cut -d':' -f2)" != "" ]; then
+          ./../../efi-config.sh
+          ./../../$(echo $loc | cut -d':' -f2)config.sh
+        fi
       fi
       cp /efi.var efi.var && echo "Deployed efi.var"
       cp /logo.bmp tools/logos/denx.bmp && cp /logo.bmp drivers/video/u_boot_logo.bmp && echo "Deployed Logo"
