@@ -101,7 +101,7 @@ docker run -it --cpus=$(nproc) \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
   -e SOURCE_DATE=$source_date \
   -e UB_VER=$UB_VER \
-  -e BUILD_LIST=$BUILD_LIST \
+  -e BUILD_LIST="$BUILD_LIST" \
   -e DEV_BUILD=$2 \
   -e TEE="/tee.bin" \
   u-boot
