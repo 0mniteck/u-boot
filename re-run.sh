@@ -13,9 +13,9 @@ OPT_VER=4.4.0;
 ATF_VER=dc5d485206e168c7e86ede646e512c761bf1752e;
 UB_VER=2024.10;
 
-$LIST="RP64-rk3399 PBP-rk3399 PT2-rk3566 R5B-rk3588"
+LIST="RP64-rk3399 PBP-rk3399 PT2-rk3566 R5B-rk3588"
 if [ "$2" = "yes" ]; then
-  $LIST="RP64-rk3399"
+  LIST="RP64-rk3399"
 fi
 
 source_date_epoch=1;
