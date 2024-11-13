@@ -2,11 +2,11 @@
 
 chmod +x Configs/*
 pushd Builds/
-  export $LIST="RP64-rk3399 PBP-rk3399 PT2-rk3566 R5B-rk3588"
-  export $ARCHS="rk3399 rk3568 rk3588"
+  LIST="RP64-rk3399 PBP-rk3399 PT2-rk3566 R5B-rk3588"
+  ARCHS="rk3399 rk3568 rk3588"
   if [ "$2" = "yes" ]; then
-    export $LIST="RP64-rk3399"
-    export $ARCHS="rk3399"
+    LIST="RP64-rk3399"
+    ARCHS="rk3399"
   fi
   if [ "$1" = "yes" ]; then
     find . ! -type d -delete
