@@ -6,6 +6,7 @@ echo "CONFIG_LOG=y" >> defconfig
 echo "CONFIG_LOG_MAX_LEVEL=6" >> defconfig
 echo "CONFIG_LOG_CONSOLE=y" >> defconfig
 echo "CONFIG_LOGLEVEL=6" >> defconfig
+# echo "CONFIG_BOOTDELAY=-2" >> defconfig
 # echo "CONFIG_ARMV8_SEC_FIRMWARE_SUPPORT=y" >> defconfig
 # echo "CONFIG_ARM64=y" >> defconfig
 # echo "CONFIG_FIT=y" >> defconfig
