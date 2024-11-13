@@ -10,7 +10,11 @@ for dev in RP64-rk3399:rockpro64-rk3399_defconfig PBP-rk3399:pinebook-pro-rk3399
     echo "Entering /$(echo $loc | cut -d':' -f1)/u-boot-$UB_VER"
     pushd /$(echo $loc | cut -d':' -f1)/u-boot-$UB_VER
       make clean
-      ./../../$(echo $loc | cut -d':' -f2)config.sh
+      ./../../common-config.sh
+      if [ "$(echo $dev | cut -d':' -f2)" != "" ]; then
+        ./../../efi-config.sh
+        ./../../$(echo $loc | cut -d':' -f2)config.sh
+      fi
       cp /efi.var efi.var && echo "Deployed efi.var"
       cp /logo.bmp tools/logos/denx.bmp && cp /logo.bmp drivers/video/u_boot_logo.bmp && echo "Deployed Logo"
       if [ "$(echo $dev | cut -d':' -f2)" = "pinebook-pro-rk3399_defconfig" ]; then
@@ -35,4 +39,4 @@ for dev in RP64-rk3399:rockpro64-rk3399_defconfig PBP-rk3399:pinebook-pro-rk3399
     popd
   done
 done
-echo "# Container Build System: $(uname -o) $(uname -r) $(uname -m) $(lsb_release -ds) $(uname -v)" > /sys.info
+echo "\# Container Build System: $(uname -o) $(uname -r) $(uname -m) $(lsb_release -ds) $(uname -v)" > /sys.info
