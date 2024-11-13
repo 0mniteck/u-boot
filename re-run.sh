@@ -11,7 +11,7 @@ sleep 10
 
 OPT_VER=4.4.0;
 ATF_VER=dc5d485206e168c7e86ede646e512c761bf1752e;
-UB_VER=2025.01-rc2;
+UB_VER=2024.10;
 
 source_date_epoch=1;
 if [ "$1" != 0 ];
