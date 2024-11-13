@@ -12,6 +12,11 @@ Staging Branch
     * [ ] Test 3072 bit RSA
     * [ ] Test ECDSA keys
       * [ ] Create hybrid scheme fallback and use dbx revocations
+* [ ] Setup Secure Bootflow
+  * [ ] U-Boot Secure boot with verified FIT -> TF-A -> Default: run bootcmd -> UEFI Secure Boot
+    * [ ] Change default run to efiload
+    * [ ] Enable stack protection
+    * [ ] Block dropping down to shell
 * [x] Generate SBOM at buildtime
 * [x] Fine tune for reproducibility
   * [x] Convert to docker build
