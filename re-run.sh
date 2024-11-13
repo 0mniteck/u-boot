@@ -35,55 +35,57 @@ echo "SOURCE_DATE_EPOCH: $source_date_epoch"
 echo "BUILD_MESSAGE_TIMESTAMP: $build_message_timestamp"
 docker buildx create --name U-Boot-Builder --bootstrap --use
 
-if [ -f Builds/tee.bin ]; then
-  echo "Using Prebuilt OP-TEE"
-else
-docker buildx build --load --target optee --tag optee \
-  --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
-  --build-arg OPT_VER=$OPT_VER \
-  --build-arg ENTRYPOINT=optee \
-  -f Dockerfile .
-mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:optee -o spdx-json=Builds/optee-os.manifest.spdx.json && rm -f -r "$HOME/syft" 
-docker run -it --cpus=$(nproc) \
-  --name optee \
-  --user "$(id -u):$(id -g)" \
-  --entrypoint /optee-buildscript.sh \
-  -e SOURCE_DATE_EPOCH=$source_date_epoch \
-  -e OPT_VER=$OPT_VER \
-  optee
-docker cp optee:/optee_os-$OPT_VER/out/arm-plat-rockchip/core/tee.bin Builds/rk3399/
-sha512sum Builds/rk3399/tee.bin && sha512sum Builds/rk3399/tee.bin > Builds/release.sha512sum
-docker stop optee && docker rm --volumes optee
-# read -p "Continue to Git Signing-->"
-# ./git.sh "Successful Build of OP-TEE v$OPT_VER"
-fi
-
-if [ -f Builds/bl31.elf ]; then
-  echo "Using Prebuilt Arm Trusted Firmware"
-else
-docker buildx build --load --target arm-trusted --tag arm-trusted \
-  --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
-  --build-arg BUILD_MESSAGE_TIMESTAMP="$build_message_timestamp" \
-  --build-arg ATF_VER=$ATF_VER \
-  --build-arg ENTRYPOINT=arm-trusted \
-  -f Dockerfile .
-mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:arm-trusted -o spdx-json=Builds/arm-trusted-firmware.manifest.spdx.json && rm -f -r "$HOME/syft" 
-docker run -it --cpus=$(nproc) \
-  --name arm-trusted \
-  --user "$(id -u):$(id -g)" \
-  --entrypoint /arm-trusted-buildscript.sh \
-  -e SOURCE_DATE_EPOCH=$source_date_epoch \
-  -e BUILD_MESSAGE_TIMESTAMP="$build_message_timestamp" \
-  -e ATF_VER=$ATF_VER \
-  arm-trusted
-for arch in rk3399 rk3568 rk3588
-do
-  docker cp arm-trusted:/$arch/arm-trusted-firmware-$ATF_VER/build/$arch/release/bl31/bl31.elf Builds/$arch/
-  sha512sum Builds/$arch/bl31.elf && sha512sum Builds/$arch/bl31.elf >> Builds/release.sha512sum
-done
-docker stop arm-trusted && docker rm --volumes arm-trusted
-# read -p "Continue to Git Signing-->"
-# ./git.sh "Successful Build of TF-A v$ATF_VER"
+if [ "$DEV_BUILD" = "" ]; then
+  if [ -f Builds/tee.bin ]; then
+    echo "Using Prebuilt OP-TEE"
+  else
+  docker buildx build --load --target optee --tag optee \
+    --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
+    --build-arg OPT_VER=$OPT_VER \
+    --build-arg ENTRYPOINT=optee \
+    -f Dockerfile .
+  mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:optee -o spdx-json=Builds/optee-os.manifest.spdx.json && rm -f -r "$HOME/syft" 
+  docker run -it --cpus=$(nproc) \
+    --name optee \
+    --user "$(id -u):$(id -g)" \
+    --entrypoint /optee-buildscript.sh \
+    -e SOURCE_DATE_EPOCH=$source_date_epoch \
+    -e OPT_VER=$OPT_VER \
+    optee
+  docker cp optee:/optee_os-$OPT_VER/out/arm-plat-rockchip/core/tee.bin Builds/rk3399/
+  sha512sum Builds/rk3399/tee.bin && sha512sum Builds/rk3399/tee.bin > Builds/release.sha512sum
+  docker stop optee && docker rm --volumes optee
+  # read -p "Continue to Git Signing-->"
+  # ./git.sh "Successful Build of OP-TEE v$OPT_VER"
+  fi
+  
+  if [ -f Builds/bl31.elf ]; then
+    echo "Using Prebuilt Arm Trusted Firmware"
+  else
+  docker buildx build --load --target arm-trusted --tag arm-trusted \
+    --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
+    --build-arg BUILD_MESSAGE_TIMESTAMP="$build_message_timestamp" \
+    --build-arg ATF_VER=$ATF_VER \
+    --build-arg ENTRYPOINT=arm-trusted \
+    -f Dockerfile .
+  mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:arm-trusted -o spdx-json=Builds/arm-trusted-firmware.manifest.spdx.json && rm -f -r "$HOME/syft" 
+  docker run -it --cpus=$(nproc) \
+    --name arm-trusted \
+    --user "$(id -u):$(id -g)" \
+    --entrypoint /arm-trusted-buildscript.sh \
+    -e SOURCE_DATE_EPOCH=$source_date_epoch \
+    -e BUILD_MESSAGE_TIMESTAMP="$build_message_timestamp" \
+    -e ATF_VER=$ATF_VER \
+    arm-trusted
+  for arch in rk3399 rk3568 rk3588
+  do
+    docker cp arm-trusted:/$arch/arm-trusted-firmware-$ATF_VER/build/$arch/release/bl31/bl31.elf Builds/$arch/
+    sha512sum Builds/$arch/bl31.elf && sha512sum Builds/$arch/bl31.elf >> Builds/release.sha512sum
+  done
+  docker stop arm-trusted && docker rm --volumes arm-trusted
+  # read -p "Continue to Git Signing-->"
+  # ./git.sh "Successful Build of TF-A v$ATF_VER"
+  fi
 fi
 
 docker buildx build --load --target u-boot --tag u-boot \
@@ -104,7 +106,13 @@ docker run -it --cpus=$(nproc) \
   -e BL31="/rk3399-bl31.elf" \
   u-boot
 
-for dev in RP64-rk3399 PBP-rk3399 PT2-rk3566 R5B-rk3588
+if [ "$DEV_BUILD" = "" ]; then
+  $LIST="RP64-rk3399 PBP-rk3399 PT2-rk3566 R5B-rk3588"
+else
+  $LIST="RP64-rk3399"
+fi
+
+for dev in $LIST
 do
   for loc in $dev $dev-SB $dev-MU-SB
   do
@@ -123,27 +131,29 @@ snap remove docker --purge
 snap remove docker --purge
 ufw -f enable
 
-for dev in RP64-rk3399 PBP-rk3399 PT2-rk3566 R5B-rk3588
-do
-  for loc in $dev $dev-SB $dev-MU-SB
+if [ "$DEV_BUILD" = "" ]; then
+  for dev in $LIST
   do
-    pushd Builds/$loc/
-    dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
-    parted /dev/mmcblk1 mktable gpt mkpart P1 fat32 15MB 34MB -s && sleep 3
-    mkfs.fat /dev/mmcblk1p1 && mount /dev/mmcblk1p1 /mnt
-    cp u-boot-rockchip.bin /mnt/u-boot-rockchip.bin
-    cp u-boot-rockchip-spi.bin /mnt/u-boot-rockchip-spi.bin
-    sync && umount /mnt
-    dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
-    sync && dd if=/dev/mmcblk1 of=sdcard.img bs=1M count=35 status=progress
-    touch -d "$(date -R -d $source_date)" sdcard.img
-    popd
-    sha512sum Builds/$loc/sdcard.img >> Builds/release.sha512sum
+    for loc in $dev $dev-SB $dev-MU-SB
+    do
+      pushd Builds/$loc/
+      dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
+      parted /dev/mmcblk1 mktable gpt mkpart P1 fat32 15MB 34MB -s && sleep 3
+      mkfs.fat /dev/mmcblk1p1 && mount /dev/mmcblk1p1 /mnt
+      cp u-boot-rockchip.bin /mnt/u-boot-rockchip.bin
+      cp u-boot-rockchip-spi.bin /mnt/u-boot-rockchip-spi.bin
+      sync && umount /mnt
+      dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
+      sync && dd if=/dev/mmcblk1 of=sdcard.img bs=1M count=35 status=progress
+      touch -d "$(date -R -d $source_date)" sdcard.img
+      popd
+      sha512sum Builds/$loc/sdcard.img >> Builds/release.sha512sum
+    done
   done
-done
-
-dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
-dd if=Builds/RP64-rk3399-SB/u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
+else
+  dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
+  dd if=Builds/RP64-rk3399-SB/u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
+fi
 
 cat builder.log | grep -n Checksum
 
