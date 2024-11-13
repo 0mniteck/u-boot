@@ -8,3 +8,4 @@ Status:
     * [ ] Unhandled Exception in EL3
 * [ ] Test Optee MM Communicate
 * [ ] Add support for ARM FFA MM
+* [ ] Test vTPM
