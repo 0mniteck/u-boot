@@ -6,6 +6,6 @@ sudo screen -L -Logfile builder.log bash -c './re-run.sh '$(($2))
 mv builder.log Builds/builder.log
 status="$(cat status.build)"
 ./clean.sh cleanup
-read -p "$status: --> sign, commit, and push"
+read -p "$status: --> sign/commit/push"
 ./git.sh "$status" "$3"
 ls -la Builds/* && cd ..
