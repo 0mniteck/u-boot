@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Starting Build $(date -u '+on %D at %R UTC')"
+echo "# Starting Build: $(date -u '+on %D at %R UTC')" >> Builds/release.sha512sum && echo "" >> Builds/release.sha512sum && echo "Starting Build: $(date -u '+on %D at %R UTC')"
 rm -f -r /var/snap/docker/*
 rm -f -r /var/snap/docker
 snap remove docker --purge
@@ -12,6 +12,11 @@ sleep 10
 OPT_VER=4.4.0;
 ATF_VER=dc5d485206e168c7e86ede646e512c761bf1752e;
 UB_VER=2024.10;
+
+$LIST="RP64-rk3399 PBP-rk3399 PT2-rk3566 R5B-rk3588"
+if [ "$2" = "yes" ]; then
+  $LIST="RP64-rk3399"
+fi
 
 source_date_epoch=1;
 if [ "$1" != 0 ]; then
@@ -35,7 +40,7 @@ echo "SOURCE_DATE_EPOCH: $source_date_epoch"
 echo "BUILD_MESSAGE_TIMESTAMP: $build_message_timestamp"
 docker buildx create --name U-Boot-Builder --bootstrap --use
 
-if [ "$DEV_BUILD" = "" ]; then
+if [ "$2" = "" ]; then
   if [ -f Builds/tee.bin ]; then
     echo "Using Prebuilt OP-TEE"
   else
@@ -106,12 +111,6 @@ docker run -it --cpus=$(nproc) \
   -e BL31="/rk3399-bl31.elf" \
   u-boot
 
-if [ "$DEV_BUILD" = "" ]; then
-  $LIST="RP64-rk3399 PBP-rk3399 PT2-rk3566 R5B-rk3588"
-else
-  $LIST="RP64-rk3399"
-fi
-
 for dev in $LIST
 do
   for loc in $dev $dev-SB $dev-MU-SB
@@ -131,7 +130,7 @@ snap remove docker --purge
 snap remove docker --purge
 ufw -f enable
 
-if [ "$DEV_BUILD" = "" ]; then
+if [ "$2" = "" ]; then
   for dev in $LIST
   do
     for loc in $dev $dev-SB $dev-MU-SB
