@@ -23,10 +23,10 @@ fi
 > vars.env
 for env in HUB^$HUB BASE^$BASE BASE_EXTRA^$BASE_EXTRA OPT_VER^$OPT_VER OPT_SUM^$OPT_SUM ATF_VER^$ATF_VER ATF_SUM^$ATF_SUM UB_VER^$UB_VER UB_SUM^$UB_SUM
 do
-  hd=$(echo $env | cut -d'^' -f1)
-  dp=$(echo $env | cut -d'^' -f2)
-  pd=$(echo "setenv $hd \"$dp\"")
-  echo $pd
+  env1=$(echo $env | cut -d'^' -f1)
+  env2=$(echo $env | cut -d'^' -f2)
+  env3=$(echo "setenv $hd \"$dp\"")
+  echo $env3 >> vars.env
 done
 
 printf "setenv BUILD_LIST \"" >> vars.env
