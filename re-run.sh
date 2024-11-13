@@ -35,6 +35,9 @@ if [ "$2" = "" ]; then
   docker buildx build --load --target optee --tag optee \
     --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
     --build-arg OPT_VER=$OPT_VER \
+    --build-arg HUB=$HUB \
+    --build-arg BASE=$BASE \
+    --build-arg BASE_EXTRA=$BASE_EXTRA \
     --build-arg ENTRYPOINT=optee \
     -f Dockerfile .
   mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:optee -o spdx-json=Builds/optee-os.manifest.spdx.json && rm -f -r "$HOME/syft" 
@@ -53,6 +56,9 @@ if [ "$2" = "" ]; then
     --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
     --build-arg BUILD_MESSAGE_TIMESTAMP="$build_message_timestamp" \
     --build-arg ATF_VER=$ATF_VER \
+    --build-arg HUB=$HUB \
+    --build-arg BASE=$BASE \
+    --build-arg BASE_EXTRA=$BASE_EXTRA \
     --build-arg ENTRYPOINT=arm-trusted \
     -f Dockerfile .
   mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:arm-trusted -o spdx-json=Builds/arm-trusted-firmware.manifest.spdx.json && rm -f -r "$HOME/syft" 
@@ -76,6 +82,9 @@ fi
 docker buildx build --load --target u-boot --tag u-boot \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
+  --build-arg HUB=$HUB \
+  --build-arg BASE=$BASE \
+  --build-arg BASE_EXTRA=$BASE_EXTRA \
   --build-arg ENTRYPOINT=u-boot \
   -f Dockerfile .
 mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:u-boot -o spdx-json=Builds/u-boot.manifest.spdx.json && rm -f -r "$HOME/syft" 
