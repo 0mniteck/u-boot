@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo 'CONFIG_SYS_PROMPT="0MNITECK:~$ "' >> defconfig
+echo 'CONFIG_LOCALVERSION=" 0MNITECK"' >> defconfig
 echo "CONFIG_LOG=y" >> defconfig
 echo "CONFIG_LOG_MAX_LEVEL=6" >> defconfig
 echo "CONFIG_LOG_CONSOLE=y" >> defconfig
@@ -78,9 +80,6 @@ echo "CONFIG_CMD_HASH=y" >> defconfig
 ## echo "CONFIG_CMD_BOOTMENU=y" >> defconfig
 ## echo "CONFIG_CMD_BOOTEFI_BOOTMGR=y" >> defconfig
 ## echo "CONFIG_CMD_EFIDEBUG=y" >> defconfig
-echo 'CONFIG_SYS_PROMPT="0MNITECK:~$ "' >> defconfig
-echo 'CONFIG_LOCALVERSION=" 0MNITECK"' >> defconfig
-
 # echo 'CONFIG_EFI_SCROLL_ON_CLEAR_SCREEN=y' >> defconfig
 #echo 'CONFIG_DEVICE_TREE_INCLUDES="rockchip/rk3399-rockpro64-tpm.dtso"' >> defconfig
 echo "CONFIG_OF_CONTROL=y" >> defconfig
