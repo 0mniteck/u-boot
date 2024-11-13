@@ -13,10 +13,14 @@ OPT_VER=4.4.0;
 ATF_VER=dc5d485206e168c7e86ede646e512c761bf1752e;
 UB_VER=2024.10;
 
+BUILD_LIST="RP64-rk3399:rockpro64-rk3399_defconfig PBP-rk3399:pinebook-pro-rk3399_defconfig PT2-rk3566:pinetab2-rk3566_defconfig R5B-rk3588:rock5b-rk3588_defconfig"
 LIST="RP64-rk3399 PBP-rk3399 PT2-rk3566 R5B-rk3588"
 ARCHS="rk3399 rk3568 rk3588"
+
 if [ "$2" = "yes" ]; then
+  BUILD_LIST="RP64-rk3399:rockpro64-rk3399_defconfig"
   LIST="RP64-rk3399"
+  ARCHS="rk3399"
 fi
 
 source_date_epoch=1;
@@ -73,6 +77,7 @@ if [ "$2" = "" ]; then
     -e SOURCE_DATE_EPOCH=$source_date_epoch \
     -e BUILD_MESSAGE_TIMESTAMP="$build_message_timestamp" \
     -e ATF_VER=$ATF_VER \
+    -e ARCHS=$ARCHS \
     arm-trusted
   for arch in $ARCHS
   do
@@ -95,6 +100,7 @@ docker run -it --cpus=$(nproc) \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
   -e SOURCE_DATE=$source_date \
   -e UB_VER=$UB_VER \
+  -e BUILD_LIST=$BUILD_LIST \
   -e DEV_BUILD=$2 \
   -e TEE="/tee.bin" \
   -e BL31="/rk3399-bl31.elf" \
