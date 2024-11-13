@@ -35,6 +35,7 @@ if [ "$2" = "" ]; then
   docker buildx build --load --target optee --tag optee \
     --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
     --build-arg OPT_VER=$OPT_VER \
+    --build-arg OPT_SUM=$OPT_SUM \
     --build-arg HUB=$HUB \
     --build-arg BASE=$BASE \
     --build-arg BASE_EXTRA=$BASE_EXTRA \
@@ -56,6 +57,7 @@ if [ "$2" = "" ]; then
     --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
     --build-arg BUILD_MESSAGE_TIMESTAMP="$build_message_timestamp" \
     --build-arg ATF_VER=$ATF_VER \
+    --build-arg ATF_SUM=$ATF_SUM \
     --build-arg HUB=$HUB \
     --build-arg BASE=$BASE \
     --build-arg BASE_EXTRA=$BASE_EXTRA \
@@ -82,6 +84,7 @@ fi
 docker buildx build --load --target u-boot --tag u-boot \
   --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
   --build-arg UB_VER=$UB_VER \
+  --build-arg UB_SUM=$UB_SUM \
   --build-arg HUB=$HUB \
   --build-arg BASE=$BASE \
   --build-arg BASE_EXTRA=$BASE_EXTRA \
