@@ -150,10 +150,10 @@ if [ "$DEV_BUILD" = "" ]; then
       sha512sum Builds/$loc/sdcard.img >> Builds/release.sha512sum
     done
   done
-else
-  dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
-  dd if=Builds/RP64-rk3399-SB/u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 fi
+
+dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
+dd if=Builds/RP64-rk3399-SB/u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 
 cat builder.log | grep -n Checksum
 
