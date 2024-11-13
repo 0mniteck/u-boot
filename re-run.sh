@@ -51,7 +51,7 @@ if [ "$2" = "" ]; then
     optee
   docker cp optee:/optee_os-$OPT_VER/out/arm-plat-rockchip/core/tee.bin Builds/rk3399/
   sha512sum Builds/rk3399/tee.bin && sha512sum Builds/rk3399/tee.bin > Builds/release.sha512sum
-  docker stop optee && echo " stopped" && docker rm --volumes optee && echo " removed"
+  docker stop optee && printf " stopped" && docker rm --volumes optee && printf " removed"
 
   docker buildx build --load --target arm-trusted --tag arm-trusted \
     --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
@@ -73,12 +73,13 @@ if [ "$2" = "" ]; then
     -e ATF_VER=$ATF_VER \
     -e ARCHS=$ARCHS \
     arm-trusted
+  
   for arch in $ARCHS
   do
     docker cp arm-trusted:/$arch/arm-trusted-firmware-$ATF_VER/build/$arch/release/bl31/bl31.elf Builds/$arch/
     sha512sum Builds/$arch/bl31.elf && sha512sum Builds/$arch/bl31.elf >> Builds/release.sha512sum
   done
-  docker stop arm-trusted && echo " stopped" && docker rm --volumes arm-trusted && echo " removed"
+  docker stop arm-trusted && printf " stopped" && docker rm --volumes arm-trusted && printf " removed"
 fi
 
 docker buildx build --load --target u-boot --tag u-boot \
@@ -114,7 +115,7 @@ do
 done
 docker cp u-boot:/sys.info sys.info
 
-docker stop u-boot && echo " stopped" && docker rm --volumes u-boot && echo " removed"
+docker stop u-boot && printf " stopped" && docker rm --volumes u-boot && printf " removed"
 snap disable docker
 rm -f -r /var/snap/docker/*
 rm -f -r /var/snap/docker
