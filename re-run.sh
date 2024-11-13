@@ -103,7 +103,6 @@ docker run -it --cpus=$(nproc) \
   -e BUILD_LIST=$BUILD_LIST \
   -e DEV_BUILD=$2 \
   -e TEE="/tee.bin" \
-  -e BL31="/rk3399-bl31.elf" \
   u-boot
 
 for dev in $LIST
