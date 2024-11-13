@@ -16,6 +16,11 @@ for dev in RP64-rk3399:rockpro64-rk3399_defconfig PBP-rk3399:pinebook-pro-rk3399
       if [ "$(echo $dev | cut -d':' -f2)" = "pinebook-pro-rk3399_defconfig" ]; then
         cp /rk3399-pinebook-pro-u-boot.dtsi arch/arm/dts/rk3399-pinebook-pro-u-boot.dtsi && echo "Patched Device Tree bug"
       fi
+      if [ "$(echo $dev | cut -d':' -f2)" = "pinetab2-rk3566_defconfig" ] || \
+         [ "$(echo $dev | cut -d':' -f2)" = "rock5b-rk3588_defconfig" ]; then
+        ./../../tpl-config.sh
+        sed -i '112,117d' arch/arm/mach-rockchip/sdram.c
+      fi
       sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/$(echo $dev | cut -d':' -f2)
       cat defconfig >> configs/$(echo $dev | cut -d':' -f2)
       cat configs/$(echo $dev | cut -d':' -f2)
