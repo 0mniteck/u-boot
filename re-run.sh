@@ -1,13 +1,12 @@
 #!/bin/bash
 
 echo "# Starting Build: $(date -u '+on %D at %R UTC')" >> Builds/release.sha512sum && echo "" >> Builds/release.sha512sum && echo "Starting Build: $(date -u '+on %D at %R UTC')"
-rm -f -r /var/snap/docker/*
-rm -f -r /var/snap/docker
+rm -f -r /var/snap/docker/* && rm -f -r /var/snap/docker
 snap remove docker --purge
 mkdir /var/snap/docker
 chown root:root /var/snap/docker
 snap install docker --revision=2936 && ufw disable
-sleep 10
+sleep 5
 
 source_date_epoch=1;
 if [ "$1" != 0 ]; then
@@ -53,7 +52,7 @@ if [ "$2" = "" ]; then
   
   docker cp optee:/optee_os-$OPT_VER/out/arm-plat-rockchip/core/tee.bin Builds/rk3399/
   sha512sum Builds/rk3399/tee.bin && sha512sum Builds/rk3399/tee.bin > Builds/release.sha512sum
-  docker stop optee && printf " stopped" && echo "" && docker rm --volumes optee && printf " removed" && echo ""
+  docker stop optee > /dev/null && echo "optee stopped" && docker rm --volumes optee > /dev/null && echo "optee removed"
 
   docker buildx build --load --target arm-trusted --tag arm-trusted \
     --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
@@ -81,7 +80,7 @@ if [ "$2" = "" ]; then
     docker cp arm-trusted:/$arch/arm-trusted-firmware-$ATF_VER/build/$arch/release/bl31/bl31.elf Builds/$arch/
     sha512sum Builds/$arch/bl31.elf && sha512sum Builds/$arch/bl31.elf >> Builds/release.sha512sum
   done
-  docker stop arm-trusted && printf " stopped" && echo "" && docker rm --volumes arm-trusted && printf " removed" && echo ""
+  docker stop arm-trusted > /dev/null && echo "arm-trusted stopped" && docker rm --volumes arm-trusted > /dev/null && echo "arm-trusted removed"
 fi
 
 docker buildx build --load --target u-boot --tag u-boot \
@@ -116,11 +115,11 @@ do
 done
 docker cp u-boot:/sys.info sys.info
 
-docker stop u-boot && printf " stopped" && echo "" && docker rm --volumes u-boot && printf " removed" && echo ""
+docker stop u-boot > /dev/null && echo "u-boot stopped"
+docker rm --volumes u-boot > /dev/null && echo "u-boot removed"
 snap disable docker
-rm -f -r /var/snap/docker/*
-rm -f -r /var/snap/docker
-sleep 10
+rm -f -r /var/snap/docker/* && rm -f -r /var/snap/docker
+sleep 5
 snap remove docker --purge
 snap remove docker --purge
 ufw -f enable
