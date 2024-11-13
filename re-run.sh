@@ -14,6 +14,7 @@ ATF_VER=dc5d485206e168c7e86ede646e512c761bf1752e;
 UB_VER=2024.10;
 
 LIST="RP64-rk3399 PBP-rk3399 PT2-rk3566 R5B-rk3588"
+ARCHS="rk3399 rk3568 rk3588"
 if [ "$2" = "yes" ]; then
   LIST="RP64-rk3399"
 fi
@@ -41,9 +42,6 @@ echo "BUILD_MESSAGE_TIMESTAMP: $build_message_timestamp"
 docker buildx create --name U-Boot-Builder --bootstrap --use
 
 if [ "$2" = "" ]; then
-  if [ -f Builds/tee.bin ]; then
-    echo "Using Prebuilt OP-TEE"
-  else
   docker buildx build --load --target optee --tag optee \
     --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
     --build-arg OPT_VER=$OPT_VER \
@@ -59,14 +57,8 @@ if [ "$2" = "" ]; then
     optee
   docker cp optee:/optee_os-$OPT_VER/out/arm-plat-rockchip/core/tee.bin Builds/rk3399/
   sha512sum Builds/rk3399/tee.bin && sha512sum Builds/rk3399/tee.bin > Builds/release.sha512sum
-  docker stop optee && docker rm --volumes optee
-  # read -p "Continue to Git Signing-->"
-  # ./git.sh "Successful Build of OP-TEE v$OPT_VER"
-  fi
-  
-  if [ -f Builds/bl31.elf ]; then
-    echo "Using Prebuilt Arm Trusted Firmware"
-  else
+  docker stop optee && echo " stopped" && docker rm --volumes optee && echo " removed"
+
   docker buildx build --load --target arm-trusted --tag arm-trusted \
     --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
     --build-arg BUILD_MESSAGE_TIMESTAMP="$build_message_timestamp" \
@@ -82,15 +74,12 @@ if [ "$2" = "" ]; then
     -e BUILD_MESSAGE_TIMESTAMP="$build_message_timestamp" \
     -e ATF_VER=$ATF_VER \
     arm-trusted
-  for arch in rk3399 rk3568 rk3588
+  for arch in $ARCHS
   do
     docker cp arm-trusted:/$arch/arm-trusted-firmware-$ATF_VER/build/$arch/release/bl31/bl31.elf Builds/$arch/
     sha512sum Builds/$arch/bl31.elf && sha512sum Builds/$arch/bl31.elf >> Builds/release.sha512sum
   done
-  docker stop arm-trusted && docker rm --volumes arm-trusted
-  # read -p "Continue to Git Signing-->"
-  # ./git.sh "Successful Build of TF-A v$ATF_VER"
-  fi
+  docker stop arm-trusted && echo " stopped" && docker rm --volumes arm-trusted && echo " removed"
 fi
 
 docker buildx build --load --target u-boot --tag u-boot \
@@ -121,7 +110,7 @@ do
 done
 docker cp u-boot:/sys.info sys.info
 
-docker stop u-boot && docker rm --volumes u-boot
+docker stop u-boot && echo " stopped" && docker rm --volumes u-boot && echo " removed"
 snap disable docker
 rm -f -r /var/snap/docker/*
 rm -f -r /var/snap/docker
@@ -141,10 +130,11 @@ if [ "$2" = "" ]; then
       mkfs.fat /dev/mmcblk1p1 && mount /dev/mmcblk1p1 /mnt
       cp u-boot-rockchip.bin /mnt/u-boot-rockchip.bin
       cp u-boot-rockchip-spi.bin /mnt/u-boot-rockchip-spi.bin
-      sync && umount /mnt
-      dd if=u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
-      sync && dd if=/dev/mmcblk1 of=sdcard.img bs=1M count=35 status=progress
-      touch -d "$(date -R -d $source_date)" sdcard.img
+      touch -c -d "$(date -R -d $source_date)" /mnt/*
+      touch -c -d "$(date -R -d $source_date)" /mnt/
+      dd if=/mnt/u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
+      sync && umount /mnt && dd if=/dev/mmcblk1 of=sdcard.img bs=1M count=35 status=progress
+      touch -c -d "$(date -R -d $source_date)" sdcard.img
       popd
       sha512sum Builds/$loc/sdcard.img >> Builds/release.sha512sum
     done
