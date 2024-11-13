@@ -42,6 +42,7 @@ do
   printf "$lis2 " >> vars.env
 done
 echo "$lis1 \"" >> vars.env
+sed -i '10d' vars.env
 
 sudo apt install -y bc dosfstools parted screen snapd && sudo snap install syft --classic
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
