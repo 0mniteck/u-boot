@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo 'CONFIG_SYS_PROMPT="0MNITECK:~$ "' >> defconfig
+echo 'CONFIG_LOCALVERSION=" 0MNITECK"' >> defconfig
 echo "CONFIG_FIT_SIGNATURE=y" >> defconfig
 echo "CONFIG_RSA=y" >> defconfig
 echo "CONFIG_ECDSA=y" >> defconfig
@@ -17,5 +19,3 @@ echo "CONFIG_EFI_LOADER=y" >> defconfig
 echo "CONFIG_CMD_BOOTEFI=y" >> defconfig
 echo "CONFIG_HEXDUMP=y" >> defconfig
 echo "CONFIG_CMD_NVEDIT_EFI=y" >> defconfig
-echo 'CONFIG_SYS_PROMPT="0MNITECK:~$ "' >> defconfig
-echo 'CONFIG_LOCALVERSION=" 0MNITECK"' >> defconfig
