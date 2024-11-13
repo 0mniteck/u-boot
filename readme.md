@@ -26,8 +26,8 @@
 
 ### Build:
 
-`buildscript.sh {yes/no: make clean} {time: source_date_epoch} {tag: release tag}`:
+`buildscript.sh {yes/no: make clean} {time: source_date_epoch} {tag: release tag} {yes/no: dev mode}`:
 
 To build current release with today's date run:
 
-```sudo su && git clone git@github.com:0mniteck/U-Boot.git && cd U-Boot && ./buildscript.sh yes "" "New Tagname"```
+```sudo su && git clone git@github.com:0mniteck/U-Boot.git && cd U-Boot && ./buildscript.sh yes "" "New Tagname" ""```
