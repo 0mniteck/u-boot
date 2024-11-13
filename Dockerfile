@@ -30,6 +30,8 @@ ENV BUILD_MESSAGE_TIMESTAMP="$BUILD_MESSAGE_TIMESTAMP"
 RUN mkdir /.cache && chmod -R 777 /.cache
 ARG ATF_VER
 ARG ATF_SUM
+ARG ARCHS
+ENV ARCHS=$ARCHS
 ENV ATF_VER=$ATF_VER
 ENV ATF_SUM=$ATF_SUM
 RUN /bin/bash -c 'wget https://github.com/ARM-software/arm-trusted-firmware/archive/$ATF_VER.zip && echo "$ATF_SUM  $ATF_VER.zip" > $ATF_VER.zip.sum && if [[ $(sha512sum -c $ATF_VER.zip.sum) == "$ATF_VER.zip: OK" ]]; then echo "TF-A Checksum Matched!"; else echo "TF-A Checksum Mismatched!" & exit 1; fi;'
