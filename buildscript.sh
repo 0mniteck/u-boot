@@ -29,26 +29,19 @@ do
   echo $env3 >> vars.env
 done
 
-printf "setenv BUILD_LIST \"" >> vars.env
-for env in $BUILD_LIST
+printf "\"" >> vars.env
+for lis in BUILD_LIST^$BUILD_LIST LIST^$LIST ARCHS^$ARCHS
 do
-  printf "$env" >> vars.env
+  lis1=$(echo $lis | cut -d'^' -f1)
+  lis2=$(echo $lis | cut -d'^' -f2)
+  if [ $lis1 = BUILD_LIST ] || [ $lis1 = LIST ] || [ $lis1 = ARCHS ]; then
+    printf "\"" >> vars.env
+    echo "" >> vars.env
+    printf "setenv $lis1 \"" >> vars.env
+  fi
+  printf "$lis2 " >> vars.env
 done
-echo "\"" >> vars.env
-
-printf "setenv LIST \"" >> vars.env
-for env in $LIST
-do
-  printf "$env" >> vars.env
-done
-echo "\"" >> vars.env
-
-printf "setenv ARCHS \"" >> vars.env
-for env in $ARCHS
-do
-  printf "$env" >> vars.env
-done
-echo "\"" >> vars.env
+echo "$lis1 \"" >> vars.env
 
 sudo apt install -y bc dosfstools parted screen snapd && sudo snap install syft --classic
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
