@@ -26,7 +26,7 @@
 
 ### Build:
 
-`buildscript.sh {yes/no: make clean} {time: source_date_epoch} {tag: release tag} {yes/no: dev mode}`:
+`buildscript.sh {yes/blank: make clean} {time: source_date_epoch} {tag: release tag} {yes/blank: dev mode}`:
 
 To build current release with today's date run:
 
