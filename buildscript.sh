@@ -5,7 +5,7 @@ git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 sudo screen -L -Logfile builder.log bash -c './re-run.sh '$(($2))' '$4
 mv builder.log Builds/builder.log
 status="$(cat status.build)"
-./clean.sh cleanup
+./clean.sh cleanup $4
 read -p "$status: --> sign/commit/push"
 ./git.sh "$status" "$3" $4
 ls -la Builds/* && cd ..
