@@ -47,9 +47,7 @@ RUN /bin/bash -c 'wget https://github.com/u-boot/u-boot/archive/refs/tags/v$UB_V
 ENV TEE=/tee.bin
 ENV BL31=/rk3399-bl31.elf
 COPY Builds/rk3399/tee.bin /
-COPY Builds/rk3399/bl31.elf /rk3399-bl31.elf
-COPY Builds/rk3568/bl31.elf /rk3566-bl31.elf
-COPY Builds/rk3588/bl31.elf /rk3588-bl31.elf
+COPY Builds/*/bl31.elf /*-bl31.elf
 COPY Includes/* /
 COPY Configs/* /
 ARG ENTRYPOINT
