@@ -14,14 +14,12 @@ ATF_VER=dc5d485206e168c7e86ede646e512c761bf1752e;
 UB_VER=2024.10;
 
 source_date_epoch=1;
-if [ "$1" != 0 ];
-then
+if [ "$1" != 0 ]; then
   echo 'Using override timestamp for SOURCE_DATE_EPOCH: $(date -d @$(($1)) = $1';
   source_date_epoch=$(($1));
 else
   timestamp=$(date -d $(date +%D) +%s);
-  if [ "${timestamp}" != "" ];
-  then
+  if [ "${timestamp}" != "" ]; then
     echo "Setting SOURCE_DATE_EPOCH from today's date: $(date +%D) = @$timestamp";
     source_date_epoch=$((timestamp));
   else
@@ -29,6 +27,7 @@ else
     source_date_epoch=1;
   fi
 fi
+
 source_date="@$source_date_epoch"
 build_message_timestamp="$(date +'%b %d %Y - 00:00:00 +0000' -d $source_date)";
 echo "SOURCE_DATE: $source_date"
@@ -100,6 +99,7 @@ docker run -it --cpus=$(nproc) \
   -e SOURCE_DATE_EPOCH=$source_date_epoch \
   -e SOURCE_DATE=$source_date \
   -e UB_VER=$UB_VER \
+  -e DEV_BUILD=$2 \
   -e TEE="/tee.bin" \
   -e BL31="/rk3399-bl31.elf" \
   u-boot
