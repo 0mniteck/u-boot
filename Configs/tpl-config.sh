@@ -10,3 +10,4 @@ echo "CONFIG_TPL_LIBCOMMON_SUPPORT=y" >> defconfig
 echo "CONFIG_TPL_LIBGENERIC_SUPPORT=y" >> defconfig
 echo "CONFIG_TPL_ROCKCHIP_COMMON_BOARD=y" >> defconfig
 echo "CONFIG_TPL_SERIAL=y" >> defconfig
+echo "CONFIG_NR_DRAM_BANKS=1" >> defconfig
