@@ -30,5 +30,5 @@ pushd Builds/
     done
   fi
 popd
-rm -f builder.log && rm -f status.build && rm -f sys.info
+rm -f builder.log && rm -f status.build && rm -f sys.info && rm -f vars.temp
 exit
