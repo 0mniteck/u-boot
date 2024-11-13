@@ -7,5 +7,7 @@ mv builder.log Builds/builder.log
 status="$(cat status.build)"
 ./clean.sh cleanup $4
 read -p "$status: --> sign/commit/push"
-./git.sh "$status" "$3" $4
+if [ "$4" = "yes" ]; then
+  ./git.sh "$status" "$3"
+fi
 ls -la Builds/* && cd ..
