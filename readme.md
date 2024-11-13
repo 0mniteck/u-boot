@@ -3,6 +3,9 @@ Staging Branch
 
 ### Project Goals
 * [ ] Enable TPM Support
+* [ ] Remove rkbin dependency from rk3566 & rk3588
+  * [x] TF-A upstreamed initial patches from rockchip
+  * [ ] U-boot modifications to use u-boot-tpl vs rockchip-tpl
 * [x] Enable UEFI Secure Boot with Root CA only on a Yubikey
 * [x] Generate SBOM at buildtime
 * [x] Fine tune for reproducibility
