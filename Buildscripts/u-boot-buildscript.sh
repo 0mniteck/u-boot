@@ -40,7 +40,7 @@ for dev in $BUILD_LIST
       cat configs/$(echo $dev | cut -d':' -f2)
       make $(echo $dev | cut -d':' -f2)
       platt=$(echo $(echo $dev | cut -d':' -f1) | cut -d'-' -f2)
-      BL31=/$platt-bl31.elf FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j $(nproc) all
+      BL31=/Builds/$platt/bl31.elf FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j $(nproc) all
       ls -la
     popd
   done
