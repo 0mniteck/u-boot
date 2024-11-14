@@ -102,7 +102,6 @@ docker run -it --cpus=$(nproc) \
   -e UB_VER=$UB_VER \
   -e BUILD_LIST="$BUILD_LIST" \
   -e DEV_BUILD=$2 \
-  -e TEE="/tee.bin" \
   u-boot
 
 for dev in $LIST
