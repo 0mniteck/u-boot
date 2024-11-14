@@ -34,7 +34,6 @@ COPY Buildscripts/$ENTRYPOINT-buildscript.sh /
 
 FROM base AS u-boot
 RUN apt install -y libgnutls28-dev lzop
-WORKDIR /
 ARG SOURCE_DATE_EPOCH
 ENV SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH
 ENV SOURCE_DATE="@$SOURCE_DATE_EPOCH";
@@ -43,11 +42,11 @@ ARG UB_VER
 ARG UB_SUM
 ENV UB_VER=$UB_VER
 ENV UB_SUM=$UB_SUM
-ADD https://github.com/u-boot/u-boot/archive/refs/tags/v$UB_VER.zip /
+ADD https://github.com/u-boot/u-boot/archive/refs/tags/v$UB_VER.zip /v$UB_VER.zip
 RUN echo "$UB_SUM  v$UB_VER.zip" | sha512sum --status -c - && echo "U-Boot Checksum Matched!" || exit 1
 ENV TEE=/rk3399/tee.bin
-COPY Builds/* /
-COPY Includes/* /
-COPY Configs/* /
+COPY Builds /Builds
+COPY Includes /Includes
+COPY Configs /Configs
 ARG ENTRYPOINT
 COPY Buildscripts/$ENTRYPOINT-buildscript.sh /
