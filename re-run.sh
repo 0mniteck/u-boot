@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "# Starting Build: $(date -u '+on %D at %R UTC')" >> Builds/release.sha512sum && echo "" >> Builds/release.sha512sum && echo "Starting Build: $(date -u '+on %D at %R UTC')"
-rm -f -r /var/snap/docker/* && rm -f -r /var/snap/docker
+rm -f -r /var/snap/docker*
 snap remove docker --purge
 mkdir /var/snap/docker
 chown root:root /var/snap/docker
@@ -123,11 +123,13 @@ docker cp u-boot:/sys.info sys.info
 docker stop u-boot > /dev/null && echo "u-boot stopped"
 docker rm --volumes u-boot > /dev/null && echo "u-boot removed"
 snap disable docker
-rm -f -r /var/snap/docker/* && rm -f -r /var/snap/docker
+rm -f -r /var/snap/docker*
 sleep 5
 snap remove docker --purge
 snap remove docker --purge
 ufw -f enable
+snap remove syft --purge
+snap remove grype --purge
 
 if [ "$2" = "" ]; then
   for dev in $LIST
