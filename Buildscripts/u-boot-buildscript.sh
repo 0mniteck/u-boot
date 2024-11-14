@@ -18,7 +18,8 @@ for dev in $BUILD_LIST
           ./../../$(echo $loc | cut -d':' -f2)config.sh
         fi
       fi
-      cp /efi.var efi.var && echo "Deployed efi.var"
+      cp /efi.var efi.var
+      sha512sum --status -c /efi.sum && echo "Deployed efi.var" || exit 0
       cp /logo.bmp tools/logos/denx.bmp && cp /logo.bmp drivers/video/u_boot_logo.bmp && echo "Deployed Logo"
       if [ "$(echo $dev | cut -d':' -f2)" = "pinebook-pro-rk3399_defconfig" ]; then
         cp /rk3399-pinebook-pro-u-boot.dtsi arch/arm/dts/rk3399-pinebook-pro-u-boot.dtsi && echo "Patched Device Tree Bug"
@@ -37,7 +38,7 @@ for dev in $BUILD_LIST
       cat configs/$(echo $dev | cut -d':' -f2)
       make $(echo $dev | cut -d':' -f2)
       platt=$(echo $(echo $dev | cut -d':' -f1) | cut -d'-' -f2)
-      BL31=/Builds/$platt/bl31.elf FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j $(nproc) all
+      BL31=/$platt/bl31.elf FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j $(nproc) all
       ls -la
     popd
   done
