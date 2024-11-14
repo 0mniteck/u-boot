@@ -34,6 +34,7 @@ COPY Buildscripts/$ENTRYPOINT-buildscript.sh /
 
 FROM base AS u-boot
 RUN apt install -y libgnutls28-dev lzop
+WORKDIR /
 ARG SOURCE_DATE_EPOCH
 ENV SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH
 ENV SOURCE_DATE="@$SOURCE_DATE_EPOCH";
