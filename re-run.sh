@@ -1,6 +1,8 @@
 #!/bin/bash
 
 echo "# Starting Build: $(date -u '+on %D at %R UTC')" >> Builds/release.sha512sum && echo "" >> Builds/release.sha512sum && echo "Starting Build: $(date -u '+on %D at %R UTC')"
+snap install syft --classic
+snap install grype --classic
 rm -f -r /var/snap/docker*
 snap remove docker --purge
 mkdir /var/snap/docker
