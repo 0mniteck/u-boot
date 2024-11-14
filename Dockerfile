@@ -46,7 +46,7 @@ ENV UB_SUM=$UB_SUM
 RUN /bin/bash -c 'wget https://github.com/u-boot/u-boot/archive/refs/tags/v$UB_VER.zip && echo "$UB_SUM  v$UB_VER.zip" > $UB_VER.zip.sum && if [[ $(sha512sum -c $UB_VER.zip.sum) == "v$UB_VER.zip: OK" ]]; then echo "U-Boot Checksum Matched!"; else echo "U-Boot Checksum Mismatched!" & exit 1; fi;'
 ENV TEE=/tee.bin
 COPY Builds/rk3399/tee.bin /
-COPY Builds/*/bl31.elf /*-bl31.elf
+COPY --exclude=/*/* Builds/* /Builds/
 COPY Includes/* /
 COPY Configs/* /
 ARG ENTRYPOINT
