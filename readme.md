@@ -17,6 +17,7 @@
     * [ ] Enable stack protection
     * [ ] Block dropping down to shell
 * [x] Generate SBOM at buildtime
+  * [x] Scan with Grype
 * [x] Fine tune for reproducibility
   * [x] Convert to docker build
     * [x] Build variants in one branch
