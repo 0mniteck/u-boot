@@ -1,14 +1,11 @@
 #!/usr/bin/env bash
 trap '[[ $pid ]] && kill $pid; exit' EXIT
-echo "SOURCE_DATE_EPOCH: $SOURCE_DATE_EPOCH" && echo "SOURCE_DATE: $SOURCE_DATE"
-if [ "$DEV_BUILD" = "yes" ]; then
-  echo "DEV_BUILD: $DEV_BUILD"
-fi
 for dev in $BUILD_LIST
   do
   for loc in $(echo $dev | cut -d':' -f1): $(echo $dev | cut -d':' -f1)-SB:sb- $(echo $dev | cut -d':' -f1)-MU-SB:mutable-sb-
     do
-    unzip -q /v$UB_VER.zip -d /$(echo $loc | cut -d':' -f1)
+    echo "Unzipping U-Boot for $(echo $dev | cut -d':' -f1)..."
+    unzip -q /v$UB_VER.zip -d /$(echo $loc | cut -d':' -f1) > /dev/null
     echo "Entering /$(echo $loc | cut -d':' -f1)/u-boot-$UB_VER"
     pushd /$(echo $loc | cut -d':' -f1)/u-boot-$UB_VER
       make clean
