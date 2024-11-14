@@ -42,7 +42,7 @@ ENV UB_VER=$UB_VER
 ENV UB_SUM=$UB_SUM
 ADD --checksum=sha512:$UB_SUM https://github.com/u-boot/u-boot/archive/refs/tags/v$UB_VER.zip /
 ENV TEE=/Builds/rk3399/tee.bin
-COPY Builds/rk* /Builds/
+COPY Builds/rk* /
 COPY Includes/* /
 COPY Configs/* /
 ARG ENTRYPOINT
