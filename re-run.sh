@@ -28,6 +28,9 @@ build_message_timestamp="$(date +'%b %d %Y - 00:00:00 +0000' -d $source_date)";
 echo "SOURCE_DATE: $source_date"
 echo "SOURCE_DATE_EPOCH: $source_date_epoch"
 echo "BUILD_MESSAGE_TIMESTAMP: $build_message_timestamp"
+if [ "$DEV_BUILD" = "yes" ]; then
+  echo "DEV_BUILD: $DEV_BUILD"
+fi
 ARCHS=$(echo $ARCHS | tr ' ' '\n' | sort -u | tr '\n' ' ')
 docker buildx create --name U-Boot-Builder --bootstrap --use
 
