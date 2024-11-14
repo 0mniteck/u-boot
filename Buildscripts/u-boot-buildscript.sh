@@ -10,26 +10,26 @@ for dev in $BUILD_LIST
     pushd /$(echo $loc | cut -d':' -f1)/u-boot-$UB_VER
       make clean
       if [ "$DEV_BUILD" = "yes" ]; then
-        ./../../dev-config.sh
+        ./../../Configs/dev-config.sh
       else
-        ./../../common-config.sh
+        ./../../Configs/common-config.sh
         if [ "$(echo $dev | cut -d':' -f2)" != "" ]; then
-          ./../../efi-config.sh
-          ./../../$(echo $loc | cut -d':' -f2)config.sh
+          ./../../Configs/efi-config.sh
+          ./../../Configs/$(echo $loc | cut -d':' -f2)config.sh
         fi
       fi
-      cp /efi.var efi.var
+      cp /Includes/efi.var efi.var
       sha512sum --status -c /efi.sum && echo "Deployed efi.var" || exit 1
-      cp /logo.bmp tools/logos/denx.bmp && cp /logo.bmp drivers/video/u_boot_logo.bmp && echo "Deployed Logo"
+      cp /Includes/logo.bmp tools/logos/denx.bmp && cp /Includes/logo.bmp drivers/video/u_boot_logo.bmp && echo "Deployed Logo"
       if [ "$(echo $dev | cut -d':' -f2)" = "pinebook-pro-rk3399_defconfig" ]; then
-        cp /rk3399-pinebook-pro-u-boot.dtsi arch/arm/dts/rk3399-pinebook-pro-u-boot.dtsi && echo "Patched Device Tree Bug"
+        cp /Includes/rk3399-pinebook-pro-u-boot.dtsi arch/arm/dts/rk3399-pinebook-pro-u-boot.dtsi && echo "Patched Device Tree Bug"
       fi
       if [ "$(echo $dev | cut -d':' -f2)" = "rock5b-rk3588_defconfig" ]; then
-        ./../../tpl-config.sh
+        ./../../Configs/tpl-config.sh
         sed -i '112,117d' arch/arm/mach-rockchip/sdram.c && echo "Deployed Rockchip TPL Bypass"
       fi
       if [ "$(echo $dev | cut -d':' -f2)" = "pinetab2-rk3566_defconfig" ]; then
-        ./../../tpl-config.sh
+        ./../../Configs/tpl-config.sh
         echo "CONFIG_TPL_TINY_MEMSET=y" >> defconfig
         sed -i '112,117d' arch/arm/mach-rockchip/sdram.c && echo "Deployed Rockchip TPL Bypass"
       fi
@@ -38,7 +38,7 @@ for dev in $BUILD_LIST
       cat configs/$(echo $dev | cut -d':' -f2)
       make $(echo $dev | cut -d':' -f2)
       platt=$(echo $(echo $dev | cut -d':' -f1) | cut -d'-' -f2)
-      BL31=/$platt/bl31.elf FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j $(nproc) all
+      BL31=/Builds/$platt/bl31.elf FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j $(nproc) all
       ls -la
     popd
   done
