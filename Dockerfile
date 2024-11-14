@@ -11,7 +11,8 @@ ARG OPT_VER
 ARG OPT_SUM
 ENV OPT_VER=$OPT_VER
 ENV OPT_SUM=$OPT_SUM
-ADD --checksum=sha512:$OPT_SUM https://github.com/OP-TEE/optee_os/archive/refs/tags/$OPT_VER.zip /
+ADD https://github.com/OP-TEE/optee_os/archive/refs/tags/$OPT_VER.zip /
+RUN echo "$OPT_SUM  $OPT_VER.zip" | sha512sum --status -c - && echo "OP-TEE Checksum Matched!" || exit 1
 ARG ENTRYPOINT
 COPY Buildscripts/$ENTRYPOINT-buildscript.sh /
 
@@ -26,7 +27,8 @@ ARG ARCHS
 ENV ARCHS=$ARCHS
 ENV ATF_VER=$ATF_VER
 ENV ATF_SUM=$ATF_SUM
-ADD --checksum=sha512:$ATF_SUM https://github.com/ARM-software/arm-trusted-firmware/archive/$ATF_VER.zip /
+ADD https://github.com/ARM-software/arm-trusted-firmware/archive/$ATF_VER.zip /
+RUN echo "$ATF_SUM  $ATF_VER.zip" | sha512sum --status -c - && echo "TF-A Checksum Matched!" || exit 1
 ARG ENTRYPOINT
 COPY Buildscripts/$ENTRYPOINT-buildscript.sh /
 
@@ -40,7 +42,8 @@ ARG UB_VER
 ARG UB_SUM
 ENV UB_VER=$UB_VER
 ENV UB_SUM=$UB_SUM
-ADD --checksum=sha512:$UB_SUM https://github.com/u-boot/u-boot/archive/refs/tags/v$UB_VER.zip /
+ADD https://github.com/u-boot/u-boot/archive/refs/tags/v$UB_VER.zip /
+RUN echo "$UB_SUM  v$UB_VER.zip" | sha512sum --status -c - && echo "U-Boot Checksum Matched!" || exit 1
 ENV TEE=/Builds/rk3399/tee.bin
 COPY Builds/rk* /
 COPY Includes/* /
