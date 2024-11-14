@@ -19,7 +19,7 @@ for dev in $BUILD_LIST
         fi
       fi
       cp /efi.var efi.var
-      sha512sum --status -c /efi.sum && echo "Deployed efi.var" || exit 0
+      sha512sum --status -c /efi.sum && echo "Deployed efi.var" || exit 1
       cp /logo.bmp tools/logos/denx.bmp && cp /logo.bmp drivers/video/u_boot_logo.bmp && echo "Deployed Logo"
       if [ "$(echo $dev | cut -d':' -f2)" = "pinebook-pro-rk3399_defconfig" ]; then
         cp /rk3399-pinebook-pro-u-boot.dtsi arch/arm/dts/rk3399-pinebook-pro-u-boot.dtsi && echo "Patched Device Tree Bug"
