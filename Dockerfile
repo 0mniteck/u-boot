@@ -27,8 +27,8 @@ ARG ARCHS
 ENV ARCHS=$ARCHS
 ENV ATF_VER=$ATF_VER
 ENV ATF_SUM=$ATF_SUM
-ADD https://github.com/ARM-software/arm-trusted-firmware/archive/$ATF_VER.zip /
-RUN echo "$ATF_SUM  $ATF_VER.zip" | sha512sum --status -c - && echo "TF-A Checksum Matched!" || exit 1
+ADD https://github.com/ARM-software/arm-trusted-firmware/archive/v$ATF_VER.zip /
+RUN echo "$ATF_SUM  v$ATF_VER.zip" | sha512sum --status -c - && echo "TF-A Checksum Matched!" || exit 1
 ARG ENTRYPOINT
 COPY Buildscripts/$ENTRYPOINT-buildscript.sh /
 
