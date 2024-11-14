@@ -44,7 +44,8 @@ if [ "$2" = "" ]; then
     --build-arg BASE_EXTRA=$BASE_EXTRA \
     --build-arg ENTRYPOINT=optee \
     -f Dockerfile .
-  mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:optee -o spdx-json=Builds/optee-os.manifest.spdx.json && rm -f -r "$HOME/syft" 
+  mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:optee -o spdx-json=Builds/optee-os.manifest.spdx.json && rm -f -r "$HOME/syft"
+  grype sbom:Builds/optee-os.manifest.spdx.json -o json > optee-os.grype.json
   docker run -it --cpus=$(nproc) \
     --name optee \
     --user "$(id -u):$(id -g)" \
@@ -67,7 +68,8 @@ if [ "$2" = "" ]; then
     --build-arg BASE_EXTRA=$BASE_EXTRA \
     --build-arg ENTRYPOINT=arm-trusted \
     -f Dockerfile .
-  mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:arm-trusted -o spdx-json=Builds/arm-trusted-firmware.manifest.spdx.json && rm -f -r "$HOME/syft" 
+  mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:arm-trusted -o spdx-json=Builds/arm-trusted-firmware.manifest.spdx.json && rm -f -r "$HOME/syft"
+  grype sbom:Builds/arm-trusted-firmware.manifest.spdx.json -o json > arm-trusted-firmware.grype.json
   docker run -it --cpus=$(nproc) \
     --name arm-trusted \
     --user "$(id -u):$(id -g)" \
@@ -95,7 +97,8 @@ docker buildx build --load --target u-boot --tag u-boot \
   --build-arg BASE_EXTRA=$BASE_EXTRA \
   --build-arg ENTRYPOINT=u-boot \
   -f Dockerfile .
-mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:u-boot -o spdx-json=Builds/u-boot.manifest.spdx.json && rm -f -r "$HOME/syft" 
+mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:u-boot -o spdx-json=Builds/u-boot.manifest.spdx.json && rm -f -r "$HOME/syft"
+grype sbom:Builds/u-boot.manifest.spdx.json -o json > u-boot.grype.json
 docker run -it --cpus=$(nproc) \
   --name u-boot \
   --user "$(id -u):$(id -g)" \
