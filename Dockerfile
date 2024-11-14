@@ -42,7 +42,7 @@ ARG UB_VER
 ARG UB_SUM
 ENV UB_VER=$UB_VER
 ENV UB_SUM=$UB_SUM
-ADD https://github.com/u-boot/u-boot/archive/refs/tags/v$UB_VER.zip /v$UB_VER.zip
+ADD https://github.com/u-boot/u-boot/archive/refs/tags/v$UB_VER.zip /
 RUN echo "$UB_SUM  v$UB_VER.zip" | sha512sum --status -c - && echo "U-Boot Checksum Matched!" || exit 1
 ENV TEE=/rk3399/tee.bin
 COPY Builds /Builds
