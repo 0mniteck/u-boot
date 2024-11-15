@@ -13,7 +13,7 @@ for dev in $BUILD_LIST
         ../.././Configs/dev-config.sh
       else
         ../.././Configs/common-config.sh
-        if [ "$(echo $dev | cut -d':' -f2)" != "" ]; then
+        if [ "$(echo $loc | cut -d':' -f2)" != "" ]; then
           ../.././Configs/efi-config.sh
           ../.././Configs/$(echo $loc | cut -d':' -f2)config.sh
         fi
