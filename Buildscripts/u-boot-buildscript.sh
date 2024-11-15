@@ -10,26 +10,26 @@ for dev in $BUILD_LIST
     pushd /$(echo $loc | cut -d':' -f1)/u-boot-$UB_VER
       make clean
       if [ "$DEV_BUILD" = "yes" ]; then
-        ./Configs/dev-config.sh
+        ../.././Configs/dev-config.sh
       else
-        ./Configs/common-config.sh
+        ../.././Configs/common-config.sh
         if [ "$(echo $dev | cut -d':' -f2)" != "" ]; then
-          ./Configs/efi-config.sh
-          ./Configs/$(echo $loc | cut -d':' -f2)config.sh
+          ../.././Configs/efi-config.sh
+          ../.././Configs/$(echo $loc | cut -d':' -f2)config.sh
         fi
       fi
       cp /Includes/efi.var efi.var
-      sha512sum --status -c /Includes/efi.sum && echo "Deployed efi.var" || exit 1
+      sha512sum --status -c /Includes/efi.var.sum && echo "Deployed efi.var" || exit 1
       cp /Includes/logo.bmp tools/logos/denx.bmp && cp /Includes/logo.bmp drivers/video/u_boot_logo.bmp && echo "Deployed Logo"
       if [ "$(echo $dev | cut -d':' -f2)" = "pinebook-pro-rk3399_defconfig" ]; then
         cp /Includes/rk3399-pinebook-pro-u-boot.dtsi arch/arm/dts/rk3399-pinebook-pro-u-boot.dtsi && echo "Patched Device Tree Bug"
       fi
       if [ "$(echo $dev | cut -d':' -f2)" = "rock5b-rk3588_defconfig" ]; then
-        ./Configs/tpl-config.sh
+        ../.././Configs/tpl-config.sh
         sed -i '112,117d' arch/arm/mach-rockchip/sdram.c && echo "Deployed Rockchip TPL Bypass"
       fi
       if [ "$(echo $dev | cut -d':' -f2)" = "pinetab2-rk3566_defconfig" ]; then
-        ./Configs/tpl-config.sh
+        ../.././Configs/tpl-config.sh
         echo "CONFIG_TPL_TINY_MEMSET=y" >> defconfig
         sed -i '112,117d' arch/arm/mach-rockchip/sdram.c && echo "Deployed Rockchip TPL Bypass"
       fi
