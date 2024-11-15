@@ -123,8 +123,8 @@ for dev in $LIST
 do
   for loc in $dev $dev-SB $dev-MU-SB
   do
-    docker cp u-boot:/$loc/u-boot-$UB_VER/u-boot-rockchip.bin Builds/$loc/u-boot-rockchip.bin && sha512sum Builds/$loc/u-boot-rockchip.bin >> Builds/release.sha512sum
-    docker cp u-boot:/$loc/u-boot-$UB_VER/u-boot-rockchip-spi.bin Builds/$loc/u-boot-rockchip-spi.bin && sha512sum Builds/$loc/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
+    docker cp u-boot:/$loc/u-boot-rockchip.bin Builds/$loc/u-boot-rockchip.bin && sha512sum Builds/$loc/u-boot-rockchip.bin >> Builds/release.sha512sum
+    docker cp u-boot:/$loc/u-boot-rockchip-spi.bin Builds/$loc/u-boot-rockchip-spi.bin && sha512sum Builds/$loc/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
   done
 done
 docker cp u-boot:/sys.info sys.info
