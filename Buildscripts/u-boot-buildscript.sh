@@ -31,6 +31,7 @@ for dev in $BUILD_LIST
       if [ "$(echo $dev | cut -d':' -f2)" = "pinetab2-rk3566_defconfig" ]; then
         ../.././Configs/tpl-config.sh
         echo "CONFIG_TPL_TINY_MEMSET=y" >> defconfig
+        echo "CONFIG_SPL_TINY_MEMSET=y" >> defconfig
         sed -i '112,117d' arch/arm/mach-rockchip/sdram.c && echo "Deployed Rockchip TPL Bypass"
       fi
       sed -i 's/CONFIG_BAUDRATE=1500000/CONFIG_BAUDRATE=115200/' configs/$(echo $dev | cut -d':' -f2)
