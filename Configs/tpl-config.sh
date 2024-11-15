@@ -11,4 +11,4 @@
 #echo "CONFIG_TPL_LIBGENERIC_SUPPORT=y" >> defconfig
 #echo "CONFIG_TPL_NEEDS_SEPARATE_STACK=y" >> defconfig
 #echo "CONFIG_TPL_ROCKCHIP_COMMON_BOARD=y" >> defconfig
-echo "CONFIG_XPL_CONFIG=y" >> defconfig
+echo "CONFIG_XPL_BUILD=y" >> defconfig
