@@ -44,6 +44,9 @@ for dev in $BUILD_LIST
       BL31=/Builds/$platt/bl31.elf FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j $(nproc) all
       ls -la
     popd
+    mv /$(echo $loc | cut -d':' -f1)/u-boot-$UB_VER/u-boot-rockchip.bin /$(echo $loc | cut -d':' -f1)/u-boot-rockchip.bin
+    mv /$(echo $loc | cut -d':' -f1)/u-boot-$UB_VER/u-boot-rockchip-spi.bin /$(echo $loc | cut -d':' -f1)/u-boot-rockchip-spi.bin
+    rm -f -r /$(echo $loc | cut -d':' -f1)/u-boot-$UB_VER
   done
 done
 echo "# Container Build System: $(uname -o) $(uname -r) $(uname -m) $(lsb_release -ds) $(uname -v)" > /sys.info
