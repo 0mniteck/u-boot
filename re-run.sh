@@ -45,8 +45,10 @@ if [ "$2" = "" ]; then
     --build-arg BASE_EXTRA=$BASE_EXTRA \
     --build-arg ENTRYPOINT=optee \
     -f Dockerfile .
+
   mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:optee -o spdx-json=Builds/optee-os.manifest.spdx.json && rm -f -r "$HOME/syft"
   grype sbom:Builds/optee-os.manifest.spdx.json -o json > optee-os.grype.json
+
   docker run -it --cpus=$(nproc) \
     --name optee \
     --user "$(id -u):$(id -g)" \
@@ -54,7 +56,7 @@ if [ "$2" = "" ]; then
     -e SOURCE_DATE_EPOCH=$source_date_epoch \
     -e OPT_VER=$OPT_VER \
     optee
-  
+
   docker cp optee:/optee_os-$OPT_VER/out/arm-plat-rockchip/core/tee.bin Builds/rk3399/
   sha512sum Builds/rk3399/tee.bin && sha512sum Builds/rk3399/tee.bin > Builds/release.sha512sum
   docker stop optee > /dev/null && echo "optee stopped" && docker rm --volumes optee > /dev/null && echo "optee removed"
@@ -69,8 +71,10 @@ if [ "$2" = "" ]; then
     --build-arg BASE_EXTRA=$BASE_EXTRA \
     --build-arg ENTRYPOINT=arm-trusted \
     -f Dockerfile .
+
   mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:arm-trusted -o spdx-json=Builds/arm-trusted-firmware.manifest.spdx.json && rm -f -r "$HOME/syft"
   grype sbom:Builds/arm-trusted-firmware.manifest.spdx.json -o json > arm-trusted-firmware.grype.json
+
   docker run -it --cpus=$(nproc) \
     --name arm-trusted \
     --user "$(id -u):$(id -g)" \
@@ -80,7 +84,7 @@ if [ "$2" = "" ]; then
     -e ATF_VER=$ATF_VER \
     -e ARCHS="$ARCHS" \
     arm-trusted
-  
+
   for arch in $ARCHS
   do
     docker cp arm-trusted:/$arch/arm-trusted-firmware-$ATF_VER/build/$arch/release/bl31/bl31.elf Builds/$arch/
@@ -98,8 +102,12 @@ docker buildx build --load --target u-boot --tag u-boot \
   --build-arg BASE_EXTRA=$BASE_EXTRA \
   --build-arg ENTRYPOINT=u-boot \
   -f Dockerfile .
+
 mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:u-boot -o spdx-json=Builds/u-boot.manifest.spdx.json && rm -f -r "$HOME/syft"
 grype sbom:Builds/u-boot.manifest.spdx.json -o json > u-boot.grype.json
+snap remove syft --purge && rm -f -r $HOME/.cache/syft
+snap remove grype --purge && rm -f -r $HOME/.cache/grype
+
 docker run -it --cpus=$(nproc) \
   --name u-boot \
   --user "$(id -u):$(id -g)" \
@@ -129,8 +137,6 @@ sleep 5
 snap remove docker --purge
 snap remove docker --purge
 ufw -f enable
-snap remove syft --purge
-snap remove grype --purge
 
 if [ "$2" = "" ]; then
   for dev in $LIST
