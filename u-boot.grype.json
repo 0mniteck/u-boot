@@ -77121,9 +77121,9 @@
  "source": {
   "type": "image",
   "target": {
-   "userInput": "u-boot:sha256:7dab99cb2f0ca66f96a4af44a8e03b98941c0c26d04d721ca24b2ef88fed41a9",
+   "userInput": "u-boot:sha256:46fa1cf638bb9548827bed15d54354a547ce9b04c9aed124a83a93ab4175a728",
    "imageID": "DocumentRoot-Image-u-boot",
-   "manifestDigest": "sha256:7dab99cb2f0ca66f96a4af44a8e03b98941c0c26d04d721ca24b2ef88fed41a9",
+   "manifestDigest": "sha256:46fa1cf638bb9548827bed15d54354a547ce9b04c9aed124a83a93ab4175a728",
    "mediaType": "",
    "tags": [],
    "imageSize": 0,
@@ -77290,6 +77290,6 @@
    "checksum": "sha256:83e8d20e255a37ced933cc4a96e803a5873e153a0bcc00a684e3eadb92c75b21",
    "error": null
   },
-  "timestamp": "2024-11-15T21:59:02.914431981Z"
+  "timestamp": "2024-11-16T00:14:25.849826646Z"
  }
 }

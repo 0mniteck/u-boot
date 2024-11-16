@@ -76057,9 +76057,9 @@
  "source": {
   "type": "image",
   "target": {
-   "userInput": "arm-trusted:sha256:3f6b501a7045a152b8b9369215d8b22ce78a94c78da9eb1e18486304a5ad3158",
+   "userInput": "arm-trusted:sha256:b3884621da6612e804374a521e69cfc22b30e330d9f138c9780f74792b466d32",
    "imageID": "DocumentRoot-Image-arm-trusted",
-   "manifestDigest": "sha256:3f6b501a7045a152b8b9369215d8b22ce78a94c78da9eb1e18486304a5ad3158",
+   "manifestDigest": "sha256:b3884621da6612e804374a521e69cfc22b30e330d9f138c9780f74792b466d32",
    "mediaType": "",
    "tags": [],
    "imageSize": 0,
@@ -76226,6 +76226,6 @@
    "checksum": "sha256:83e8d20e255a37ced933cc4a96e803a5873e153a0bcc00a684e3eadb92c75b21",
    "error": null
   },
-  "timestamp": "2024-11-15T21:48:34.007494086Z"
+  "timestamp": "2024-11-16T00:03:58.944256433Z"
  }
 }
