@@ -146,7 +146,7 @@ if [ "$2" = "" ]; then
       pushd Builds/$loc/
       dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
       parted /dev/mmcblk1 mktable gpt mkpart P1 fat32 15MB 34MB -s && sleep 3
-      mkfs.fat /dev/mmcblk1p1 && mount /dev/mmcblk1p1 /mnt
+      mkfs.fat -i 0000-0000 -n "U-BOOT" /dev/mmcblk1p1 && mount /dev/mmcblk1p1 /mnt
       cp u-boot-rockchip.bin /mnt/u-boot-rockchip.bin
       cp u-boot-rockchip-spi.bin /mnt/u-boot-rockchip-spi.bin
       touch -c -d "$(date -R -d $source_date)" /mnt/*
