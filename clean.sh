@@ -1,8 +1,7 @@
 #!/bin/bash
 
-chmod +x Configs/*
-pushd Builds/
-  if [ "$1" = "yes" ]; then
+if [ "$1" = "yes" ]; then
+  pushd Builds/
     find . ! -type d -delete
     for dev in $LIST
     do
@@ -15,8 +14,15 @@ pushd Builds/
     do
       touch $arch/tmp
     done
-  fi
-  if [ "$1" = "cleanup" ]; then
+  popd
+  pushd Results/
+    find . ! -type d -delete
+    touch tmp
+  popd
+fi
+
+if [ "$1" = "cleanup" ]; then
+  pushd Builds/
     for dev in $LIST
     do
       for loc in $dev $dev-SB $dev-MU-SB
@@ -28,7 +34,10 @@ pushd Builds/
     do
       rm -f $arch/tmp
     done
-  fi
-popd
-rm -f builder.log && rm -f status.build && rm -f sys.info && rm -f vars.env
+  popd
+  pushd Results/
+    rm -f tmp
+  popd
+  rm -f status.build && rm -f sys.info && rm -f vars.env
+fi
 exit
