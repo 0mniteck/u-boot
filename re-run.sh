@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "# Starting Build: $(date -u '+on %D at %R UTC')" >> Builds/release.sha512sum && echo "" >> Builds/release.sha512sum && echo "Starting Build: $(date -u '+on %D at %R UTC')"
+echo "# Starting Build: $(date -u '+on %D at %R UTC')" >> Results/release.sha512sum && echo "" >> Results/release.sha512sum && echo "Starting Build: $(date -u '+on %D at %R UTC')"
 sudo apt install -y snapd
 snap install syft --classic
 snap install grype --classic
@@ -46,8 +46,8 @@ if [ "$2" = "" ]; then
     --build-arg ENTRYPOINT=optee \
     -f Dockerfile .
 
-  mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:optee -o spdx-json=Builds/optee-os.manifest.spdx.json && rm -f -r "$HOME/syft"
-  grype sbom:Builds/optee-os.manifest.spdx.json -o json > optee-os.grype.json
+  mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:optee -o spdx-json=Results/optee-os.manifest.spdx.json && rm -f -r "$HOME/syft"
+  grype sbom:Results/optee-os.manifest.spdx.json -o json > Results/optee-os.grype.json
 
   docker run -it --cpus=$(nproc) \
     --name optee \
@@ -58,7 +58,7 @@ if [ "$2" = "" ]; then
     optee
 
   docker cp optee:/optee_os-$OPT_VER/out/arm-plat-rockchip/core/tee.bin Builds/rk3399/
-  sha512sum Builds/rk3399/tee.bin && sha512sum Builds/rk3399/tee.bin > Builds/release.sha512sum
+  sha512sum Builds/rk3399/tee.bin && sha512sum Builds/rk3399/tee.bin > Results/release.sha512sum
   docker stop optee > /dev/null && echo "optee stopped" && docker rm --volumes optee > /dev/null && echo "optee removed"
 
   docker buildx build --load --target arm-trusted --tag arm-trusted \
@@ -72,8 +72,8 @@ if [ "$2" = "" ]; then
     --build-arg ENTRYPOINT=arm-trusted \
     -f Dockerfile .
 
-  mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:arm-trusted -o spdx-json=Builds/arm-trusted-firmware.manifest.spdx.json && rm -f -r "$HOME/syft"
-  grype sbom:Builds/arm-trusted-firmware.manifest.spdx.json -o json > arm-trusted-firmware.grype.json
+  mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:arm-trusted -o spdx-json=Results/arm-trusted-firmware.manifest.spdx.json && rm -f -r "$HOME/syft"
+  grype sbom:Results/arm-trusted-firmware.manifest.spdx.json -o json > Results/arm-trusted-firmware.grype.json
 
   docker run -it --cpus=$(nproc) \
     --name arm-trusted \
@@ -88,7 +88,7 @@ if [ "$2" = "" ]; then
   for arch in $ARCHS
   do
     docker cp arm-trusted:/$arch/arm-trusted-firmware-$ATF_VER/build/$arch/release/bl31/bl31.elf Builds/$arch/
-    sha512sum Builds/$arch/bl31.elf && sha512sum Builds/$arch/bl31.elf >> Builds/release.sha512sum
+    sha512sum Builds/$arch/bl31.elf && sha512sum Builds/$arch/bl31.elf >> Results/release.sha512sum
   done
   docker stop arm-trusted > /dev/null && echo "arm-trusted stopped" && docker rm --volumes arm-trusted > /dev/null && echo "arm-trusted removed"
 fi
@@ -103,8 +103,8 @@ docker buildx build --load --target u-boot --tag u-boot \
   --build-arg ENTRYPOINT=u-boot \
   -f Dockerfile .
 
-mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:u-boot -o spdx-json=Builds/u-boot.manifest.spdx.json && rm -f -r "$HOME/syft"
-grype sbom:Builds/u-boot.manifest.spdx.json -o json > u-boot.grype.json
+mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:u-boot -o spdx-json=Results/u-boot.manifest.spdx.json && rm -f -r "$HOME/syft"
+grype sbom:Results/u-boot.manifest.spdx.json -o json > Results/u-boot.grype.json
 snap remove syft --purge && rm -f -r $HOME/.cache/syft
 snap remove grype --purge && rm -f -r $HOME/.cache/grype
 
@@ -123,8 +123,8 @@ for dev in $LIST
 do
   for loc in $dev $dev-SB $dev-MU-SB
   do
-    docker cp u-boot:/$loc/u-boot-rockchip.bin Builds/$loc/u-boot-rockchip.bin && sha512sum Builds/$loc/u-boot-rockchip.bin >> Builds/release.sha512sum
-    docker cp u-boot:/$loc/u-boot-rockchip-spi.bin Builds/$loc/u-boot-rockchip-spi.bin && sha512sum Builds/$loc/u-boot-rockchip-spi.bin >> Builds/release.sha512sum
+    docker cp u-boot:/$loc/u-boot-rockchip.bin Builds/$loc/u-boot-rockchip.bin && sha512sum Builds/$loc/u-boot-rockchip.bin >> Results/release.sha512sum
+    docker cp u-boot:/$loc/u-boot-rockchip-spi.bin Builds/$loc/u-boot-rockchip-spi.bin && sha512sum Builds/$loc/u-boot-rockchip-spi.bin >> Results/release.sha512sum
   done
 done
 docker cp u-boot:/sys.info sys.info
@@ -155,17 +155,17 @@ if [ "$2" = "" ]; then
       sync && umount /mnt && dd if=/dev/mmcblk1 of=sdcard.img bs=1M count=35 status=progress
       touch -c -d "$(date -R -d $source_date)" sdcard.img
       popd
-      sha512sum Builds/$loc/sdcard.img >> Builds/release.sha512sum
+      sha512sum Builds/$loc/sdcard.img >> Results/release.sha512sum
     done
   done
 fi
 dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
 dd if=Builds/RP64-rk3399-SB/u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 
-cat builder.log | grep -n Checksum && echo "" && echo "" >> Builds/release.sha512sum
-echo "# 0mniteck's Current GPG Key ID: 287EE837E6ED2DD3" >> Builds/release.sha512sum && echo "" >> Builds/release.sha512sum
-echo "# Source Date Epoch: $source_date_epoch" >> Builds/release.sha512sum
-echo "# Build Complete: $(date -u '+on %D at %R UTC')" >> Builds/release.sha512sum && echo "Build Complete: $(date -u '+on %D at %R UTC')"
-echo "# Base Build System: $(uname -o) $(uname -r) $(uname -p) $(lsb_release -ds) $(lsb_release -cs) $(uname -v)"  >> Builds/release.sha512sum
-echo $(cat sys.info) >> Builds/release.sha512sum
+cat builder.log | grep -n Checksum && echo "" && echo "" >> Results/release.sha512sum
+echo "# 0mniteck's Current GPG Key ID: 287EE837E6ED2DD3" >> Results/release.sha512sum && echo "" >> Results/release.sha512sum
+echo "# Source Date Epoch: $source_date_epoch" >> Results/release.sha512sum
+echo "# Build Complete: $(date -u '+on %D at %R UTC')" >> Results/release.sha512sum && echo "Build Complete: $(date -u '+on %D at %R UTC')"
+echo "# Base Build System: $(uname -o) $(uname -r) $(uname -p) $(lsb_release -ds) $(lsb_release -cs) $(uname -v)"  >> Results/release.sha512sum
+echo $(cat sys.info) >> Results/release.sha512sum
 echo "Successful Build of U-Boot v$UB_VER at $BUILD_MESSAGE_TIMESTAMP W/ TF-A commit $ATF_VER & OP-TEE v$OPT_VER" > status.build
