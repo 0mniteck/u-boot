@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 echo "CONFIG_TPL=y" >> defconfig
+echo "TPL_TINY_FRAMEWORK=y" >> defconfig
 echo "CONFIG_TPL_TINY_MEMSET=y" >> defconfig
 echo "CONFIG_SPL_TINY_MEMSET=y" >> defconfig
 #echo "CONFIG_TPL_DM=y" >> defconfig
