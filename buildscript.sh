@@ -30,11 +30,11 @@ do
 done
 
 printf "\"" >> vars.env
-for lis in BUILD_LIST^$BUILD_LIST LIST^$LIST ARCHS^$ARCHS
+for lis in BUILD_LIST^$BUILD_LIST ARCHS^$ARCHS
 do
   lis1=$(echo $lis | cut -d'^' -f1)
   lis2=$(echo $lis | cut -d'^' -f2)
-  if [ $lis1 = BUILD_LIST ] || [ $lis1 = LIST ] || [ $lis1 = ARCHS ]; then
+  if [ $lis1 = BUILD_LIST ] || [ $lis1 = ARCHS ]; then
     printf "\"" >> vars.env
     echo "" >> vars.env
     printf "setenv $lis1 \"" >> vars.env
@@ -47,7 +47,7 @@ sed -i '10d' vars.env
 sudo apt install -y bc dosfstools parted screen snapd
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 ./clean.sh $1 && sudo screen -c vars.env -L -Logfile builder.log bash -c './re-run.sh '$(($2))' '$4
-mv builder.log Builds/builder.log && status="$(cat status.build)" && ./clean.sh cleanup
+mv builder.log Results/builder.log && status="$(cat status.build)" && ./clean.sh cleanup
 if [ "$3" != "" ]; then
   ls -la Builds/*
   read -p "$status: --> sign/commit/push" && ./git.sh "$status" "$3"
