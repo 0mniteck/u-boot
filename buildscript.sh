@@ -30,11 +30,11 @@ do
 done
 
 printf "\"" >> vars.env
-for lis in BUILD_LIST^$BUILD_LIST ARCHS^$ARCHS
+for lis in BUILD_LIST^$BUILD_LIST LIST^$LIST ARCHS^$ARCHS
 do
   lis1=$(echo $lis | cut -d'^' -f1)
   lis2=$(echo $lis | cut -d'^' -f2)
-  if [ $lis1 = BUILD_LIST ] || [ $lis1 = ARCHS ]; then
+  if [ $lis1 = BUILD_LIST ] || [ $lis1 = LIST ] || [ $lis1 = ARCHS ]; then
     printf "\"" >> vars.env
     echo "" >> vars.env
     printf "setenv $lis1 \"" >> vars.env
