@@ -41,7 +41,7 @@ To build current release run:
 sudo su && \
 git clone git@github.com:0mniteck/U-Boot.git && \
 cd U-Boot && \
-./buildscript.sh -c yes -d "" -r "tagname" -t no
+./buildscript.sh -c yes -r "tagname" -t no
 ```
 
 To build for reproducibility run:
