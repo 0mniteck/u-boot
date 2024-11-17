@@ -41,7 +41,7 @@ To build current release run:
 sudo su && \
 git clone git@github.com:0mniteck/U-Boot.git && \
 cd U-Boot && \
-./buildscript.sh -c yes -r "tagname"
+./buildscript.sh -r "tagname"
 ```
 
 To build for reproducibility run:
@@ -50,5 +50,5 @@ To build for reproducibility run:
 sudo su && \
 git clone git@github.com:0mniteck/U-Boot.git -b "tagname" && \
 cd U-Boot && \
-./buildscript.sh -c yes -d "$(cat Results/release.sha512sum | grep Epoch | cut -d ' ' -f5)"
+./buildscript.sh -d "$(cat Results/release.sha512sum | grep Epoch | cut -d ' ' -f5)"
 ```
