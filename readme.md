@@ -2,6 +2,7 @@
 
 ### Project Goals
 * [ ] Enable TPM Support
+  * [ ] Check if new patches fixed problem
 * [x] Remove rkbin dependency from rk3566 & rk3588
   * [x] TF-A upstreamed initial patches from rockchip
   * [x] U-boot modifications to use u-boot-tpl vs rockchip-tpl
