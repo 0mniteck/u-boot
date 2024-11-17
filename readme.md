@@ -29,10 +29,10 @@
 
 ```
 buildscript.sh
--c {Clean: yes/no}
--d {Date: source_date_epoch}
--r {Release-tag: tagname}
--t {Test-mode: yes/no}
+ -c {Clean: yes/no}
+ -d {Date: source_date_epoch}
+ -r {Release-tag: tagname}
+ -t {Test-mode: yes/no}
 ```
 
 To build current release run:
@@ -42,4 +42,13 @@ sudo su && \
 git clone git@github.com:0mniteck/U-Boot.git && \
 cd U-Boot && \
 ./buildscript.sh -c yes -d "" -r "tagname" -t no
+```
+
+To build for reproducibility run:
+
+```
+sudo su && \
+git clone git@github.com:0mniteck/U-Boot.git -b "tagname" && \
+cd U-Boot && \
+./buildscript.sh -c yes -d "$(cat Results/release.sha512sum | grep Epoch | cut -d ' ' -f5)"
 ```
