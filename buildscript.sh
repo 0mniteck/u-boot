@@ -44,11 +44,41 @@ done
 echo "$lis1 \"" >> vars.env
 sed -i '10d' vars.env
 
+while getopts ":c:d:r:t:" opt; do
+    case $opt in
+        c)
+            CLEAN="$OPTARG"
+            ;;
+        d)
+            EPOCH="$OPTARG"
+            ;;
+        r)
+            TAG="$OPTARG"
+            ;;
+        t)
+            TEST="$OPTARG"
+            ;;
+        \?)
+            echo "Invalid option: -$opt" >&2
+            ;;
+        :)
+            echo "Option -$opt requires an argument." >&2
+            ;;
+    esac
+done
+
+if [ "$CLEAN" = "" ]; then
+    MOUNT="no"
+fi
+if [ "$TEST" = "" ]; then
+    TEST="no"
+fi
+
 sudo apt install -y bc dosfstools parted screen snapd
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
-./clean.sh $1 && sudo screen -c vars.env -L -Logfile builder.log bash -c './re-run.sh '$(($2))' '$4
+./clean.sh $CLEAN && sudo screen -c vars.env -L -Logfile builder.log bash -c './re-run.sh '$(($EPOCH))' '$TEST
 mv builder.log Results/builder.log && status="$(cat status.build)" && ./clean.sh cleanup
-if [ "$3" != "" ]; then
+if [ "$TAG" != "" ]; then
   ls -la Builds/*
-  read -p "$status: --> sign/commit/push" && ./git.sh "$status" "$3"
+  read -p "$status: --> sign/commit/push" && ./git.sh "$status" "$TAG"
 fi
