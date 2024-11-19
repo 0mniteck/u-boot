@@ -78,8 +78,5 @@ sed -i '10d' vars.env
 sudo apt install -y bc dosfstools parted screen snapd
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
 ./clean.sh $CLEAN && sudo screen -c vars.env -L -Logfile builder.log bash -c './re-run.sh '$(($EPOCH))' '$CLEAN
-mv builder.log Results/builder.log && status="$(cat status.build)" && ./clean.sh cleanup
-if [ "$TAG" != "" ]; then
-  ls -la Builds/*
-  read -p "$status: --> sign/commit/push" && ./git.sh "$status" "$TAG"
-fi
+mv builder.log Results/builder.log && status="$(cat status.build)" && ./clean.sh cleanup && ls -la Builds/*
+read -p "$status: --> sign/commit/push" && ./git.sh "$status" "$TAG"
