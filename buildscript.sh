@@ -68,7 +68,7 @@ while getopts ":c:d:r:t:" opt; do
 done
 
 if [ "$CLEAN" = "" ]; then
-    MOUNT="yes"
+    CLEAN="yes"
 fi
 if [ "$TEST" = "" ]; then
     TEST="no"
