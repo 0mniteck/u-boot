@@ -161,9 +161,9 @@ if [ "$3" = "no" ]; then
       sha512sum Builds/$loc/sdcard.img >> Results/release.sha512sum
     done
   done
+  dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
+  dd if=Builds/RP64-rk3399-SB/u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 fi
-dd if=/dev/zero of=/dev/mmcblk1 bs=1M count=100 status=progress
-dd if=Builds/RP64-rk3399-SB/u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 conv=notrunc status=progress
 
 cat builder.log | grep -n Checksum && echo "" && echo "" >> Results/release.sha512sum
 echo "# 0mniteck's Current GPG Key ID: 287EE837E6ED2DD3" >> Results/release.sha512sum && echo "" >> Results/release.sha512sum
