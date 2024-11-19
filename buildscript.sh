@@ -14,35 +14,6 @@ export UB_SUM="0ba126110942f1d5bb3dec3f0f17fab0fa13fce9f4e532e4387167e8e1325ee4b
 export BUILD_LIST="PT2-rk3566:pinetab2-rk3566_defconfig RP64-rk3399:rockpro64-rk3399_defconfig PBP-rk3399:pinebook-pro-rk3399_defconfig R5B-rk3588:rock5b-rk3588_defconfig"
 export LIST="PT2-rk3566 RP64-rk3399 PBP-rk3399 R5B-rk3588"
 export ARCHS="rk3568 rk3399 rk3588"
-if [ "$4" = "yes" ]; then
-  export BUILD_LIST="PT2-rk3566:pinetab2-rk3566_defconfig"
-  export LIST="PT2-rk3566"
-  export ARCHS="rk3568"
-fi
-
-> vars.env
-for env in HUB^$HUB BASE^$BASE BASE_EXTRA^$BASE_EXTRA OPT_VER^$OPT_VER OPT_SUM^$OPT_SUM ATF_VER^$ATF_VER ATF_SUM^$ATF_SUM UB_VER^$UB_VER UB_SUM^$UB_SUM
-do
-  env1=$(echo $env | cut -d'^' -f1)
-  env2=$(echo $env | cut -d'^' -f2)
-  env3=$(echo "setenv $env1 \"$env2\"")
-  echo $env3 >> vars.env
-done
-
-printf "\"" >> vars.env
-for lis in BUILD_LIST^$BUILD_LIST LIST^$LIST ARCHS^$ARCHS
-do
-  lis1=$(echo $lis | cut -d'^' -f1)
-  lis2=$(echo $lis | cut -d'^' -f2)
-  if [ $lis1 = BUILD_LIST ] || [ $lis1 = LIST ] || [ $lis1 = ARCHS ]; then
-    printf "\"" >> vars.env
-    echo "" >> vars.env
-    printf "setenv $lis1 \"" >> vars.env
-  fi
-  printf "$lis2 " >> vars.env
-done
-echo "$lis1 \"" >> vars.env
-sed -i '10d' vars.env
 
 while getopts ":c:d:r:t:" opt; do
     case $opt in
@@ -74,9 +45,39 @@ if [ "$TEST" = "" ]; then
     TEST="no"
 fi
 
+if [ "$TEST" = "yes" ]; then
+  export BUILD_LIST="PT2-rk3566:pinetab2-rk3566_defconfig"
+  export LIST="PT2-rk3566"
+  export ARCHS="rk3568"
+fi
+
+> vars.env
+for env in HUB^$HUB BASE^$BASE BASE_EXTRA^$BASE_EXTRA OPT_VER^$OPT_VER OPT_SUM^$OPT_SUM ATF_VER^$ATF_VER ATF_SUM^$ATF_SUM UB_VER^$UB_VER UB_SUM^$UB_SUM
+do
+  env1=$(echo $env | cut -d'^' -f1)
+  env2=$(echo $env | cut -d'^' -f2)
+  env3=$(echo "setenv $env1 \"$env2\"")
+  echo $env3 >> vars.env
+done
+
+printf "\"" >> vars.env
+for lis in BUILD_LIST^$BUILD_LIST LIST^$LIST ARCHS^$ARCHS
+do
+  lis1=$(echo $lis | cut -d'^' -f1)
+  lis2=$(echo $lis | cut -d'^' -f2)
+  if [ $lis1 = BUILD_LIST ] || [ $lis1 = LIST ] || [ $lis1 = ARCHS ]; then
+    printf "\"" >> vars.env
+    echo "" >> vars.env
+    printf "setenv $lis1 \"" >> vars.env
+  fi
+  printf "$lis2 " >> vars.env
+done
+echo "$lis1 \"" >> vars.env
+sed -i '10d' vars.env
+
 sudo apt install -y bc dosfstools parted screen snapd
 git remote remove origin && git remote add origin git@UBoot:0mniteck/U-Boot.git
-./clean.sh $CLEAN && sudo screen -c vars.env -L -Logfile builder.log bash -c './re-run.sh '$(($EPOCH))' '$TEST
+./clean.sh $CLEAN && sudo screen -c vars.env -L -Logfile builder.log bash -c './re-run.sh '$(($EPOCH))' '$CLEAN
 mv builder.log Results/builder.log && status="$(cat status.build)" && ./clean.sh cleanup
 if [ "$TAG" != "" ]; then
   ls -la Builds/*
