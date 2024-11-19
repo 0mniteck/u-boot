@@ -26,16 +26,19 @@ fi
 
 source_date="@$source_date_epoch"
 build_message_timestamp="$(date +'%b %d %Y - 00:00:00 +0000' -d $source_date)";
+if [ "$2" = "no" ]; then
+  echo "CLEAN_BUILD: $2"
+fi
+if [ "$3" = "yes" ]; then
+  echo "DEV_BUILD: $3"
+fi
 echo "SOURCE_DATE: $source_date"
 echo "SOURCE_DATE_EPOCH: $source_date_epoch"
 echo "BUILD_MESSAGE_TIMESTAMP: $build_message_timestamp"
-if [ "$2" = "yes" ]; then
-  echo "DEV_BUILD: $2"
-fi
 ARCHS=$(echo $ARCHS | tr ' ' '\n' | sort -u | tr '\n' ' ')
 docker buildx create --name U-Boot-Builder --bootstrap --use
 
-if [ "$2" = "" ]; then
+if [ "$2" = "yes" ]; then
   docker buildx build --load --target optee --tag optee \
     --build-arg SOURCE_DATE_EPOCH=$source_date_epoch \
     --build-arg OPT_VER=$OPT_VER \
@@ -116,7 +119,7 @@ docker run -it --cpus=$(nproc) \
   -e SOURCE_DATE=$source_date \
   -e UB_VER=$UB_VER \
   -e BUILD_LIST="$BUILD_LIST" \
-  -e DEV_BUILD=$2 \
+  -e DEV_BUILD=$3 \
   u-boot
 
 for dev in $LIST
@@ -138,7 +141,7 @@ snap remove docker --purge
 snap remove docker --purge
 ufw -f enable
 
-if [ "$2" = "" ]; then
+if [ "$3" = "no" ]; then
   for dev in $LIST
   do
     for loc in $dev $dev-SB $dev-MU-SB
