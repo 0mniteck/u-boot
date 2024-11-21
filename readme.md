@@ -1,4 +1,4 @@
-# U-Boot RockChip <sup><sub>- rk3399, & rk3588</sub></sup>
+# U-Boot RockChip <sup><sub>- rk3399, rk3568, & rk3588</sub></sup>
 
 ### Project Goals
 * [ ] Enable TPM Support
