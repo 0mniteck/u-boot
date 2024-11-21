@@ -1,9 +1,9 @@
-# U-Boot RockChip <sup><sub>- rk3399, rk3566, & rk3588</sub></sup>
+# U-Boot RockChip <sup><sub>- rk3399, & rk3588</sub></sup>
 
 ### Project Goals
 * [ ] Enable TPM Support
   * [ ] Check if new patches fixed problem
-* [x] Remove rkbin dependency from rk3566 & rk3588
+* [x] Remove rkbin dependency from rk3568 & rk3588
   * [x] TF-A upstreamed initial patches from rockchip
   * [x] U-boot modifications to use u-boot-tpl vs rockchip-tpl
   * [ ] Resolve rk3568 issues - SPL_MAX
