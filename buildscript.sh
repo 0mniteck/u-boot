@@ -11,8 +11,8 @@ export ATF_SUM="c9c2c44cf8a412c228fcce87949ce155500743e7f39bed505e7416058738ab9c
 export UB_VER="2025.01-rc2"
 export UB_SUM="0ba126110942f1d5bb3dec3f0f17fab0fa13fce9f4e532e4387167e8e1325ee4b63a17accdbeb102dd2a6fbe70a48dd488953169919da8a4c5d052b250df464d"
 
-export BUILD_LIST="PT2-rk3566:pinetab2-rk3566_defconfig RP64-rk3399:rockpro64-rk3399_defconfig PBP-rk3399:pinebook-pro-rk3399_defconfig R5B-rk3588:rock5b-rk3588_defconfig"
-export LIST="PT2-rk3566 RP64-rk3399 PBP-rk3399 R5B-rk3588"
+export BUILD_LIST="RP64-rk3399:rockpro64-rk3399_defconfig PBP-rk3399:pinebook-pro-rk3399_defconfig R5B-rk3588:rock5b-rk3588_defconfig"
+export LIST="RP64-rk3399 PBP-rk3399 R5B-rk3588"
 export ARCHS="rk3568 rk3399 rk3588"
 
 while getopts ":c:d:r:t:" opt; do
