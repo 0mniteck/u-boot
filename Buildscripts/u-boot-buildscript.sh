@@ -41,6 +41,7 @@ for dev in $BUILD_LIST
       fi
       BL31=/Builds/$platt/bl31.elf FORCE_SOURCE_DATE=1 SOURCE_DATE=$SOURCE_DATE SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH make -j $(nproc) all
       ls -la
+      cat simple-bin.map
     popd
     mv /$(echo $loc | cut -d':' -f1)/u-boot-$UB_VER/u-boot-rockchip.bin /$(echo $loc | cut -d':' -f1)/u-boot-rockchip.bin
     mv /$(echo $loc | cut -d':' -f1)/u-boot-$UB_VER/u-boot-rockchip-spi.bin /$(echo $loc | cut -d':' -f1)/u-boot-rockchip-spi.bin
