@@ -27,7 +27,7 @@ for dev in $BUILD_LIST
       if [ "$(echo $dev | cut -d':' -f2)" = "rock5b-rk3588_defconfig" ] || [ "$(echo $dev | cut -d':' -f2)" = "pinetab2-rk3566_defconfig" ]; then
         ../.././Configs/xpl-config.sh
         if [ "$(echo $dev | cut -d':' -f2)" = "pinetab2-rk3566_defconfig" ]; then
-          echo "CONFIG_SPL_MAX_SIZE=0x23C00" >> defconfig
+          echo "CONFIG_SPL_MAX_SIZE=0x25800" >> defconfig
         fi
         sed -i '112,117d' arch/arm/mach-rockchip/sdram.c && echo "Deployed Rockchip TPL Bypass"
       fi
