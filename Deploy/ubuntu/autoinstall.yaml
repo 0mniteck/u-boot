@@ -34615,8 +34615,17 @@ autoinstall:
   shutdown: poweroff
   late-commands:
     - curtin in-target -- apt-get remove --purge ufw firefox
+    - curtin in-target -- apt-mark hold shim shim-signed
     - cp /bootaa64.efi /target/boot/efi/EFI/BOOT/BOOTAA64.EFI
     - cp /shimaa64.efi /target/boot/efi/EFI/ubuntu/shimaa64.efi
+    - curtin in-target -- curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
+    - curtin in-target -- echo "deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ noble main" | tee /etc/apt/sources.list.d/cloudflare-client.list
+    - curtin in-target -- apt update
+    - curtin in-target -- apt install cloudflare-warp
+    - curtin in-target -- warp-cli registration new
+    - curtin in-target -- warp-cli mode warp+doh
+    - curtin in-target -- warp-cli dns families malware
+    - curtin in-target -- warp-cli connect
     - sleep 5m
   error-commands:
     - tar -czf /target/installer-logs.tar.gz /var/log/installer/
