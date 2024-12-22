@@ -2,7 +2,6 @@ autoinstall:
   version: 1
   interactive-sections:
     - identity
-    - storage
   early-commands:
     - wget -q -O /bootaa64.efi https://github.com/0mniteck/U-Boot/raw/refs/heads/Docker/Deploy/ubuntu/bootaa64.efi
     - echo "3c7b02add63da9f1d76096dfd6aacc13d2ab5fec7a0ac820a752512aab7d80374a0ea463611473bf9e15c8bb3cc35e85a6d93433d6709a88995f2e17bf476fca  /bootaa64.efi" | sha512sum --status -c - && echo "bootaa64.efi Checksum Matched!" || poweroff
@@ -45,7 +44,6 @@ autoinstall:
       name: lvm
       sizing-policy: all
       encrypted: yes
-      password:
       match:
         - path: /dev/mmcblk0
   ubuntu-pro:
@@ -72,7 +70,9 @@ autoinstall:
   debconf-selections: |
     ufw ufw/enable boolean true
   packages:
-    - libpam-u2f fido2-tools dracut
+    - libpam-u2f
+    - fido2-tools
+    - dracut
   kernel:
      flavor: generic
   kernel-crash-dumps:
