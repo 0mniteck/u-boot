@@ -40,7 +40,6 @@ autoinstall:
         Components: main
     fallback: abort
     geoip: false
-  autoinstall:
   storage:
     layout:
       name: lvm
@@ -73,9 +72,7 @@ autoinstall:
   debconf-selections: |
     ufw ufw/enable boolean true
   packages:
-    - libpam-u2f
-    - fido2-tools
-    - dracut
+    - libpam-u2f fido2-tools dracut
   kernel:
      flavor: generic
   kernel-crash-dumps:
@@ -84,7 +81,8 @@ autoinstall:
   updates: all
   shutdown: poweroff
   late-commands:
-    - curtin in-target -- apt-get remove --purge ufw firefox
+    - curtin in-target -- apt install device-tree-compiler devio libfdt1 libiniparser1 libubootenv-tool -y
+    - curtin in-target -- apt remove --purge ufw firefox -y
     - curtin in-target -- apt-mark hold shim shim-signed
     - cp /bootaa64.efi /target/boot/efi/EFI/BOOT/BOOTAA64.EFI
     - echo "3c7b02add63da9f1d76096dfd6aacc13d2ab5fec7a0ac820a752512aab7d80374a0ea463611473bf9e15c8bb3cc35e85a6d93433d6709a88995f2e17bf476fca  /target/boot/efi/EFI/BOOT/BOOTAA64.EFI" | sha512sum --status -c - && echo "bootaa64.efi Checksum Matched!" || exit 1
@@ -93,7 +91,7 @@ autoinstall:
     - curtin in-target -- curl -fsSL https://pkg.cloudflareclient.com/pubkey.gpg | gpg --yes --dearmor --output /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg
     - curtin in-target -- echo "deb [signed-by=/usr/share/keyrings/cloudflare-warp-archive-keyring.gpg] https://pkg.cloudflareclient.com/ noble main" | tee /etc/apt/sources.list.d/cloudflare-client.list
     - curtin in-target -- apt update
-    - curtin in-target -- apt install cloudflare-warp
+    - curtin in-target -- apt install cloudflare-warp -y
     - curtin in-target -- warp-cli registration new
     - curtin in-target -- warp-cli mode warp+doh
     - curtin in-target -- warp-cli dns families malware
