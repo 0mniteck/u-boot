@@ -33,4 +33,4 @@ Prebuilt u-boot-rockchip.bin & u-boot-rockchip-spi.bin are included in a bootabl
 
 --> [FLASHING](https://github.com/0mniteck/U-Boot/blob/rk3399-A/docs/FLASH.md)
 
---> [SIGNING](https://github.com/0mniteck/U-Boot/blob/rk3399-A/docs/SIGN.md)
+--> [SIGNING YOUR OWN](https://github.com/0mniteck/U-Boot/blob/rk3399-A/docs/SIGN.md)
