@@ -3,8 +3,6 @@
 [Asciinema Demo](https://asciinema.org/a/kSWswlC3jxwgrxGbu8Lc0redZ)
 
 ### Initial-Flash From Bypassed and Erased SPI/eMMC (Recommended)
-### or Update-Flash From Existing U-Boot
-
 #### Erase current SPI, then boot into U-Boot Via SD with sdcard.img
 
 `Insert SD Card`
@@ -13,7 +11,7 @@
 
 `Power-on`
 
-#### Wait untill you see the environment fails to load from SPI
+#### Wait untill you see the environment fail to load from SPI
 
 `Reconnect SPI`
 
