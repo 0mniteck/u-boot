@@ -67,4 +67,4 @@ cd U-Boot && \
 
 --> [FLASHING](https://github.com/0mniteck/U-Boot/blob/Docs/docs/FLASH.md)
 
---> [SIGNING](https://github.com/0mniteck/U-Boot/blob/Docs/docs/SIGN.md)
+--> [SIGNING YOUR OWN](https://github.com/0mniteck/U-Boot/blob/Docs/docs/SIGN.md)
