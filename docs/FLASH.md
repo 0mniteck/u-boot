@@ -62,4 +62,4 @@ Wait until `Booting /\EFI\BOOT\BOOTAA64.EFI`
 
 `Reconnect eMMC`
 
-Continue installation as usual, connect ethernet, and use the provided [https://omniteck.com/autoinstall.yaml](https://github.com/0mniteck/U-Boot/raw/refs/heads/Docker/Deploy/ubuntu/autoinstall.yaml) when subiquity has the option for `Automated Installation`
+Continue installation as usual, connect ethernet, and use the provided [https://omniteck.com/autoinstall.yaml](https://github.com/0mniteck/U-Boot/raw/refs/heads/Docker/Deploy/ubuntu/autoinstall.yaml) when subiquity has the option select `Automated Installation`
