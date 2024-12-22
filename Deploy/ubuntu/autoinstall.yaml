@@ -41,7 +41,7 @@ autoinstall:
         Components: main
       sources: |
         cloudflare.list:
-          source: "https://pkg.cloudflareclient.com/ noble main"
+          source: "deb https://pkg.cloudflareclient.com/ noble main"
           key: |
             -----BEGIN PGP PUBLIC KEY BLOCK-----
             
