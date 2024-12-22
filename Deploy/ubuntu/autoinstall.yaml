@@ -30,11 +30,9 @@ autoinstall:
     disable_components: [restricted, universe, multiverse]
     mirror-selection:
       primary:
-        - arches: [default]
-          uri: "https://us.ports.ubuntu.com/ubuntu-ports"
+        - uri: "https://us.ports.ubuntu.com/ubuntu-ports"
       security:
-        - arches: [default]
-          uri: "https://us.ports.ubuntu.com/ubuntu-ports"
+        - uri: "https://us.ports.ubuntu.com/ubuntu-ports"
     sources_list: |
       URIs: $PRIMARY $SECURITY
       Suites: $RELEASE $RELEASE-updates $RELEASE-security $RELEASE-backports
@@ -73,7 +71,7 @@ autoinstall:
             =J+JK
             -----END PGP PUBLIC KEY BLOCK-----
     fallback: abort
-    geoip: false
+    geoip: true
   storage:
     layout:
       name: lvm
