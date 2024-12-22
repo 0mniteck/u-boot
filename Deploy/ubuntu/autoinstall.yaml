@@ -29,10 +29,10 @@ autoinstall:
     preserve_sources_list: false
     disable_components: [restricted, universe, multiverse]
     primary:
-      - arches: [arm64,default]
+      - arches: [arm64, default]
         uri: "https://us.ports.ubuntu.com/ubuntu-ports"
     security:
-      - arches: [arm64,default]
+      - arches: [arm64, default]
       - uri: "https://us.ports.ubuntu.com/ubuntu-ports"
     sources_list: |
       URIs: $PRIMARY $SECURITY
