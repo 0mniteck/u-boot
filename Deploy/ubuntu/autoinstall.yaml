@@ -31,8 +31,11 @@ autoinstall:
       primary:
         - uri: "https://us.ports.ubuntu.com/ubuntu-ports"
           arches: [arm64]
+      security:
+        - uri: "https://us.ports.ubuntu.com/ubuntu-ports"
+          arches: [arm64]
       sources_list: |
-        URIs: $PRIMARY
+        URIs: $PRIMARY $SECURITY
         Suites: $RELEASE $RELEASE-updates $RELEASE-security $RELEASE-backports
         Components: main
     fallback: abort
@@ -42,6 +45,8 @@ autoinstall:
     layout:
       name: lvm
       sizing-policy: all
+      encrypted: yes
+      password:
       match:
         - path: /dev/mmcblk0
   ubuntu-pro:
@@ -69,8 +74,8 @@ autoinstall:
     ufw ufw/enable boolean true
   packages:
     - libpam-u2f
-    - dracut
     - fido2-tools
+    - dracut
   kernel:
      flavor: generic
   kernel-crash-dumps:
