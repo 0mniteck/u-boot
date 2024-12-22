@@ -28,21 +28,20 @@ autoinstall:
   apt:
     preserve_sources_list: false
     disable_components: [restricted, universe, multiverse]
-    mirror-selection:
-      primary:
-        - uri: "https://us.ports.ubuntu.com/ubuntu-ports"
-          arches: [arm64]
-      security:
-        - uri: "https://us.ports.ubuntu.com/ubuntu-ports"
-          arches: [arm64]
-      sources_list: |
-        URIs: $PRIMARY $SECURITY
-        Suites: $RELEASE $RELEASE-updates $RELEASE-security $RELEASE-backports
-        Components: main
-      sources: |
-        cloudflare.list:
-          source: "deb https://pkg.cloudflareclient.com/ noble main"
-          key: |
+    primary:
+      - arches: [arm64,default]
+        uri: "https://us.ports.ubuntu.com/ubuntu-ports"
+    security:
+      - arches: [arm64,default]
+      - uri: "https://us.ports.ubuntu.com/ubuntu-ports"
+    sources_list: |
+      URIs: $PRIMARY $SECURITY
+      Suites: $RELEASE $RELEASE-updates $RELEASE-security $RELEASE-backports
+      Components: main
+    sources: |
+      cloudflare:
+        source: "deb https://pkg.cloudflareclient.com/ noble main"
+        key: |
             -----BEGIN PGP PUBLIC KEY BLOCK-----
             
             mQINBGGr2jUBEADHaae1uIKW4JI/E32IR9EJSswkOuZl1J+XXH32U2u3DGtzGuei
