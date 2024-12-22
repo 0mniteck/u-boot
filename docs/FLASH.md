@@ -4,7 +4,7 @@
 
 ### Always do an Initial Flash From Bypassed and Erased SPI/eMMC
 
-#### Erase current SPI, then boot into U-Boot Via SD with sdcard.img
+#### Bypass current SPI, then boot into U-Boot Via SD with sdcard.img
 
 `Insert SD Card`
 
