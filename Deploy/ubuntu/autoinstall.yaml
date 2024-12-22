@@ -45,7 +45,7 @@ autoinstall:
       match:
         - path: /dev/mmcblk0
   ubuntu-pro:
-    token: ""
+    token: null
   active-directory:
     admin-name: ""
     domain-name: ""
