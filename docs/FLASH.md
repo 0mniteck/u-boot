@@ -52,7 +52,7 @@ Check for `Loading Environment from SPIFlash... SF: Detected gd25q128 with page 
 
 `Power-off`
 
-#### Insert installation ISO after adding OMNITECK's [bootaa64.efi](https://github.com/0mniteck/U-Boot/raw/refs/heads/Docker/Deploy/ubuntu/bootaa64.efi) to the ESP patition & Keep the eMMC bypassed and ethernet unplugged during boot
+#### Insert installation [ISO](https://cdimage.ubuntu.com/releases/oracular/release/ubuntu-24.10-desktop-arm64.iso) after adding OMNITECK's [bootaa64.efi](https://github.com/0mniteck/U-Boot/raw/refs/heads/Docker/Deploy/ubuntu/bootaa64.efi) to the ESP patition & Keep the eMMC bypassed and ethernet unplugged during boot
 
 `Bypass eMMC`
 
@@ -63,5 +63,3 @@ Wait until `Booting /\EFI\BOOT\BOOTAA64.EFI`
 `Reconnect eMMC`
 
 Continue installation as usual, connect ethernet, and use the provided [https://omniteck.com/autoinstall.yaml](https://github.com/0mniteck/U-Boot/raw/refs/heads/Docker/Deploy/ubuntu/autoinstall.yaml) when subiquity has the option for `Automated Installation`
-
-Select `Advanced` button for storage options and select `LVM with Encryption`
