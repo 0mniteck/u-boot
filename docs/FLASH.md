@@ -2,9 +2,9 @@
 
 [Asciinema Demo](https://asciinema.org/a/kSWswlC3jxwgrxGbu8Lc0redZ)
 
-### Always do an Initial Flash From Bypassed and Erased SPI/eMMC
+### Always do an Initial Flash From Bypassed & Erased SPI/eMMC; And Keep Ethernet Unplugged!
 
-#### Bypass current SPI/eMMC, then boot into U-Boot Via SD with sdcard.img
+#### Bypass current SPI/eMMC, then boot into U-Boot Via SD with [sdcard.img](https://github.com/0mniteck/U-Boot/tree/Docker/Builds)
 
 `Insert SD Card`
 
@@ -46,3 +46,20 @@ As well as `Loading Environment from SPIFlash... jedec_spi_nor flash@0: unrecogn
 `saveenv`
 
 `reset`
+
+Check for `Loading Environment from SPIFlash... SF: Detected gd25q128 with page size 256 Bytes, erase size 4 KiB, total 16 MiB`
+`OK`
+
+`Power-off`
+
+#### Insert installation ISO & Keep the eMMC bypassed and ethernet unplugged during boot
+
+`Bypass eMMC`
+
+`Power-on`
+
+Wait until `Booting /\EFI\BOOT\BOOTAA64.EFI`
+
+`Reconnect eMMC`
+
+Continue installation as usual connect ethernet and use the provided autoinstall.yaml
