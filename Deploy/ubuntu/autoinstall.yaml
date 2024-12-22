@@ -71,6 +71,7 @@ autoinstall:
   debconf-selections: |
     ufw ufw/enable boolean true
   packages:
+    - curl
     - libpam-u2f
     - fido2-tools
     - dracut
