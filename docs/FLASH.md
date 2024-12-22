@@ -14,6 +14,11 @@
 
 #### Wait untill you see the environment fail to load from SPI
 
+Ensure you see `Trying to boot from MMC2`
+
+As well as `Loading Environment from SPIFlash... jedec_spi_nor flash@0: unrecognized JEDEC id bytes: ff, ff, ff`
+`*** Warning - spi_flash_probe_bus_cs() failed, using default environment`
+
 `Reconnect SPI`
 
 `Stop Autoboot by hitting any key`
