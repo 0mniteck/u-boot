@@ -28,11 +28,13 @@ autoinstall:
   apt:
     preserve_sources_list: false
     disable_components: [restricted, universe, multiverse]
-    primary:
-      - arches: [default]
-        uri: "https://us.ports.ubuntu.com/ubuntu-ports"
-    security:
-      - uri: "https://us.ports.ubuntu.com/ubuntu-ports"
+    mirror-selection:
+      primary:
+        - arches: [default]
+          uri: "https://us.ports.ubuntu.com/ubuntu-ports"
+      security:
+        - arches: [default]
+          uri: "https://us.ports.ubuntu.com/ubuntu-ports"
     sources_list: |
       URIs: $PRIMARY $SECURITY
       Suites: $RELEASE $RELEASE-updates $RELEASE-security $RELEASE-backports
