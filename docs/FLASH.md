@@ -4,7 +4,7 @@
 
 ### Always do an Initial Flash From Bypassed & Erased SPI/eMMC; And Keep Ethernet Unplugged!
 
-#### Bypass current SPI/eMMC, then boot into U-Boot Via SD with [sdcard.img](https://github.com/0mniteck/U-Boot/tree/Docker/Builds)
+#### Bypass current SPI/eMMC, then boot into U-Boot Via SD with [sdcard.img](https://github.com/0mniteck/U-Boot/tree/UEFI%2BSb%2Bv2024.10%2Bv2.10.7%2Bv4.3.0/Builds)
 
 `Insert SD Card`
 
@@ -52,7 +52,7 @@ Check for `Loading Environment from SPIFlash... SF: Detected gd25q128 with page 
 
 `Power-off`
 
-#### Insert installation ISO & Keep the eMMC bypassed and ethernet unplugged during boot
+#### Insert installation ISO after adding OMNITECK's [bootaa64.efi](https://github.com/0mniteck/U-Boot/raw/refs/heads/Docker/Deploy/ubuntu/bootaa64.efi) to the ESP patition & Keep the eMMC bypassed and ethernet unplugged during boot
 
 `Bypass eMMC`
 
@@ -62,4 +62,6 @@ Wait until `Booting /\EFI\BOOT\BOOTAA64.EFI`
 
 `Reconnect eMMC`
 
-Continue installation as usual connect ethernet and use the provided autoinstall.yaml
+Continue installation as usual, connect ethernet, and use the provided [https://omniteck.com/autoinstall.yaml](https://github.com/0mniteck/U-Boot/raw/refs/heads/Docker/Deploy/ubuntu/autoinstall.yaml) when subiquity has the option for `Automated Installation`
+
+Select `Advanced` button for storage options and select `LVM with Encryption`
