@@ -33,13 +33,13 @@ autoinstall:
       primary:
         - uri: "https://us.ports.ubuntu.com/ubuntu-ports"
           arches: [arm64, default]
+      security:
+        uri: "https://us.ports.ubuntu.com/ubuntu-ports"
+        arches: [arm64, default]
     sources_list: |
       URIs: $PRIMARY $SECURITY
       Suites: $RELEASE $RELEASE-updates $RELEASE-security $RELEASE-backports
       Components: main
-    security:
-      uri: "https://us.ports.ubuntu.com/ubuntu-ports"
-      arches: [arm64, default]
     sources: |
       cloudflare:
         source: "deb https://pkg.cloudflareclient.com/ noble main"
