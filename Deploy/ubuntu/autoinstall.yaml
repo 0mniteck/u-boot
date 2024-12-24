@@ -28,7 +28,6 @@ autoinstall:
   apt:
     preserve_sources_list: false
     disable_components: [restricted, universe, multiverse]
-    disable_suites: []
     mirror-selection:
       primary:
         - uri: "https://us.ports.ubuntu.com/ubuntu-ports"
