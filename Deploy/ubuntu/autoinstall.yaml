@@ -32,14 +32,15 @@ autoinstall:
       primary:
         - uri: "https://us.ports.ubuntu.com/ubuntu-ports"
           arches: [arm64, default]
-          fallback:
-            primary: "https://us.ports.ubuntu.com/ubuntu-ports"
-            security: "https://us.ports.ubuntu.com/ubuntu-ports"
+      security:
+        uri: "https://us.ports.ubuntu.com/ubuntu-ports"
       sources_list: |
+        Types: deb
         URIs: $PRIMARY
         Suites: $RELEASE $RELEASE-updates $RELEASE-backports
         Components: main
         |
+        Types: deb
         URIs: $SECURITY
         Suites: $RELEASE-security
         Components: main
