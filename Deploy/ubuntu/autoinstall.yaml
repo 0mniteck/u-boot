@@ -10,7 +10,7 @@ autoinstall:
     - echo "cd332972c26369600cf9ce7b3373977c4674794e8b80eaf36fe53d08fc9abc746bb1739cbb6e31d55aacf0a13705302d7b7d73d251c86754d9416c4d1673ef35  /shimaa64.efi" | sha512sum --status -c - && echo "shimaa64.efi Checksum Matched!" || poweroff
     - sed -i s,http://ports.ubuntu.com/ubuntu-ports,https://us.ports.ubuntu.com/ubuntu-ports,g /etc/cloud/cloud.cfg
     - sed -i s,http://ports.ubuntu.com/ubuntu-ports,https://us.ports.ubuntu.com/ubuntu-ports,g /etc/apt/sources.list.d/ubuntu.sources
-    - sed -i s,main universe restricted multiverse,main,g /etc/apt/sources.list.d/ubuntu.sources
+    - sed -i s,'main universe restricted multiverse',main,g /etc/apt/sources.list.d/ubuntu.sources
     - |
       cat > /etc/apt/sources.list.d/cloudflare.sources << 'EOF'
       Types: deb
