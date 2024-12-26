@@ -79,8 +79,11 @@ autoinstall:
         deb $PRIMARY $RELEASE $RELEASE-updates $RELEASE-backports main
         deb $SECURITY $RELEASE-security main
     sources:
-      cloudflare.list:
-        source: deb https://pkg.cloudflareclient.com/ noble main
+      cloudflare.sources:
+        Types: deb
+        URIs: https://pkg.cloudflareclient.com/
+        Suites: noble
+        Components: main
         key: |
           -----BEGIN PGP PUBLIC KEY BLOCK-----
           
