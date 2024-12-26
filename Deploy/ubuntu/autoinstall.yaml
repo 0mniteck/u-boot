@@ -66,7 +66,7 @@ autoinstall:
         dhcp6: true
   proxy: null
   apt:
-    preserve_sources_list: true
+    preserve_sources_list: false
     disable_components: [restricted, universe, multiverse]
     mirror-selection:
       primary:
