@@ -32,12 +32,9 @@ autoinstall:
       primary:
         - uri: "https://us.ports.ubuntu.com/ubuntu-ports"
           arches: [arm64, default]
-      security:
-        - uri: "https://us.ports.ubuntu.com/ubuntu-ports"
-          arches: [arm64, default]
-      cloudflare:
-        - uri: "https://pkg.cloudflareclient.com/"
-          arches: [arm64, default]
+          fallback:
+            primary: "https://us.ports.ubuntu.com/ubuntu-ports"
+            security: "https://us.ports.ubuntu.com/ubuntu-ports"
       sources_list: |
         URIs: $PRIMARY
         Suites: $RELEASE $RELEASE-updates $RELEASE-backports
