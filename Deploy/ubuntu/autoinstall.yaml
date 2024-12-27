@@ -193,7 +193,6 @@ autoinstall:
   user-data:
     apt:
       preserve_sources_list: false
-      disable_components: [restricted, universe, multiverse]
       primary:
         - arches: [arm64, default]
           uri: "https://us.ports.ubuntu.com/ubuntu-ports"
