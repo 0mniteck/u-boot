@@ -125,6 +125,9 @@ autoinstall:
           -----END PGP PUBLIC KEY BLOCK-----
     fallback: abort
     geoip: true
+  apt_mirrors:
+    ubuntu_archive: https://us.ports.ubuntu.com/ubuntu-ports
+    ubuntu_security: https://us.ports.ubuntu.com/ubuntu-ports
   storage:
     layout:
       name: lvm
@@ -187,8 +190,4 @@ autoinstall:
   reporting:
     builtin:
       type: none
-  user-data:
-    curtin:
-      apt_mirrors:
-        ubuntu_archive: https://us.ports.ubuntu.com/ubuntu-ports
-        ubuntu_security: https://us.ports.ubuntu.com/ubuntu-ports
+  user-data: {}
