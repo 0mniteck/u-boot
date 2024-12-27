@@ -14,6 +14,14 @@ autoinstall:
               break
           fi
       done
+    - mkdir -p /var/log/cache/partial
+    - echo 'Dir::Cache::Archives "/var/log/cache";' > /etc/apt/apt.conf.d/omni-apt.conf
+    - mkdir -p /var/log/varlibdpkg
+    - cp -r --preserve /var/lib/dpkg/* /var/log/varlibdpkg/
+    - echo 'admindir=/var/log/varlibdpkg' >> /etc/dpkg/dpkg.cfg
+    - echo 'Dir::State::status "/var/log/varlibdpkg/status";' >> /etc/apt/apt.conf.d/omni-apt.conf
+    - mkdir -p /var/log/tmp
+    - echo 'APT::ExtractTemplates::TempDir "/var/log/tmp";' >> /etc/apt/apt.conf.d/omni-apt.conf
     - sed -i s,http://ports.ubuntu.com/ubuntu-ports,https://us.ports.ubuntu.com/ubuntu-ports,g /etc/cloud/cloud.cfg
     - sed -i s,http://ports.ubuntu.com/ubuntu-ports,https://us.ports.ubuntu.com/ubuntu-ports,g /etc/apt/sources.list.d/ubuntu.sources
     - sed -i s,'main universe restricted multiverse','main universe',g /etc/apt/sources.list.d/ubuntu.sources
