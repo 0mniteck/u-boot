@@ -247,11 +247,7 @@ autoinstall:
       clear
       EOF
     - sed -i s,'main universe','main',g /target/etc/apt/sources.list.d/ubuntu.sources
-    - curtin in-target -- warp-svc
-    - curtin in-target -- warp-cli registration new
-    - curtin in-target -- warp-cli mode warp+doh
-    - curtin in-target -- warp-cli dns families malware
-    - curtin in-target -- warp-cli connect
+    - curtin in-target -- systemctl start warp-svc && warp-cli registration new && warp-cli mode warp+doh && warp-cli dns families malware && warp-cli connect
     - sleep 5m
   error-commands:
     - tar -czf /target/installer-logs.tar.gz /var/log/installer/
