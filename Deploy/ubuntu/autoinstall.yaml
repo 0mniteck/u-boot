@@ -159,7 +159,7 @@ autoinstall:
   debconf-selections: |
     ufw ufw/enable boolean true
   packages:
-    - gnupg2
+    - gnupg
     - cloudflare-warp
     - libpam-u2f
     - fido2-tools
