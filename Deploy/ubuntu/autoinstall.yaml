@@ -48,6 +48,7 @@ autoinstall:
         =J+JK
         -----END PGP PUBLIC KEY BLOCK-----
       EOF
+    - apt update
   locale: "en_US.UTF-8"
   refresh-installer:
     update: true
@@ -155,6 +156,7 @@ autoinstall:
   debconf-selections: |
     ufw ufw/enable boolean true
   packages:
+    - gnupg2
     - cloudflare-warp
     - libpam-u2f
     - fido2-tools
@@ -185,4 +187,7 @@ autoinstall:
   reporting:
     builtin:
       type: none
-  user-data: {}
+  user-data:
+    apt_mirrors:
+      ubuntu_archive: https://us.ports.ubuntu.com/ubuntu-ports
+      ubuntu_security: https://us.ports.ubuntu.com/ubuntu-ports
