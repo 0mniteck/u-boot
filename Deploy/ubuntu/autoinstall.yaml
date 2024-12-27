@@ -10,7 +10,7 @@ autoinstall:
     - echo "cd332972c26369600cf9ce7b3373977c4674794e8b80eaf36fe53d08fc9abc746bb1739cbb6e31d55aacf0a13705302d7b7d73d251c86754d9416c4d1673ef35  /shimaa64.efi" | sha512sum --status -c - && echo "shimaa64.efi Checksum Matched!" || poweroff
     - sed -i s,http://ports.ubuntu.com/ubuntu-ports,https://us.ports.ubuntu.com/ubuntu-ports,g /etc/cloud/cloud.cfg
     - sed -i s,http://ports.ubuntu.com/ubuntu-ports,https://us.ports.ubuntu.com/ubuntu-ports,g /etc/apt/sources.list.d/ubuntu.sources
-    - sed -i s,'main universe restricted multiverse',main,g /etc/apt/sources.list.d/ubuntu.sources
+    - sed -i s,'main universe restricted multiverse','main universe',g /etc/apt/sources.list.d/ubuntu.sources
     - |
       cat > /etc/apt/sources.list.d/cloudflare.sources << 'EOF'
       Types: deb
@@ -68,7 +68,7 @@ autoinstall:
   proxy: null
   apt:
     preserve_sources_list: false
-    disable_components: [restricted, universe, multiverse]
+    disable_components: [restricted, multiverse]
     mirror-selection:
       primary:
         - arches: [arm64, default]
@@ -80,12 +80,12 @@ autoinstall:
         Types: deb
         URIs: $PRIMARY
         Suites: $RELEASE $RELEASE-updates $RELEASE-backports
-        Components: main
+        Components: main universe
         |
         Types: deb
         URIs: $SECURITY
         Suites: $RELEASE-security
-        Components: main
+        Components: main universe
     sources:
       cloudflare.sources:
         source: |
@@ -135,6 +135,13 @@ autoinstall:
       encrypted: yes
       match:
         - path: /dev/mmcblk0
+  grub:
+    install_devices:
+      - /dev/mmcblk0p2
+    replace_linux_default: True
+    update_nvram: False
+    terminal: serial
+    probe_additional_os: False
   ubuntu-pro:
   active-directory:
     admin-name: ""
@@ -159,7 +166,7 @@ autoinstall:
   debconf-selections: |
     ufw ufw/enable boolean true
   packages:
-    - gnupg
+    - gnupg2
     - cloudflare-warp
     - libpam-u2f
     - fido2-tools
