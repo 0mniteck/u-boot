@@ -4,10 +4,6 @@ autoinstall:
     - identity
     - storage
   early-commands:
-    - wget -q -O /bootaa64.efi https://github.com/0mniteck/U-Boot/raw/refs/heads/Docker/Deploy/ubuntu/bootaa64.efi
-    - echo "3c7b02add63da9f1d76096dfd6aacc13d2ab5fec7a0ac820a752512aab7d80374a0ea463611473bf9e15c8bb3cc35e85a6d93433d6709a88995f2e17bf476fca  /bootaa64.efi" | sha512sum --status -c - && echo "bootaa64.efi Checksum Matched!" || poweroff
-    - wget -q -O /shimaa64.efi https://github.com/0mniteck/U-Boot/raw/refs/heads/Docker/Deploy/ubuntu/shimaa64.efi
-    - echo "cd332972c26369600cf9ce7b3373977c4674794e8b80eaf36fe53d08fc9abc746bb1739cbb6e31d55aacf0a13705302d7b7d73d251c86754d9416c4d1673ef35  /shimaa64.efi" | sha512sum --status -c - && echo "shimaa64.efi Checksum Matched!" || poweroff
     - sed -i s,http://ports.ubuntu.com/ubuntu-ports,https://us.ports.ubuntu.com/ubuntu-ports,g /etc/cloud/cloud.cfg
     - sed -i s,http://ports.ubuntu.com/ubuntu-ports,https://us.ports.ubuntu.com/ubuntu-ports,g /etc/apt/sources.list.d/ubuntu.sources
     - sed -i s,'main universe restricted multiverse','main universe',g /etc/apt/sources.list.d/ubuntu.sources
@@ -55,6 +51,10 @@ autoinstall:
     - warp-cli mode warp+doh
     - warp-cli dns families malware
     - warp-cli connect
+    - wget -q -O /bootaa64.efi https://github.com/0mniteck/U-Boot/raw/refs/heads/Docker/Deploy/ubuntu/bootaa64.efi
+    - echo "3c7b02add63da9f1d76096dfd6aacc13d2ab5fec7a0ac820a752512aab7d80374a0ea463611473bf9e15c8bb3cc35e85a6d93433d6709a88995f2e17bf476fca  /bootaa64.efi" | sha512sum --status -c - && echo "bootaa64.efi Checksum Matched!" || poweroff
+    - wget -q -O /shimaa64.efi https://github.com/0mniteck/U-Boot/raw/refs/heads/Docker/Deploy/ubuntu/shimaa64.efi
+    - echo "cd332972c26369600cf9ce7b3373977c4674794e8b80eaf36fe53d08fc9abc746bb1739cbb6e31d55aacf0a13705302d7b7d73d251c86754d9416c4d1673ef35  /shimaa64.efi" | sha512sum --status -c - && echo "shimaa64.efi Checksum Matched!" || poweroff
   locale: "en_US.UTF-8"
   refresh-installer:
     update: true
