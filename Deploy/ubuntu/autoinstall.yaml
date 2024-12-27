@@ -70,10 +70,10 @@ autoinstall:
     disable_components: [restricted, universe, multiverse]
     mirror-selection:
       primary:
-        - arches: [default]
+        - arches: [arm64, default]
           uri: "https://us.ports.ubuntu.com/ubuntu-ports"
       security:
-        - arches: [default]
+        - arches: [arm64, default]
           uri: "https://us.ports.ubuntu.com/ubuntu-ports"
       sources_list: |
         deb $PRIMARY $RELEASE $RELEASE-updates $RELEASE-backports main
