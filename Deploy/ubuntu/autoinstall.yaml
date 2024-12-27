@@ -5,7 +5,7 @@ autoinstall:
     - storage
   early-commands:
     - |
-      for i in {1..5}; do
+      for i in {1..10}; do
           echo 125 | tee /sys/class/hwmon/hwmon3/pwm1
           sleep 5
           current_speed=$(cat /sys/class/hwmon/hwmon3/pwm1)
@@ -14,9 +14,6 @@ autoinstall:
               break
           fi
       done
-    - mkdir -p /var/log/overlay/{upper,work,lower}
-    - mount -o lowerdir=/,upperdir=/var/log/overlay/upper,workdir=/var/log/overlay/work /var/log/overlay
-    - mount --bind /var/log/overlay /
     - sed -i s,http://ports.ubuntu.com/ubuntu-ports,https://us.ports.ubuntu.com/ubuntu-ports,g /etc/cloud/cloud.cfg
     - sed -i s,http://ports.ubuntu.com/ubuntu-ports,https://us.ports.ubuntu.com/ubuntu-ports,g /etc/apt/sources.list.d/ubuntu.sources
     - sed -i s,'main universe restricted multiverse','main universe',g /etc/apt/sources.list.d/ubuntu.sources
@@ -213,7 +210,7 @@ autoinstall:
       if [ "$1" = "" ]; then
       T=125
       fi
-      for i in {1..5}; do
+      for i in {1..10}; do
           echo "$T" | tee /sys/class/hwmon/hwmon3/pwm1
           sleep 5
           current_speed=$(cat /sys/class/hwmon/hwmon3/pwm1)
