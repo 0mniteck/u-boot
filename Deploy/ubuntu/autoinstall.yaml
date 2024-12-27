@@ -230,6 +230,7 @@ autoinstall:
       exit 0
       EOF
     - chmod +x /target/usr/bin/update
+    - sed -i s,'main universe','main',g /target/etc/apt/sources.list.d/ubuntu.sources
     - sleep 5m
   error-commands:
     - tar -czf /target/installer-logs.tar.gz /var/log/installer/
