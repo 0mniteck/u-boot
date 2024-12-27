@@ -230,6 +230,19 @@ autoinstall:
       exit 0
       EOF
     - chmod +x /target/usr/bin/update
+    - |
+      cat >> /target/root/.bashrc << 'EOF'
+      
+      update
+
+      GPG_TTY=$(tty)
+      export GPG_TTY
+      
+      # eval `ssh-agent -s`
+      # ssh-add $HOME/.ssh/id_ecdsa_s*[!.pub]
+      
+      clear
+      EOF
     - sed -i s,'main universe','main',g /target/etc/apt/sources.list.d/ubuntu.sources
     - sleep 5m
   error-commands:
