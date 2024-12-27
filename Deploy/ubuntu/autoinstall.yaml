@@ -188,6 +188,7 @@ autoinstall:
     builtin:
       type: none
   user-data:
-    apt_mirrors:
-      ubuntu_archive: https://us.ports.ubuntu.com/ubuntu-ports
-      ubuntu_security: https://us.ports.ubuntu.com/ubuntu-ports
+    curtin:
+      apt_mirrors:
+        ubuntu_archive: https://us.ports.ubuntu.com/ubuntu-ports
+        ubuntu_security: https://us.ports.ubuntu.com/ubuntu-ports
