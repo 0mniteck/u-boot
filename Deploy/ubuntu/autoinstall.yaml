@@ -14,6 +14,9 @@ autoinstall:
               break
           fi
       done
+    - mkdir -p /var/log/overlay/{upper,work,lower}
+    - mount -o lowerdir=/,upperdir=/var/log/overlay/upper,workdir=/var/log/overlay/work /var/log/overlay
+    - mount --bind /var/log/overlay /
     - sed -i s,http://ports.ubuntu.com/ubuntu-ports,https://us.ports.ubuntu.com/ubuntu-ports,g /etc/cloud/cloud.cfg
     - sed -i s,http://ports.ubuntu.com/ubuntu-ports,https://us.ports.ubuntu.com/ubuntu-ports,g /etc/apt/sources.list.d/ubuntu.sources
     - sed -i s,'main universe restricted multiverse','main universe',g /etc/apt/sources.list.d/ubuntu.sources
