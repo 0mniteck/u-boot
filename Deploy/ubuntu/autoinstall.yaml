@@ -190,6 +190,46 @@ autoinstall:
     - curtin in-target -- warp-cli mode warp+doh
     - curtin in-target -- warp-cli dns families malware
     - curtin in-target -- warp-cli connect
+    - |
+      cat > /target/usr/bin/fan << 'EOF'
+      #!/bin/bash
+      T=$1
+      if [ "$1" = "" ]; then
+      T=125
+      fi
+      for i in {1..5}; do
+          echo "$T" | tee /sys/class/hwmon/hwmon3/pwm1
+          sleep 5
+          current_speed=$(cat /sys/class/hwmon/hwmon3/pwm1)
+          if [ "$current_speed" -eq "$T" ]; then
+              echo "Fan speed set to $T"
+              break
+          fi
+      done
+      journalctl --vacuum-time=2d
+      EOF
+    - chmod +x /target/usr/bin/fan
+    - echo "@reboot root fan > /var/log/fan.log" >> /target/etc/crontab
+    - |
+      cat > /target/usr/bin/update << 'EOF'
+      #!/bin/bash
+      apt update
+      apt upgrade $1 -y
+      apt autoremove -y
+      dpkg -l | grep '^rc' | awk '{print $2}' | xargs apt purge -y
+      apt autoclean
+      apt clean
+      echo ''
+      snap refresh
+      echo ''
+      ufw status
+      df -h
+      echo ''
+      free -h
+      sleep 5 && clear
+      exit 0
+      EOF
+    - chmod +x /target/usr/bin/update
     - sleep 5m
   error-commands:
     - tar -czf /target/installer-logs.tar.gz /var/log/installer/
@@ -210,9 +250,9 @@ autoinstall:
         Types: deb
         URIs: $PRIMARY
         Suites: $RELEASE $RELEASE-updates $RELEASE-backports
-        Components: main
+        Components: main universe
         |
         Types: deb
         URIs: $SECURITY
         Suites: $RELEASE-security
-        Components: main
+        Components: main universe
