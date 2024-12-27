@@ -76,8 +76,15 @@ autoinstall:
         - arches: [arm64, default]
           uri: "https://us.ports.ubuntu.com/ubuntu-ports"
       sources_list: |
-        deb $PRIMARY $RELEASE $RELEASE-updates $RELEASE-backports main
-        deb $SECURITY $RELEASE-security main
+        Types: deb
+        URIs: $PRIMARY
+        Suites: $RELEASE $RELEASE-updates $RELEASE-backports
+        Components: main
+        |
+        Types: deb
+        URIs: $SECURITY
+        Suites: $RELEASE-security
+        Components: main
     sources:
       cloudflare.sources:
         source: |
