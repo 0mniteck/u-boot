@@ -2,7 +2,7 @@
 users:
   - default
   - name: installer
-  shell: /bin/bash
+  shell: usr/bin/subiquity-shell
   lock-passwd: true
   sudo: ALL=(ALL) NOPASSWD:ALL
   groups: users, admin
