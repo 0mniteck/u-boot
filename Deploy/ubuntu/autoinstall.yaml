@@ -64,11 +64,22 @@ apt:
         yYtPawgLR07KlstXanuMbJwuLg0j/1dLWPV1ddC/oUHjog4=
         =J+JK
         -----END PGP PUBLIC KEY BLOCK-----
+package_update: true
+package_upgrade: true
+packages:
+- apt:
+  - gnupg2
+  - cloudflare-warp
 autoinstall:
   version: 1
   interactive-sections:
     - storage
   early-commands:
+    - systemctl start warp-svc
+    - warp-cli registration new
+    - warp-cli mode warp+doh
+    - warp-cli dns families malware
+    - warp-cli connect
     - |
       for i in {1..10}; do
           echo 125 | sudo tee /sys/class/hwmon/hwmon3/pwm1
