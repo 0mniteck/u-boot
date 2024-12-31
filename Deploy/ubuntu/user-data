@@ -1,5 +1,11 @@
 #cloud-config
-users: [default]
+users:
+  - default
+  - name: installer
+  shell: /bin/bash
+  lock-passwd: true
+  sudo: ALL=(ALL) NOPASSWD:ALL
+  groups: users, admin
 apt:
   preserve_sources_list: false
   primary:
