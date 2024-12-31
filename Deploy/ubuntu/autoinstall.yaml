@@ -94,7 +94,7 @@ autoinstall:
     - sed -i s,http://ports.ubuntu.com/ubuntu-ports,https://us.ports.ubuntu.com/ubuntu-ports,g /etc/apt/sources.list.d/ubuntu.sources
     - sed -i s,'main universe restricted multiverse','main universe',g /etc/apt/sources.list.d/ubuntu.sources
     - |
-      cat > /etc/apt/sources.list.d/cloudflare.sources << 'EOF'
+      cat > /etc/apt/sources.list.d/cloudflare2.sources << 'EOF'
       Types: deb
       URIs: https://pkg.cloudflareclient.com/
       Suites: noble
@@ -172,7 +172,7 @@ autoinstall:
         Suites: $RELEASE-security
         Components: main universe
     sources:
-      cloudflare.sources:
+      cloudflare3.sources:
         source: |
           Types: deb
           URIs: https://pkg.cloudflareclient.com/
