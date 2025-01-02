@@ -1,11 +1,5 @@
 #cloud-config
-users:
-  - default
-  - name: installer
-  shell: usr/bin/subiquity-shell
-  lock-passwd: true
-  sudo: ALL=(ALL) NOPASSWD:ALL
-  groups: users, admin
+users: [default]
 apt:
   preserve_sources_list: false
   primary:
