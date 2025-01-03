@@ -73,6 +73,12 @@ packages:
   - cloudflare-warp
 autoinstall:
   version: 1
+  network:
+    version: 2
+    ethernets:
+      end0:
+        dhcp6: true
+        dhcp4: true
   interactive-sections:
     - storage
   early-commands:
