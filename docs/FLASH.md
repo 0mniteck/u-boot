@@ -71,7 +71,7 @@ Once at the grub boot menu hit `e` to edit:
 setparams 'Try or Install Ubuntu'
 
     set gfxpayload=keep
-    linux        /casper/vmlinuz $cmdline  --- autoinstall quiet splash console=tty0 'ds=nocloud-net;s=https://omniteck.com/' date=202303151430.00
+    linux        /casper/vmlinuz $cmdline  --- autoinstall quiet splash console=tty0 'ds=nocloud-net;s=https://omniteck.com/' date=202403010000.00
     initrd       /casper/initrd
     $dtb
 ```
