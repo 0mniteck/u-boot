@@ -117,7 +117,6 @@ bootcmd:
     EOF
 runcmd:
   - apt update
-  - apt upgrade -y
   - apt install gnupg2 cloudflare-warp -y
   - systemctl start warp-svc
   - warp-cli registration new
