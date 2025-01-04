@@ -119,10 +119,16 @@ runcmd:
   - apt update
   - apt install gnupg2 cloudflare-warp -y
   - systemctl start warp-svc
-  - warp-cli registration new --accept-tos
+  - warp-cli registration new -- --accept-tos
   - warp-cli mode warp+doh
   - warp-cli dns families malware
   - warp-cli connect
+  - apt remove --purge ufw -y
+  - apt upgrade snapd -y
+  - snap refresh
+  - snap install ufw
+  - sleep 10s
+  - ufw enable
 autoinstall:
   version: 1
   network:
@@ -273,6 +279,7 @@ autoinstall:
     - |
       cat > /target/usr/bin/fan << 'EOF'
       #!/bin/bash
+      ufw enable
       T=$1
       if [ "$1" = "" ]; then
       T=125
@@ -324,7 +331,7 @@ autoinstall:
       clear
       EOF
     - sed -i s,'main universe','main',g /target/etc/apt/sources.list.d/ubuntu.sources
-    - curtin in-target -- systemctl start warp-svc && warp-cli registration new --accept-tos && warp-cli mode warp+doh && warp-cli dns families malware && warp-cli connect
+    - curtin in-target -- systemctl start warp-svc && warp-cli registration new -- --accept-tos && warp-cli mode warp+doh && warp-cli dns families malware && warp-cli connect
   error-commands:
     - tar -czf /target/installer-logs.tar.gz /var/log/installer/
     - journalctl -b > /target/installer-journal.error.log
