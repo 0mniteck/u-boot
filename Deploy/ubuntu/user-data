@@ -117,14 +117,13 @@ bootcmd:
     EOF
 runcmd:
   - apt update
-  - apt install gnupg2 cloudflare-warp -y
+  - apt install snapd gnupg2 cloudflare-warp -y
   - systemctl start warp-svc
   - warp-cli --accept-tos registration new
   - warp-cli mode warp+doh
   - warp-cli dns families malware
   - warp-cli connect
   - apt remove --purge ufw -y
-  - apt upgrade snapd -y
   - snap refresh
   - snap install ufw
   - sleep 10s
