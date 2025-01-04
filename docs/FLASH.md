@@ -69,9 +69,9 @@ Wait until `Booting /\EFI\BOOT\BOOTAA64.EFI`
 Once at the grub boot menu hit `e` to edit:
 ```
 setparams 'Try or Install Ubuntu'
-    date 2025-01-03 00:00:00
+
     set gfxpayload=keep
-    linux        /casper/vmlinuz $cmdline  --- autoinstall quiet splash console=tty0 'ds=nocloud-net;s=https://omniteck.com/'
+    linux        /casper/vmlinuz $cmdline  --- autoinstall quiet splash console=tty0 'ds=nocloud-net;s=https://omniteck.com/' date=202303151430.00
     initrd       /casper/initrd
     $dtb
 ```
