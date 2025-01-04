@@ -1,8 +1,11 @@
 # Flashing Recipe
 
-[Asciinema Demo](https://asciinema.org/a/kSWswlC3jxwgrxGbu8Lc0redZ)
+[![Asciinema Demo](https://asciinema.org/a/kSWswlC3jxwgrxGbu8Lc0redZ.svg)](https://asciinema.org/a/kSWswlC3jxwgrxGbu8Lc0redZ)
 
-### Always do an Initial Flash From Bypassed & Erased SPI/eMMC; And Keep Ethernet Unplugged!
+### Always do an Initial Flash From Bypassed & Erased SPI/eMMC
+### And Keep Ethernet Unplugged!
+
+#
 
 #### Bypass current SPI/eMMC, then boot into U-Boot Via SD with [sdcard.img](https://github.com/0mniteck/U-Boot/tree/UEFI%2BSb%2Bv2024.10%2Bv2.10.7%2Bv4.3.0/Builds)
 
@@ -62,11 +65,10 @@ Wait until `Booting /\EFI\BOOT\BOOTAA64.EFI`
 
 `Reconnect eMMC`
 
-## WIP
-
-~Continue installation as usual, connect ethernet; when subiquity has the option select `Automated Installation` and use the provided [https://omniteck.com/autoinstall.yaml](https://github.com/0mniteck/U-Boot/raw/refs/heads/Docker/Deploy/ubuntu/autoinstall.yaml)~
-
 Once at the grub boot menu hit `e` to edit:
+
+Add `autoinstall 'ds=nocloud-net;s=https://omniteck.com/' date=202403010000.00` to the kernel command line
+
 ```
 setparams 'Try or Install Ubuntu'
 
