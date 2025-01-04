@@ -71,6 +71,9 @@ packages:
 - apt:
   - gnupg2
   - cloudflare-warp
+apt:
+  commands:
+    00: apt install gnupg2 cloudflare-warp -y
 autoinstall:
   version: 1
   network:
@@ -82,11 +85,6 @@ autoinstall:
   interactive-sections:
     - storage
   early-commands:
-    - systemctl start warp-svc
-    - warp-cli registration new
-    - warp-cli mode warp+doh
-    - warp-cli dns families malware
-    - warp-cli connect
     - |
       for i in {1..10}; do
           echo 125 | sudo tee /sys/class/hwmon/hwmon3/pwm1
@@ -137,6 +135,11 @@ autoinstall:
         =J+JK
         -----END PGP PUBLIC KEY BLOCK-----
       EOF
+    - systemctl start warp-svc
+    - warp-cli registration new
+    - warp-cli mode warp+doh
+    - warp-cli dns families malware
+    - warp-cli connect
     - wget -q -O /bootaa64.efi https://github.com/0mniteck/U-Boot/raw/refs/heads/Docker/Deploy/ubuntu/bootaa64.efi
     - echo "3c7b02add63da9f1d76096dfd6aacc13d2ab5fec7a0ac820a752512aab7d80374a0ea463611473bf9e15c8bb3cc35e85a6d93433d6709a88995f2e17bf476fca  /bootaa64.efi" | sha512sum --status -c - && echo "bootaa64.efi Checksum Matched!" || poweroff
     - wget -q -O /shimaa64.efi https://github.com/0mniteck/U-Boot/raw/refs/heads/Docker/Deploy/ubuntu/shimaa64.efi
@@ -152,11 +155,6 @@ autoinstall:
   source:
     search_drivers: false
     id: ubuntu-desktop-minimal
-  network:
-    version: 2
-    ethernets:
-      end0:
-        dhcp6: true
   proxy: null
   apt:
     preserve_sources_list: false
