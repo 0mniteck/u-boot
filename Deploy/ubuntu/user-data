@@ -75,7 +75,6 @@ packages:
     - fido2-tools
     - dracut
 bootcmd:
-  - ufw enable
   - sed -i s,http://ports.ubuntu.com/ubuntu-ports,https://us.ports.ubuntu.com/ubuntu-ports,g /etc/cloud/cloud.cfg
   - sed -i s,http://ports.ubuntu.com/ubuntu-ports,https://us.ports.ubuntu.com/ubuntu-ports,g /etc/apt/sources.list.d/ubuntu.sources
   - sed -i s,'main universe restricted multiverse','main universe',g /etc/apt/sources.list.d/ubuntu.sources
@@ -117,6 +116,7 @@ bootcmd:
       -----END PGP PUBLIC KEY BLOCK-----
     EOF
 runcmd:
+  - ufw enable
   - apt update
   - apt install snapd gnupg2 cloudflare-warp -y
   - systemctl start warp-svc
