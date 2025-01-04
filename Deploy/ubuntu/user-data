@@ -75,6 +75,7 @@ packages:
     - fido2-tools
     - dracut
 bootcmd:
+  - ufw enable
   - sed -i s,http://ports.ubuntu.com/ubuntu-ports,https://us.ports.ubuntu.com/ubuntu-ports,g /etc/cloud/cloud.cfg
   - sed -i s,http://ports.ubuntu.com/ubuntu-ports,https://us.ports.ubuntu.com/ubuntu-ports,g /etc/apt/sources.list.d/ubuntu.sources
   - sed -i s,'main universe restricted multiverse','main universe',g /etc/apt/sources.list.d/ubuntu.sources
@@ -120,11 +121,11 @@ runcmd:
   - apt install snapd gnupg2 cloudflare-warp -y
   - systemctl start warp-svc
   - warp-cli --accept-tos registration new
-  - warp-cli mode warp+doh
-  - warp-cli dns families malware
-  - warp-cli connect
-  - apt remove --purge ufw -y
+  - warp-cli --accept-tos mode warp+doh
+  - warp-cli --accept-tos dns families malware
+  - warp-cli --accept-tos connect
   - snap refresh
+  - apt remove --purge ufw -y
   - snap install ufw
   - sleep 10s
   - ufw enable
@@ -330,7 +331,7 @@ autoinstall:
       clear
       EOF
     - sed -i s,'main universe','main',g /target/etc/apt/sources.list.d/ubuntu.sources
-    - curtin in-target -- systemctl start warp-svc && warp-cli --accept-tos registration new && warp-cli mode warp+doh && warp-cli dns families malware && warp-cli connect
+    - curtin in-target -- systemctl start warp-svc && systemctl enable warp-svc && warp-cli --accept-tos registration new && warp-cli --accept-tos mode warp+doh && warp-cli --accept-tos dns families malware && warp-cli --accept-tos connect
   error-commands:
     - tar -czf /target/installer-logs.tar.gz /var/log/installer/
     - journalctl -b > /target/installer-journal.error.log
