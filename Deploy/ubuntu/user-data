@@ -29,6 +29,17 @@ apt:
     Suites: $RELEASE-security
     Components: main universe
   sources:
+    ubuntu.sources:
+      source: |
+        Types: deb
+        URIs: https://us.ports.ubuntu.com/ubuntu-ports
+        Suites: oracular oracular-updates oracular-backports
+        Components: main universe
+        |
+        Types: deb
+        URIs: https://us.ports.ubuntu.com/ubuntu-ports
+        Suites: oracular-security
+        Components: main universe
     cloudflare.sources:
       source: |
         Types: deb
@@ -181,6 +192,17 @@ autoinstall:
         Suites: $RELEASE-security
         Components: main universe
     sources:
+      ubuntu.sources:
+        source: |
+          Types: deb
+          URIs: https://us.ports.ubuntu.com/ubuntu-ports
+          Suites: oracular oracular-updates oracular-backports
+          Components: main universe
+          |
+          Types: deb
+          URIs: https://us.ports.ubuntu.com/ubuntu-ports
+          Suites: oracular-security
+          Components: main universe
       cloudflare3.sources:
         source: |
           Types: deb
@@ -268,6 +290,7 @@ autoinstall:
     - curtin in-target -- ufw enable
     - curtin in-target -- apt update
     - curtin in-target -- apt upgrade -y
+    - curtin in-target -- systemctl start warp-svc && systemctl enable warp-svc && warp-cli --accept-tos registration new && warp-cli --accept-tos mode warp+doh && warp-cli --accept-tos dns families malware && warp-cli --accept-tos connect
     - wget -q -O /tmp/bootaa64.efi https://github.com/0mniteck/U-Boot/raw/refs/heads/Docker/Deploy/ubuntu/bootaa64.efi
     - wget -q -O /tmp/shimaa64.efi https://github.com/0mniteck/U-Boot/raw/refs/heads/Docker/Deploy/ubuntu/shimaa64.efi
     - cp /tmp/bootaa64.efi /target/boot/efi/EFI/BOOT/BOOTAA64.EFI
@@ -329,7 +352,6 @@ autoinstall:
       clear
       EOF
     - sed -i s,'main universe','main',g /target/etc/apt/sources.list.d/ubuntu.sources
-    - curtin in-target -- systemctl start warp-svc && systemctl enable warp-svc && warp-cli --accept-tos registration new && warp-cli --accept-tos mode warp+doh && warp-cli --accept-tos dns families malware && warp-cli --accept-tos connect
   error-commands:
     - tar -czf /target/installer-logs.tar.gz /var/log/installer/
     - journalctl -b > /target/installer-journal.error.log
