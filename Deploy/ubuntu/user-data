@@ -48,6 +48,7 @@ apt:
         Components: main
       key: |
         -----BEGIN PGP PUBLIC KEY BLOCK-----
+        
         mQINBGGr2jUBEADHaae1uIKW4JI/E32IR9EJSswkOuZl1J+XXH32U2u3DGtzGuei
         dNXyeQ7AWHp5bM2wO7jGRqH/IwiDVHzp6gmJ8r/SFrE+iljNA71LVXY7FjaOGmKC
         pZnzl3mlY9zsRgmM+oEbTedg2k1jfeHWiYJfTk4efDUGNqF4D62GBFLpOheeXtNU
@@ -106,6 +107,7 @@ bootcmd:
     Components: main
     Signed-By: |
       -----BEGIN PGP PUBLIC KEY BLOCK-----
+      
       mQINBGGr2jUBEADHaae1uIKW4JI/E32IR9EJSswkOuZl1J+XXH32U2u3DGtzGuei
       dNXyeQ7AWHp5bM2wO7jGRqH/IwiDVHzp6gmJ8r/SFrE+iljNA71LVXY7FjaOGmKC
       pZnzl3mlY9zsRgmM+oEbTedg2k1jfeHWiYJfTk4efDUGNqF4D62GBFLpOheeXtNU
@@ -211,6 +213,7 @@ autoinstall:
           Components: main
         key: |
           -----BEGIN PGP PUBLIC KEY BLOCK-----
+          
           mQINBGGr2jUBEADHaae1uIKW4JI/E32IR9EJSswkOuZl1J+XXH32U2u3DGtzGuei
           dNXyeQ7AWHp5bM2wO7jGRqH/IwiDVHzp6gmJ8r/SFrE+iljNA71LVXY7FjaOGmKC
           pZnzl3mlY9zsRgmM+oEbTedg2k1jfeHWiYJfTk4efDUGNqF4D62GBFLpOheeXtNU
