@@ -160,7 +160,17 @@ autoinstall:
         dhcp4: true
   interactive-sections:
     - storage
-  early-commands:
+  early-commands: 
+    - |
+      for i in {1..10}; do
+          echo 125 | sudo tee /sys/class/hwmon/hwmon3/pwm1
+          sleep 5
+          current_speed=$(cat /sys/class/hwmon/hwmon3/pwm1)
+          if [ "$current_speed" -eq 125 ]; then
+              echo "Fan speed set to 125"
+              break
+          fi
+      done
   locale: "en_US.UTF-8"
   refresh-installer:
     update: true
