@@ -86,16 +86,6 @@ packages:
     - fido2-tools
     - dracut
 bootcmd:
-  - |
-      for i in {1..10}; do
-          echo 125 | sudo tee /sys/class/hwmon/hwmon3/pwm1
-          sleep 5
-          current_speed=$(cat /sys/class/hwmon/hwmon3/pwm1)
-          if [ "$current_speed" -eq 125 ]; then
-              echo "Fan speed set to 125"
-              break
-          fi
-      done
   - sed -i s,http://ports.ubuntu.com/ubuntu-ports,https://us.ports.ubuntu.com/ubuntu-ports,g /etc/cloud/cloud.cfg
   - sed -i s,http://ports.ubuntu.com/ubuntu-ports,https://us.ports.ubuntu.com/ubuntu-ports,g /etc/apt/sources.list.d/ubuntu.sources
   - sed -i s,'main universe restricted multiverse','main universe',g /etc/apt/sources.list.d/ubuntu.sources
