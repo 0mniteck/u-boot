@@ -285,7 +285,6 @@ autoinstall:
      enabled: false
   timezone: "America/Los_Angeles"
   updates: all
-  shutdown: poweroff
   late-commands:
     - curtin in-target -- apt install device-tree-compiler devio libfdt1 libiniparser1 libubootenv-tool u-boot-tools mtd-utils -y
     - curtin in-target -- apt remove --purge ufw firefox -y
