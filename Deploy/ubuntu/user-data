@@ -289,7 +289,6 @@ autoinstall:
     - curtin in-target -- apt install device-tree-compiler devio libfdt1 libiniparser1 libubootenv-tool u-boot-tools mtd-utils -y
     - curtin in-target -- apt remove --purge ufw firefox -y
     - curtin in-target -- apt-mark hold shim shim-signed
-    - curtin in-target -- ufw enable
     - curtin in-target -- apt update
     - curtin in-target -- apt upgrade -y
     - curtin in-target -- systemctl start warp-svc && systemctl enable warp-svc && warp-cli --accept-tos registration new && warp-cli --accept-tos mode warp+doh && warp-cli --accept-tos dns families malware && warp-cli --accept-tos connect
