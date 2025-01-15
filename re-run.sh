@@ -7,7 +7,7 @@ snap install grype --classic
 rm -f -r /var/snap/docker*
 snap remove docker --purge
 mkdir /var/snap/docker && chown root:root /var/snap/docker
-snap install docker --revision=2964 && ufw disable && sleep 5
+snap install docker --revision=2964 && snap disable ufw && sleep 5
 
 source_date_epoch=1;
 if [ "$1" != 0 ]; then
@@ -139,7 +139,7 @@ rm -f -r /var/snap/docker*
 sleep 5
 snap remove docker --purge
 snap remove docker --purge
-ufw -f enable
+snap enable ufw
 
 if [ "$3" = "no" ]; then
   for dev in $LIST
