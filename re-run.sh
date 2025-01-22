@@ -109,7 +109,8 @@ docker buildx build --load --target u-boot --tag u-boot \
 mkdir -p "$HOME/syft" && TMPDIR="$HOME/syft" syft scan docker:u-boot -o spdx-json=Results/u-boot.manifest.spdx.json && rm -f -r "$HOME/syft"
 grype sbom:Results/u-boot.manifest.spdx.json -o json > Results/u-boot.grype.json
 snap remove syft --purge && rm -f -r $HOME/.cache/syft
-snap remove grype --purge && rm -f -r $HOME/.cache/grype && rm -f -r /tmp/grype-scratch*
+snap remove grype --purge
+rm /root/getter* -f -r && rm /root/grype-scratch* -f -r && rm /root/5 -f -r && rm -f -r $HOME/.cache/grype && rm -f -r /tmp/grype-scratch*
 
 docker run -it --cpus=$(nproc) \
   --name u-boot \
@@ -139,6 +140,7 @@ rm -f -r /var/snap/docker*
 sleep 5
 snap remove docker --purge
 snap remove docker --purge
+networkctl delete docker0
 
 if [ "$3" = "no" ]; then
   for dev in $LIST
