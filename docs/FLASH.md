@@ -67,13 +67,13 @@ Wait until `Booting /\EFI\BOOT\BOOTAA64.EFI`
 
 Once at the grub boot menu hit `e` to edit:
 
-Add `autoinstall 'ds=nocloud-net;s=https://omniteck.com/' date=202501140000.00` to the kernel command line
+Add `autoinstall 'ds=nocloud-net;s=https://omniteck.com/' date=YYYYMMDDHHMM.SS` to the kernel command line
 
 ```
 setparams 'Try or Install Ubuntu'
 
     set gfxpayload=keep
-    linux        /casper/vmlinuz $cmdline  --- autoinstall quiet splash console=tty0 'ds=nocloud-net;s=https://omniteck.com/' date=202501140000.00
+    linux        /casper/vmlinuz $cmdline  --- autoinstall quiet splash console=tty0 'ds=nocloud-net;s=https://omniteck.com/' date=202522010000.00
     initrd       /casper/initrd
     $dtb
 ```
