@@ -7,7 +7,7 @@ snap install grype --classic
 rm -f -r /var/snap/docker*
 snap remove docker --purge
 mkdir /var/snap/docker && chown root:root /var/snap/docker
-snap install docker --revision=2964 && snap disable ufw && sleep 5
+snap install docker --revision=2964
 
 source_date_epoch=1;
 if [ "$1" != 0 ]; then
@@ -36,7 +36,7 @@ echo "SOURCE_DATE: $source_date"
 echo "SOURCE_DATE_EPOCH: $source_date_epoch"
 echo "BUILD_MESSAGE_TIMESTAMP: $build_message_timestamp"
 ARCHS=$(echo $ARCHS | tr ' ' '\n' | sort -u | tr '\n' ' ')
-docker buildx create --name U-Boot-Builder --bootstrap --use
+docker buildx create --name U-Boot-Builder --driver-opt "network=host" --bootstrap --use
 
 if [ "$2" = "yes" ]; then
   docker buildx build --load --target optee --tag optee \
@@ -139,7 +139,6 @@ rm -f -r /var/snap/docker*
 sleep 5
 snap remove docker --purge
 snap remove docker --purge
-snap enable ufw
 
 if [ "$3" = "no" ]; then
   for dev in $LIST
