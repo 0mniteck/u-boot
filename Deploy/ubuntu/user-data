@@ -203,8 +203,6 @@ autoinstall:
         Components: main universe
     security:
         - arches: *id001
-          - arm64
-          - default
           uri: "https://us.ports.ubuntu.com/ubuntu-ports"
     sources:
       ubuntu.sources:
