@@ -173,8 +173,7 @@ autoinstall:
     - echo early_done > /tmp/early
   locale: "en_US.UTF-8"
   refresh-installer:
-    update: true
-    channel: "latest/stable"
+    update: false
   keyboard:
     layout: us
     variant: ""
