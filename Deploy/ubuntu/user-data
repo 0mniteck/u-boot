@@ -144,7 +144,6 @@ runcmd:
   - warp-cli --accept-tos mode warp+doh
   - warp-cli --accept-tos dns families malware
   - warp-cli --accept-tos connect
-  - snap refresh
   - apt remove --purge ufw -y
   - snap install ufw
   - sleep 10s
