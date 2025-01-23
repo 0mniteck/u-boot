@@ -272,7 +272,7 @@ autoinstall:
   kernel:
      flavor: generic
   timezone: "America/Los_Angeles"
-  updates: all
+  updates: security
   late-commands:
     - curtin in-target -- apt remove --purge ufw firefox -y
     - curtin in-target -- apt-mark hold shim shim-signed
