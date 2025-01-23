@@ -290,8 +290,6 @@ autoinstall:
     - fido2-tools
   kernel:
      flavor: generic
-  kernel-crash-dumps:
-     enabled: false
   timezone: "America/Los_Angeles"
   updates: all
   late-commands:
