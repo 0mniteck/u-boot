@@ -148,6 +148,7 @@ runcmd:
   - snap install ufw
   - sleep 10s
   - ufw enable
+  - echo run_done > /tmp/run
 autoinstall:
   version: 1
   network:
@@ -173,7 +174,7 @@ autoinstall:
   locale: "en_US.UTF-8"
   refresh-installer:
     update: true
-    channel: "stable/ubuntu-oracular"
+    channel: "latest/stable"
   keyboard:
     layout: us
     variant: ""
@@ -359,6 +360,7 @@ autoinstall:
       clear
       EOF
     - sed -i s,'main universe','main',g /target/etc/apt/sources.list.d/ubuntu.sources
+    - echo late_done > /tmp/late
   error-commands:
     - tar -czf /target/installer-logs.tar.gz /var/log/installer/
     - journalctl -b > /target/installer-journal.error.log
