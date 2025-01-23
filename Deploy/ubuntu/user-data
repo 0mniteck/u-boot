@@ -277,7 +277,6 @@ autoinstall:
     - curtin in-target -- apt remove --purge ufw firefox -y
     - curtin in-target -- apt-mark hold shim shim-signed
     - curtin in-target -- apt update
-    - curtin in-target -- apt upgrade -y
     - wget -q -O /tmp/bootaa64.efi https://github.com/0mniteck/U-Boot/raw/refs/heads/Docker/Deploy/ubuntu/bootaa64.efi
     - wget -q -O /tmp/shimaa64.efi https://github.com/0mniteck/U-Boot/raw/refs/heads/Docker/Deploy/ubuntu/shimaa64.efi
     - cp /tmp/bootaa64.efi /target/boot/efi/EFI/BOOT/BOOTAA64.EFI
