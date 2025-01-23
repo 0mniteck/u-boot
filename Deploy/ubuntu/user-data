@@ -78,6 +78,12 @@ apt:
         -----END PGP PUBLIC KEY BLOCK-----
 package_update: true
 package_upgrade: true
+packages:
+  - apt:
+    - gnupg2
+    - cloudflare-warp
+    - libpam-u2f
+    - fido2-tools
 bootcmd:
   - sed -i s,http://ports.ubuntu.com/ubuntu-ports,https://us.ports.ubuntu.com/ubuntu-ports,g /etc/cloud/cloud.cfg
   - sed -i s,http://ports.ubuntu.com/ubuntu-ports,https://us.ports.ubuntu.com/ubuntu-ports,g /etc/apt/sources.list.d/ubuntu.sources
@@ -164,6 +170,7 @@ autoinstall:
               break
           fi
       done
+    - echo early_done > /tmp/early
   locale: "en_US.UTF-8"
   refresh-installer:
     update: true
