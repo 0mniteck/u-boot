@@ -159,7 +159,7 @@ autoinstall:
         dhcp4: true
   interactive-sections:
     - storage
-  early-commands: 
+  early-commands:
     - |
       for i in {1..15}; do
           echo 125 | sudo tee /sys/class/hwmon/hwmon3/pwm1
