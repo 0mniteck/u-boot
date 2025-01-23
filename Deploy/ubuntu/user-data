@@ -187,10 +187,9 @@ autoinstall:
     disable_components: [restricted, multiverse]
     mirror-selection:
       primary:
-        - arches: [arm64, default]
-          uri: "https://us.ports.ubuntu.com/ubuntu-ports"
-      security:
-        - arches: [arm64, default]
+        - arches: &id001
+          - arm64
+          - default
           uri: "https://us.ports.ubuntu.com/ubuntu-ports"
       sources_list: |
         Types: deb
@@ -202,6 +201,11 @@ autoinstall:
         URIs: $SECURITY
         Suites: $RELEASE-security
         Components: main universe
+    security:
+        - arches: *id001
+          - arm64
+          - default
+          uri: "https://us.ports.ubuntu.com/ubuntu-ports"
     sources:
       ubuntu.sources:
         source: |
