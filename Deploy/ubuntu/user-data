@@ -149,6 +149,7 @@ autoinstall:
         dhcp4: true
   interactive-sections:
     - storage
+    - identity
   early-commands:
     - echo early_done > /tmp/early
   locale: "en_US.UTF-8"
@@ -346,4 +347,3 @@ autoinstall:
     builtin:
       type: none
   user-data:
-    users: ['']
