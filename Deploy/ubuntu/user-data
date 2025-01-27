@@ -329,7 +329,7 @@ autoinstall:
     - sed -i s,'main universe','main',g /target/etc/apt/sources.list.d/ubuntu.sources
     - curtin in-target -- apt update
     - |
-      cat > /target/usr/bin/omni << 'EOF'
+      cat > /target/usr/bin/fan << 'EOF'
       #!/bin/bash
       T=$1
       if [ "$1" = "" ]; then
@@ -345,17 +345,9 @@ autoinstall:
           fi
       done
       journalctl --vacuum-time=2d
-      sleep 10m
-      ufw enable
-      systemctl start warp-svc
-      warp-cli --accept-tos registration new
-      warp-cli --accept-tos mode warp+doh
-      warp-cli --accept-tos dns families malware
-      warp-cli --accept-tos connect
-      update
       EOF
-    - chmod +x /target/usr/bin/omni
-    - echo "@reboot root omni > /var/log/omni.log" >> /target/etc/crontab
+    - chmod +x /target/usr/bin/fan
+    - echo "@reboot root fan > /var/log/fan.log" >> /target/etc/crontab
     - |
       cat > /target/usr/bin/update << 'EOF'
       #!/bin/bash
@@ -397,7 +389,17 @@ autoinstall:
     builtin:
       type: none
   user-data:
-    #cloud-config
+    package_update: true
+    package_upgrade: true
+    runcmd:
+      - ufw enable
+      - systemctl start warp-svc
+      - warp-cli --accept-tos registration new
+      - warp-cli --accept-tos mode warp+doh
+      - warp-cli --accept-tos dns families malware
+      - warp-cli --accept-tos connect
+      - update
+      - echo run_done > /tmp/run
     snap:
       commands:
         00: snap remove --purge firefox cups
