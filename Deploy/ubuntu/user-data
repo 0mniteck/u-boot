@@ -157,6 +157,7 @@ autoinstall:
     - storage
     - identity
   early-commands:
+    - echo early_done > /tmp/early
   locale: "en_US.UTF-8"
   refresh-installer:
     update: false
