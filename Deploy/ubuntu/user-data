@@ -31,7 +31,7 @@ apt:
   sources:
     ubuntu.sources:
       append: false
-      source:
+      source: |
         Types: deb
         URIs: https://us.ports.ubuntu.com/ubuntu-ports
         Suites: oracular oracular-updates oracular-backports
@@ -45,7 +45,7 @@ apt:
         Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
     cloudflare.sources:
       append: false
-      source:
+      source: |
         Types: deb
         URIs: https://pkg.cloudflareclient.com/
         Suites: noble
@@ -195,7 +195,7 @@ autoinstall:
     sources:
       ubuntu.sources:
         append: false
-        source:
+        source: |
           Types: deb
           URIs: https://us.ports.ubuntu.com/ubuntu-ports
           Suites: oracular oracular-updates oracular-backports
@@ -209,7 +209,7 @@ autoinstall:
           Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
       cloudflare.sources:
         append: false
-        source:
+        source: |
           Types: deb
           URIs: https://pkg.cloudflareclient.com/
           Suites: noble
