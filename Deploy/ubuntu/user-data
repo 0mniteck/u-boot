@@ -88,6 +88,9 @@ packages:
     - cloudflare-warp
     - libpam-u2f
     - fido2-tools
+  - snap:
+    - chromium
+    - ufw
 snap:
   commands:
     00: snap remove --purge firefox cups
@@ -391,6 +394,10 @@ autoinstall:
   user-data:
     package_update: false
     package_upgrade: false
+    packages:
+      - snap:
+        - chromium
+        - ufw
     runcmd:
       - cloud-init-per once ufw-enable ufw enable
       - cloud-init-per once warp-start systemctl start warp-svc
