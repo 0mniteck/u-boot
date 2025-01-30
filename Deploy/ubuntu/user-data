@@ -392,13 +392,13 @@ autoinstall:
     package_update: false
     package_upgrade: false
     runcmd:
-      - ufw enable
-      - systemctl start warp-svc
-      - warp-cli --accept-tos registration new
-      - warp-cli --accept-tos mode warp+doh
-      - warp-cli --accept-tos dns families malware
-      - warp-cli --accept-tos connect
-      - update
+      - cloud-init-per once ufw-enable ufw enable
+      - cloud-init-per once warp-start systemctl start warp-svc
+      - cloud-init-per once warp-reg warp-cli --accept-tos registration new
+      - cloud-init-per once warp-mode warp-cli --accept-tos mode warp+doh
+      - cloud-init-per once warp-filter warp-cli --accept-tos dns families malware
+      - cloud-init-per once warp-activate warp-cli --accept-tos connect
+      - cloud-init-per once update update
       - echo run_done > /tmp/run
     snap:
       commands:
