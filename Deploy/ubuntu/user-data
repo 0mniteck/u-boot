@@ -389,8 +389,8 @@ autoinstall:
     builtin:
       type: none
   user-data:
-    package_update: true
-    package_upgrade: true
+    package_update: false
+    package_upgrade: false
     runcmd:
       - ufw enable
       - systemctl start warp-svc
