@@ -357,11 +357,8 @@ autoinstall:
   user-data:
     package_update: false
     package_upgrade: false
-    packages:
-      - snap:
-        - chromium
-        - ufw
     runcmd:
+      - cloud-init-per once inst-ufw snap install ufw
       - cloud-init-per once ufw-enable ufw enable
       - cloud-init-per once warp-start systemctl start warp-svc
       - cloud-init-per once warp-reg warp-cli --accept-tos registration new
@@ -369,6 +366,7 @@ autoinstall:
       - cloud-init-per once warp-filter warp-cli --accept-tos dns families malware
       - cloud-init-per once warp-activate warp-cli --accept-tos connect
       - cloud-init-per once update update
+      - cloud-init-per once inst-chr snap install chromium
       - cloud-init-per once mkyubi mkdir /etc/Yubico
       - echo run_done > /tmp/run
     snap:
