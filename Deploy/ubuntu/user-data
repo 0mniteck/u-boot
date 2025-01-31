@@ -406,6 +406,7 @@ autoinstall:
       - cloud-init-per once warp-filter warp-cli --accept-tos dns families malware
       - cloud-init-per once warp-activate warp-cli --accept-tos connect
       - cloud-init-per once update update
+      - cloud-init-per once mkyubi mkdir /etc/Yubico
       - echo run_done > /tmp/run
     snap:
       commands:
